@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+// App Light Theme
+$app-light-primary: mat-palette($mat-blue);
+$app-light-accent : mat-palette($mat-orange, A200, A100, A400);
+$app-light-warn : mat-palette($mat-red);
+$app-light-theme : mat-light-theme($app-light-primary, $app-light-accent, $app-light-warn);
+// App Dark Theme
+$app-dark-primary: mat-palette($mat-blue);
+$app-dark-accent : mat-palette($mat-orange, A200, A100, A400);
+$app-dark-warn : mat-palette($mat-red);
+$app-dark-theme : mat-dark-theme($app-dark-primary, $app-dark-accent, $app-dark-warn);
