@@ -5,10 +5,10 @@
 
 ```bash
 # clone the repo
-git clone --depth 1 https://github.com/xxx/xxx.git
+git clone --depth 1 https://github.com/sudeep04/AngularLightbox.git
 
 # change directory to our repo
-cd angular-lightbox-component
+cd AngularLightbox
 
 # install the repo with npm
 npm install
@@ -26,8 +26,6 @@ go to [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http
 What you need to run this app:
 * `node` and `npm` (`brew install node`)
 * Ensure you're running the latest versions Node `v6.x.x`+ (or `v7.x.x`) and NPM `3.x.x`+
-
-> If you have `nvm` installed, which is highly recommended (`brew install nvm`) you can do a `nvm install --lts && nvm use` in `$` to run with the latest Node LTS. You can also have this `zsh` done for you [automatically](https://github.com/creationix/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file)
 
 ## Running the app
 Run `npm run server` to start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://0.0.0.0:3000` (or if you prefer IPv6, if you're using `express` server, then it's `http://[::1]:3000/`).
