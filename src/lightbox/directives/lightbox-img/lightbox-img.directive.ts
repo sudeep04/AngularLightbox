@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
+import { Directive } from '@angular/core';
 
-@Component({
-    selector: 'lightbox',
-    templateUrl: './lightbox.component.html',
-    styleUrls: ['./lightbox.component.scss']
+@Directive({
+    selector: 'img[lightbox-img]'
 })
-export class LightboxComponent {}
+export class LightboxImgDirective {}
