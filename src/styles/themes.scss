@@ -10,7 +10,7 @@
     $foreground: map-get($theme, foreground);
     $background: map-get($theme, background); //Toolbar
     .mat-toolbar {
-        background: mat-color($background, card) !important;
+        background: mat-color($background, background) !important;
         color: mat-color($foreground, text) !important;
     } //List
     .mat-list .mat-list-item,
@@ -46,6 +46,14 @@
     .mat-selection-list .mat-list-item,
     .mat-selection-list .mat-list-option {
         height: 40px !important;
+    }
+    .mat-list .mat-list-item .mat-list-item-content .mat-list-text:not(:nth-child(2)),
+    .mat-list .mat-list-option .mat-list-item-content .mat-list-text:not(:nth-child(2)),
+    .mat-nav-list .mat-list-item .mat-list-item-content .mat-list-text:not(:nth-child(2)),
+    .mat-nav-list .mat-list-option .mat-list-item-content .mat-list-text:not(:nth-child(2)),
+    .mat-selection-list .mat-list-item .mat-list-item-content .mat-list-text:not(:nth-child(2)),
+    .mat-selection-list .mat-list-option .mat-list-item-content .mat-list-text:not(:nth-child(2)) {
+        padding-right: 16px !important;
     }
 }
 
