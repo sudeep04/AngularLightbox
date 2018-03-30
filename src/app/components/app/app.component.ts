@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
         this._router.events.subscribe((event) => {
 
             if (event instanceof NavigationEnd) {
-                
                 this.navItems = [
                     { name: 'Home', route: '/home', icon: 'home', active: event.url === '/home' || event.url === '/' },
                     { name: 'Theming', route: '/theming', icon: 'palette', active: event.url === '/theming' },
