@@ -10,6 +10,11 @@ import { LightboxService } from './services/lightbox.service';
         LightboxImgDirective,
         LightboxVideoDirective
     ],
+    exports: [
+        LightboxComponent,
+        LightboxImgDirective,
+        LightboxVideoDirective
+    ],
     providers: [
         LightboxService
     ]
