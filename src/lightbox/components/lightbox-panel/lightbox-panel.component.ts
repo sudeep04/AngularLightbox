@@ -6,4 +6,16 @@ import { Component } from '@angular/core';
     styleUrls: ['./lightbox-panel.component.scss']
 })
 export class LightboxPanelComponent {
+
+    private _items: Lightbox.LightboxItem[] = [];
+
+    public open(items: Lightbox.LightboxItem[], activeItem: number) {
+
+        this._items = items;
+    }
+
+    public close() {
+        
+        this._items = [];
+    }
 }

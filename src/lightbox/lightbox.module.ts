@@ -6,6 +6,7 @@ import { LightboxService } from './services/lightbox.service';
 import { OverlayContainer } from './models/overlay-container';
 import { LightboxPanelComponent } from './components/lightbox-panel/lightbox-panel.component';
 import { LightboxDoomService } from './services/lightbox-doom.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -13,6 +14,9 @@ import { LightboxDoomService } from './services/lightbox-doom.service';
         LightboxImgDirective,
         LightboxVideoDirective,
         LightboxPanelComponent
+    ],
+    imports: [
+        CommonModule
     ],
     exports: [
         LightboxComponent,
