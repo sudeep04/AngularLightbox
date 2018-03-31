@@ -6,6 +6,7 @@ import { LightboxService } from '../../services/lightbox.service';
 })
 export class LightboxImgDirective implements OnInit {
 
+    private _id: number;
     @HostBinding('style.cursor') private _cursor: string;
 
     constructor(
@@ -16,6 +17,8 @@ export class LightboxImgDirective implements OnInit {
     public ngOnInit() {
 
         this._cursor = 'pointer';
+        this._id = this.lightboxService.generateId();
+        this.lightboxService.addImage(this._id, this._element.nativeElement.src);
     }
 
     @HostListener('click') private _onClick() {
@@ -25,7 +28,7 @@ export class LightboxImgDirective implements OnInit {
 
     private _show() {
 
-        console.log('image onClick');
+        this._element.nativeElement.style.visibility = 'show';
     }
 
     private _hide() {
