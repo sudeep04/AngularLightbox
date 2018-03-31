@@ -1,4 +1,4 @@
-declare module Lightbox {
+declare namespace Lightbox {
 
     interface LightboxItem {
 
