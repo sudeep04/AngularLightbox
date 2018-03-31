@@ -3,20 +3,28 @@ import { LightboxComponent } from './components/lightbox/lightbox.component';
 import { LightboxImgDirective } from './directives/lightbox-img/lightbox-img.directive';
 import { LightboxVideoDirective } from './directives/lightbox-video/lightbox-video.directive';
 import { LightboxService } from './services/lightbox.service';
+import { OverlayContainer } from './models/overlay-container';
+import { LightboxPanelComponent } from './components/lightbox-panel/lightbox-panel.component';
+import { LightboxDoomService } from './services/lightbox-doom.service';
 
 @NgModule({
     declarations: [
         LightboxComponent,
         LightboxImgDirective,
-        LightboxVideoDirective
+        LightboxVideoDirective,
+        LightboxPanelComponent
     ],
     exports: [
         LightboxComponent,
         LightboxImgDirective,
-        LightboxVideoDirective
+        LightboxVideoDirective,
+        LightboxPanelComponent
     ],
     providers: [
-        LightboxService
-    ]
+        LightboxService,
+        LightboxDoomService,
+        OverlayContainer
+    ],
+    entryComponents: [LightboxPanelComponent],
 })
 export class LightboxModule { }
