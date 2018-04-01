@@ -22,9 +22,8 @@ export class LightboxComponent {
 
     public openItem(id: number) {
 
-        let self = this;
-        const itemsArray = Object.keys(this._items).map(function(key) {
-            return self._items[key];
+        const itemsArray = Object.keys(this._items).map((key) => {
+            return this._items[key];
         });
 
         this._lightboxService.lightboxPanel.open(itemsArray, id);

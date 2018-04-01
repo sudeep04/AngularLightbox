@@ -7,6 +7,7 @@ import { OverlayContainer } from './models/overlay-container';
 import { LightboxPanelComponent } from './components/lightbox-panel/lightbox-panel.component';
 import { LightboxDoomService } from './services/lightbox-doom.service';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
         LightboxPanelComponent
     ],
     imports: [
-        CommonModule
+        CommonModule,
+        BrowserAnimationsModule
     ],
     exports: [
         LightboxComponent,
