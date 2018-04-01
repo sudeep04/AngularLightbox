@@ -3,7 +3,11 @@ import { LightboxService } from '../../services/lightbox.service';
 import { LightboxComponent } from '../../components/lightbox/lightbox.component';
 
 @Directive({
-    selector: 'img[lightbox-img]'
+    selector: 'img[lightbox-img]',
+    host: {
+        '[style.cursor]': '_cursor',
+        '(click)': '_onClick($event)'
+    }
 })
 export class LightboxImgDirective implements OnInit {
 
@@ -11,7 +15,7 @@ export class LightboxImgDirective implements OnInit {
 
     private _id: number;
 
-    @HostBinding('style.cursor') private _cursor: string;
+    private _cursor: string;
 
     constructor(
         private _lightboxService: LightboxService,
@@ -25,7 +29,7 @@ export class LightboxImgDirective implements OnInit {
         this.container.addItem({ id: this._id, type: 'img' , url: this._element.nativeElement.src});
     }
 
-    @HostListener('click') private _onClick() {
+    private _onClick(event: Event) {
 
         this.container.openItem(this._id);
         this._hide();
@@ -38,6 +42,6 @@ export class LightboxImgDirective implements OnInit {
 
     private _hide() {
 
-        this._element.nativeElement.style.visibility = 'hidden';
+        // this._element.nativeElement.style.visibility = 'hidden';
     }
 }

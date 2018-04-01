@@ -8,13 +8,15 @@ import { LightboxPanelComponent } from './components/lightbox-panel/lightbox-pan
 import { LightboxDoomService } from './services/lightbox-doom.service';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LightboxButtonComponent } from './components/lightbox-button/lightbox-button.component';
 
 @NgModule({
     declarations: [
         LightboxComponent,
         LightboxImgDirective,
         LightboxVideoDirective,
-        LightboxPanelComponent
+        LightboxPanelComponent,
+        LightboxButtonComponent
     ],
     imports: [
         CommonModule,
