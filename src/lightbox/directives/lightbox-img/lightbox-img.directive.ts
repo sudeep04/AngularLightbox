@@ -11,7 +11,9 @@ import { LightboxComponent } from '../../components/lightbox/lightbox.component'
 })
 export class LightboxImgDirective implements OnInit {
 
-    @Input() public container: LightboxComponent;
+    @Input('lightbox-container') public container: LightboxComponent;
+
+    @Input('lightbox-title') public title: string;
 
     private _id: number;
 
@@ -24,9 +26,20 @@ export class LightboxImgDirective implements OnInit {
 
     public ngOnInit() {
 
+        if(this.container == null) { 
+            throw new Error("Attribute 'lightbox-container' is required");
+        }
+
+        if(this.title == null) { 
+            throw new Error("Attribute 'lightbox-title' is required");
+        }
+
         this._cursor = 'pointer';
         this._id = this._lightboxService.generateId();
-        this.container.addItem({ id: this._id, type: 'img' , url: this._element.nativeElement.src});
+        this.container.addItem({ id: this._id, title: this.title, type: 'img' , url: this._element.nativeElement.src});
+
+        console.log('w: ' + this._element.nativeElement.naturalWidth + ', h: ' + this._element.nativeElement.naturalHeight);
+        console.log('w: ' + this._element.nativeElement.clientWidth + ', h: ' + this._element.nativeElement.clientHeight);
     }
 
     private _onClick(event: Event) {
@@ -42,6 +55,6 @@ export class LightboxImgDirective implements OnInit {
 
     private _hide() {
 
-        // this._element.nativeElement.style.visibility = 'hidden';
+        this._element.nativeElement.style.visibility = 'hidden';
     }
 }
