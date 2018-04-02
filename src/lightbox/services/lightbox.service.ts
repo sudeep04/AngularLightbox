@@ -1,12 +1,14 @@
 import { Injectable, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { LightboxDoomService } from './lightbox-doom.service';
 import { LightboxPanelComponent } from '../components/lightbox-panel/lightbox-panel.component';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LightboxService {
 
     private _idIndex: number = 0;
     private _lightboxPanelRef: ComponentRef<LightboxPanelComponent>;
+
 
     constructor(
         private _componentFactoryResolver: ComponentFactoryResolver,
@@ -26,6 +28,10 @@ export class LightboxService {
 
     public get lightboxPanel(): LightboxPanelComponent {
 
+        return this._lightboxPanelRef.instance;
+    }
+
+    public get panel(): LightboxPanelComponent{
         return this._lightboxPanelRef.instance;
     }
 }

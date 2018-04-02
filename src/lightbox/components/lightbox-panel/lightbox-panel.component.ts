@@ -1,5 +1,7 @@
 import { Component, HostBinding, HostListener } from '@angular/core';
 import { trigger, state, query, style, transition, animate, AnimationEvent } from '@angular/animations';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'lightbox-panel',
@@ -37,13 +39,21 @@ export class LightboxPanelComponent {
 
     private _activeItem: Lightbox.LightboxItem;
 
-    private _state: 'closed' | 'opened' = 'closed';
+    private _state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
     private _pointerEvents: string = 'none';
 
     private _fadeAnimator: 'show' | 'hide' = 'hide';
 
     private _headerShowAnimator: 'show' | 'hide' = 'hide';
+
+    public get state(): 'closed' | 'opened' {
+        return this._state.getValue();
+    }
+
+    public get $state() : Observable<'closed' | 'opened'> {
+        return this._state.asObservable();
+    }
 
     public open(items: Lightbox.LightboxItem[], activeItem: number) {
 
@@ -56,9 +66,6 @@ export class LightboxPanelComponent {
 
     public close() {
 
-        this._pointerEvents = 'none';
-        this._items = [];
-        this._activeItem = null;
         this._fadeAnimator = 'hide';
         this._headerShowAnimator = 'hide';
     }
@@ -66,14 +73,18 @@ export class LightboxPanelComponent {
     private _startFadeAnimator(event: AnimationEvent) {
 
         if (event.fromState === 'hide') {
-            this._state = 'opened';
+            this._state.next('opened');
         }
     }
 
     private _doneFadeAnimator(event: AnimationEvent) {
 
         if (event.toState === 'hide') {
-            this._state = 'closed';
+            
+            this._pointerEvents = 'none';
+            this._state.next('closed');
+            this._items = [];
+            this._activeItem = null;
         }
     }
 

@@ -20,8 +20,13 @@ export class LightboxComponent {
         this._items[item.id] = item;
     }
 
-    public openItem(id: number) {
+    public openItem(id: number, width: number, height: number, offsetTop: number, offsetLeft: number) {
 
+        this._items[id].width = width;
+        this._items[id].height = height;
+        this._items[id].offsetTop = offsetTop;
+        this._items[id].offsetLeft = offsetLeft;
+        
         const itemsArray = Object.keys(this._items).map((key) => {
             return this._items[key];
         });

@@ -1,6 +1,8 @@
 import { Directive, ElementRef, HostBinding, HostListener, OnInit, Input } from '@angular/core';
 import { LightboxService } from '../../services/lightbox.service';
 import { LightboxComponent } from '../../components/lightbox/lightbox.component';
+import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Directive({
     selector: 'img[lightbox-img]',
@@ -36,21 +38,38 @@ export class LightboxImgDirective implements OnInit {
 
         this._cursor = 'pointer';
         this._id = this._lightboxService.generateId();
-        this.container.addItem({ id: this._id, title: this.title, type: 'img' , url: this._element.nativeElement.src});
-
-        console.log('w: ' + this._element.nativeElement.naturalWidth + ', h: ' + this._element.nativeElement.naturalHeight);
-        console.log('w: ' + this._element.nativeElement.clientWidth + ', h: ' + this._element.nativeElement.clientHeight);
+        this.container.addItem({ 
+            id: this._id, 
+            title: this.title, 
+            type: 'img' , 
+            url: this._element.nativeElement.src,
+            originalWidth: this._element.nativeElement.naturalWidth,
+            originalHeight: this._element.nativeElement.naturalHeight
+        });
     }
 
     private _onClick(event: Event) {
 
-        this.container.openItem(this._id);
+        this.container.openItem(
+            this._id,
+            this._element.nativeElement.clientWidth,
+            this._element.nativeElement.clientHeight,
+            Math.round( this._element.nativeElement.getBoundingClientRect().top ),
+            Math.round( this._element.nativeElement.getBoundingClientRect().left )
+        );
         this._hide();
+        let panelStateSubscription = this._lightboxService.panel.$state.distinctUntilChanged().skip(1).subscribe((state) =>{
+            if(state=='closed'){
+                this._show();
+                panelStateSubscription.unsubscribe();
+            }
+        });
     }
 
     private _show() {
 
-        this._element.nativeElement.style.visibility = 'show';
+        console.log('closed');
+        this._element.nativeElement.style.visibility = 'visible';
     }
 
     private _hide() {

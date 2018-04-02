@@ -4,5 +4,14 @@
 </div>
 <div [@fadeAnimator]="_fadeAnimator" (@fadeAnimator.start)="_startFadeAnimator($event)" (@fadeAnimator.done)="_doneFadeAnimator($event)" (click)="close()" class="lightbox-panel-background">
 </div>
-<img (click)="toggleHeader()" *ngIf="_activeItem" width="400px" height="auto" style="top:100px;left:200px;position:absolute;z-index:1;" src="{{_activeItem.url}}"/>
+<img 
+    (click)="toggleHeader()" 
+    *ngIf="_activeItem"
+    [style.top]="_activeItem.offsetTop + 'px'"
+    [style.left]="_activeItem.offsetLeft + 'px'"
+    [attr.width]="_activeItem.width + 'px'"
+    [attr.height]="_activeItem.height + 'px'"
+    style="position:absolute;z-index:1;" 
+    src="{{_activeItem.url}}"
+/>
 
