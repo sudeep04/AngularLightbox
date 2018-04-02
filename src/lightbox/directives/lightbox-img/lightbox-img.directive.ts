@@ -24,24 +24,24 @@ export class LightboxImgDirective implements OnInit {
     constructor(
         private _lightboxService: LightboxService,
         private _element: ElementRef
-    ) {}
+    ) { }
 
     public ngOnInit() {
 
-        if(this.container == null) { 
+        if (this.container == null) {
             throw new Error("Attribute 'lightbox-container' is required");
         }
 
-        if(this.title == null) { 
+        if (this.title == null) {
             throw new Error("Attribute 'lightbox-title' is required");
         }
 
         this._cursor = 'pointer';
         this._id = this._lightboxService.generateId();
-        this.container.addItem({ 
-            id: this._id, 
-            title: this.title, 
-            type: 'img' , 
+        this.container.addItem({
+            id: this._id,
+            title: this.title,
+            type: 'img',
             url: this._element.nativeElement.src,
             originalWidth: this._element.nativeElement.naturalWidth,
             originalHeight: this._element.nativeElement.naturalHeight
@@ -54,12 +54,12 @@ export class LightboxImgDirective implements OnInit {
             this._id,
             this._element.nativeElement.clientWidth,
             this._element.nativeElement.clientHeight,
-            Math.round( this._element.nativeElement.getBoundingClientRect().top ),
-            Math.round( this._element.nativeElement.getBoundingClientRect().left )
+            Math.round(this._element.nativeElement.getBoundingClientRect().top),
+            Math.round(this._element.nativeElement.getBoundingClientRect().left)
         );
         this._hide();
-        let panelStateSubscription = this._lightboxService.panel.$state.distinctUntilChanged().skip(1).subscribe((state) =>{
-            if(state=='closed'){
+        const panelStateSubscription = this._lightboxService.panel.$state.distinctUntilChanged().skip(1).subscribe((state) => {
+            if (state === 'closed') {
                 this._show();
                 panelStateSubscription.unsubscribe();
             }
@@ -68,7 +68,6 @@ export class LightboxImgDirective implements OnInit {
 
     private _show() {
 
-        console.log('closed');
         this._element.nativeElement.style.visibility = 'visible';
     }
 

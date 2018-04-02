@@ -5,12 +5,13 @@
 <div [@fadeAnimator]="_fadeAnimator" (@fadeAnimator.start)="_startFadeAnimator($event)" (@fadeAnimator.done)="_doneFadeAnimator($event)" (click)="close()" class="lightbox-panel-background">
 </div>
 <img 
+    [@openItemAnimator]="_openItemAnimator"
     (click)="toggleHeader()" 
     *ngIf="_activeItem"
     [style.top]="_activeItem.offsetTop + 'px'"
     [style.left]="_activeItem.offsetLeft + 'px'"
-    [attr.width]="_activeItem.width + 'px'"
-    [attr.height]="_activeItem.height + 'px'"
+    [style.width]="_activeItem.width + 'px'"
+    [style.height]="_activeItem.height + 'px'"
     style="position:absolute;z-index:1;" 
     src="{{_activeItem.url}}"
 />

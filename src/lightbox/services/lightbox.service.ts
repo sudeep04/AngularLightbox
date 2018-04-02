@@ -9,7 +9,6 @@ export class LightboxService {
     private _idIndex: number = 0;
     private _lightboxPanelRef: ComponentRef<LightboxPanelComponent>;
 
-
     constructor(
         private _componentFactoryResolver: ComponentFactoryResolver,
         private _injector: Injector,
@@ -31,7 +30,7 @@ export class LightboxService {
         return this._lightboxPanelRef.instance;
     }
 
-    public get panel(): LightboxPanelComponent{
+    public get panel(): LightboxPanelComponent {
         return this._lightboxPanelRef.instance;
     }
 }

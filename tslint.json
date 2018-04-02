@@ -20,8 +20,8 @@
     "no-output-on-prefix-name": true,
     "no-attribute-parameter-decorator": true,
     "no-forward-ref": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
+    "no-input-rename": false,
+    "no-output-rename": false,
     "only-arrow-functions": [
         true,
         "allow-declarations",

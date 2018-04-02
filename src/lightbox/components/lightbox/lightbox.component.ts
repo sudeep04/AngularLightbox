@@ -26,7 +26,7 @@ export class LightboxComponent {
         this._items[id].height = height;
         this._items[id].offsetTop = offsetTop;
         this._items[id].offsetLeft = offsetLeft;
-        
+
         const itemsArray = Object.keys(this._items).map((key) => {
             return this._items[key];
         });
