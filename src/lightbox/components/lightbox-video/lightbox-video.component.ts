@@ -68,6 +68,7 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
             visibility: 'hidden'
         };
 
+        this.displayVideo = false;
         this._changePosition(this.item.position);
     }
 
@@ -77,7 +78,6 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
             // Pause video.
         }
-        this.displayVideo = false;
         this.item.position = position;
         this._changePosition(this.item.position);
     }
@@ -134,8 +134,8 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
         this._setDefaultDimensions();
 
-        this.item.actual.offsetTop = 0;
-        this.item.actual.offsetLeft = 0;
+        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+        this.item.actual.offsetLeft = Math.round((window.innerWidth - this.item.actual.width) / 2);
         this.item.actual.visibility = 'visible';
 
         this._actualizePosition('center');
@@ -145,7 +145,12 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
         
         this._setDefaultDimensions();
-        this.item.actual.offsetLeft = window.innerWidth;
+        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+        if (this.item.actual.width > window.innerWidth) {
+            this.item.actual.offsetLeft = this.item.actual.width;
+        } else {
+            this.item.actual.offsetLeft = window.innerWidth;
+        }
         this.item.actual.visibility = 'hidden';
         this._actualizePosition('right');
     }
@@ -153,7 +158,13 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
     private _setLeftPosition() {
 
         this._setDefaultDimensions();
-        this.item.actual.offsetLeft = window.innerWidth * -1;
+
+        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+        if (this.item.actual.width > window.innerWidth) {
+            this.item.actual.offsetLeft = this.item.actual.width * -1;
+        } else {
+            this.item.actual.offsetLeft = window.innerWidth * -1;
+        }
 
         this.item.actual.visibility = 'hidden';
 
@@ -176,7 +187,15 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
     private _setDefaultDimensions() {
 
-        this.item.actual.height = window.innerHeight;
-        this.item.actual.width = window.innerWidth;
+        const maxWidth = window.innerWidth;
+        const maxHeight = window.innerHeight;
+
+        if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
+            this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
+            this.item.actual.width = Math.round(maxWidth);
+        } else {
+            this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
+            this.item.actual.height = Math.round(maxHeight);
+        }
     }
 }
