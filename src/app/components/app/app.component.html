@@ -26,8 +26,10 @@
         </mat-nav-list>
     </mat-sidenav>
     <div>
-        <div #root="dir" dir="ltr" class="demo-content">
-            <router-outlet></router-outlet>
+        <div #root="dir" dir="ltr" class="demo-content" fxLayout="row" fxLayoutAlign="center">
+            <div fxFlex="80" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </div>
 </mat-sidenav-container>

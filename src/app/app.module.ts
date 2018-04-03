@@ -11,7 +11,6 @@ import { AppComponent } from './components/app/app.component';
 
 import '../styles/material.scss';
 import '../styles/themes.scss';
-import '../styles/headings.css';
 import '../styles/styles.scss';
 
 // Routing
