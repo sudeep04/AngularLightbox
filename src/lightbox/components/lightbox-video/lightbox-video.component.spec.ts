@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LightboxImgComponent } from './lightbox-img.component';
+import { LightboxVideoComponent } from './lightbox-video.component';
 
-describe('Create LightboxImgComponent', () => {
+describe('Create LightboxVideoComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
-                LightboxImgComponent
+                LightboxVideoComponent
             ],
             imports: [
                 CommonModule,
@@ -17,10 +17,10 @@ describe('Create LightboxImgComponent', () => {
     });
 
     it('should work', () => {
-        const fixture = TestBed.createComponent(LightboxImgComponent);
-        expect(fixture.componentInstance instanceof LightboxImgComponent).toBe(
+        const fixture = TestBed.createComponent(LightboxVideoComponent);
+        expect(fixture.componentInstance instanceof LightboxVideoComponent).toBe(
             true,
-            'should create LightboxImgComponent'
+            'should create LightboxVideoComponent'
         );
     });
 });

@@ -9,11 +9,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LightboxOverlayContainerService } from '../../services/lightbox-overlay-container.service';
 import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
+import { LightboxVideoComponent } from '../lightbox-video/lightbox-video.component';
 
 @NgModule({
     declarations: [
         LightboxPanelComponent,
         LightboxImgComponent,
+        LightboxVideoComponent,
         LightboxButtonComponent
     ],
     imports: [

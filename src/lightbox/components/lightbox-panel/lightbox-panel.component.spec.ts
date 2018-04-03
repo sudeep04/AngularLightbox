@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
+import { LightboxVideoComponent } from '../lightbox-video/lightbox-video.component';
 
 describe('Create LightboxPanelComponent', () => {
     beforeEach(() => {
@@ -11,6 +12,7 @@ describe('Create LightboxPanelComponent', () => {
             declarations: [
                 LightboxPanelComponent,
                 LightboxImgComponent,
+                LightboxVideoComponent,
                 LightboxButtonComponent
             ],
             imports: [

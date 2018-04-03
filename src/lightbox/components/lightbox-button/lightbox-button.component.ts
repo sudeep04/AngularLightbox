@@ -54,9 +54,9 @@ export class LightboxButtonComponent implements OnChanges, OnInit {
 
     @Input() public position: 'left' | 'right';
 
-    private _isIconButton: boolean = this._hasHostAttributes('lightbox-icon-button');
+    public hoverAnimator: 'leave' | 'enter' = 'leave';
 
-    private hoverAnimator: 'leave' | 'enter' = 'leave';
+    private _isIconButton: boolean = this._hasHostAttributes('lightbox-icon-button');
 
     private _displayAnimator: 'hideLeft' | 'hideRight' | 'show' = 'show';
 
@@ -72,7 +72,9 @@ export class LightboxButtonComponent implements OnChanges, OnInit {
 
     public ngOnInit() {
 
-        if(this.position) this.hide();
+        if (this.position) {
+            this.hide();
+        }
     }
 
     public show() {
@@ -82,8 +84,8 @@ export class LightboxButtonComponent implements OnChanges, OnInit {
 
     public hide() {
 
-        if(this.position == 'left') {
-            
+        if (this.position === 'left') {
+
             this._displayAnimator = 'hideLeft';
         } else {
             this._displayAnimator = 'hideRight';

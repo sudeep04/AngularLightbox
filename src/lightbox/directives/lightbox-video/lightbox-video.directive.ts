@@ -1,7 +1,7 @@
 import { Directive, OnInit, Input, ElementRef } from '@angular/core';
 import { LightboxComponent } from '../../components/lightbox/lightbox.component';
 import { LightboxService } from '../../services/lightbox.service';
-import {DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Directive({
     selector: 'img[lightbox-video]',
@@ -15,7 +15,7 @@ export class LightboxVideoDirective implements OnInit {
     @Input('lightbox-container') public container: LightboxComponent;
 
     @Input('lightbox-title') public title: string;
-    
+
     @Input('lightbox-video-url') public videoUrl: string;
 
     private _id: number;
@@ -67,7 +67,7 @@ export class LightboxVideoDirective implements OnInit {
             Math.round(this._element.nativeElement.getBoundingClientRect().top),
             Math.round(this._element.nativeElement.getBoundingClientRect().left)
         );
-        this.container.openItem( this._id );
+        this.container.openItem(this._id);
         this._hide();
         const panelStateSubscription = this._lightboxService.panel.$state.distinctUntilChanged().skip(1).subscribe((state) => {
             if (state === 'closed') {
@@ -87,4 +87,3 @@ export class LightboxVideoDirective implements OnInit {
         this._element.nativeElement.style.visibility = 'hidden';
     }
 }
-

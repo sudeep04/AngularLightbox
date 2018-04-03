@@ -50,9 +50,9 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
     @ViewChild('iframe') public iFrame: ElementRef;
 
-    private displayVideo: boolean = false;
-
     public positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
+
+    public displayVideo: boolean = false;
 
     private _animationStart: BehaviorSubject<string> = new BehaviorSubject<string>('void');
 
@@ -74,7 +74,7 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
     public changePosition(position: 'origin' | 'center' | 'right' | 'left') {
 
-        if (this.positionAnimator.value == 'center' && (position == 'left' || position == 'right')) {
+        if (this.positionAnimator.value === 'center' && (position === 'left' || position === 'right')) {
 
             // Pause video.
         }
@@ -89,8 +89,7 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
     public donePositionAnimator(event: AnimationEvent) {
 
-        if(event.toState == 'center') {
-            
+        if (event.toState === 'center') {
             this.displayVideo = true;
         }
         this._animationDone.next(event.toState);
@@ -143,7 +142,6 @@ export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
     private _setRightPosition() {
 
-        
         this._setDefaultDimensions();
         this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
         if (this.item.actual.width > window.innerWidth) {
