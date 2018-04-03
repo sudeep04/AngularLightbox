@@ -1,0 +1,20 @@
+.example-card img {
+    max-height: 200px;
+    width: auto;
+}
+
+mat-card{
+    margin-bottom: 10px;
+    padding: 0px;
+    overflow: hidden;
+
+    .mat-card-image{
+        margin: 0px;
+        padding: 0px;
+        margin-bottom: -4px;
+    }
+}
+
+h2{
+    text-align: center;
+}
