@@ -2,12 +2,16 @@ import { TestBed } from '@angular/core/testing';
 import { LightboxPanelComponent } from './lightbox-panel.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
+import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 
 describe('Create LightboxPanelComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
-                LightboxPanelComponent
+                LightboxPanelComponent,
+                LightboxImgComponent,
+                LightboxButtonComponent
             ],
             imports: [
                 CommonModule,

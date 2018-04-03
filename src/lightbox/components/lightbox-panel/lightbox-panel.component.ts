@@ -31,24 +31,24 @@ import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
         ])
     ],
     host: {
-        '[style.pointer-events]': '_pointerEvents'
+        '[style.pointer-events]': '_pointerEvents',
     }
 })
 export class LightboxPanelComponent {
 
-    private _items: Lightbox.LightboxItem[] = [];
+    public items: Lightbox.LightboxItem[] = [];
 
-    private _activeItem: Lightbox.LightboxItem;
+    public activeItem: Lightbox.LightboxItem;
+
+    public fadeAnimator: 'show' | 'hide' = 'hide';
+
+    public headerShowAnimator: 'show' | 'hide' = 'hide';
 
     @ViewChildren('items') private _itemsRef: QueryList<LightboxImgComponent>;
 
     private _state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
     private _pointerEvents: string = 'none';
-
-    private _fadeAnimator: 'show' | 'hide' = 'hide';
-
-    private _headerShowAnimator: 'show' | 'hide' = 'hide';
 
     public get state(): 'closed' | 'opened' {
 
@@ -64,63 +64,59 @@ export class LightboxPanelComponent {
 
     public open(items: Lightbox.LightboxItem[], activeItem: number) {
 
-        this._items = items;
-        this._activeItem = this._items.find((x) => x.id === activeItem);
+        this.items = items;
+        this.activeItem = this.items.find((x) => x.id === activeItem);
         this._pointerEvents = 'auto';
-        this._fadeAnimator = 'show';
-        this._headerShowAnimator = 'show';
+        this.fadeAnimator = 'show';
+        this.headerShowAnimator = 'show';
     }
 
     public close() {
 
-        this._fadeAnimator = 'hide';
-        this._headerShowAnimator = 'hide';
+        this.fadeAnimator = 'hide';
+        this.headerShowAnimator = 'hide';
     }
 
     public next() {
 
-        const activeItemIndex = this._items.indexOf(this._activeItem);
+        const activeItemIndex = this.items.indexOf(this.activeItem);
 
-        if (activeItemIndex >= 0 && activeItemIndex < this._items.length - 1) {
+        if (activeItemIndex >= 0 && activeItemIndex < this.items.length - 1) {
             this._itemsRef.toArray()[activeItemIndex].sliceLeft();
             this._itemsRef.toArray()[activeItemIndex + 1].zoomDefault();
-            this._activeItem = this._items[activeItemIndex + 1];
+            this.activeItem = this.items[activeItemIndex + 1];
         }
     }
 
     public back() {
 
-        const activeItemIndex = this._items.indexOf(this._activeItem);
+        const activeItemIndex = this.items.indexOf(this.activeItem);
 
         if (activeItemIndex > 0) {
             this._itemsRef.toArray()[activeItemIndex].sliceRight();
             this._itemsRef.toArray()[activeItemIndex - 1].zoomDefault();
-            this._activeItem = this._items[activeItemIndex - 1];
+            this.activeItem = this.items[activeItemIndex - 1];
         }
     }
 
     public toggleHeader() {
 
-        if (this._headerShowAnimator === 'show') {
-            this._headerShowAnimator = 'hide';
+        if (this.headerShowAnimator === 'show') {
+            this.headerShowAnimator = 'hide';
         } else {
-            this._headerShowAnimator = 'show';
+            this.headerShowAnimator = 'show';
         }
     }
 
-    @HostListener('window:resize', ['$event'])
-    private _onResize(event) {
-
-        this._initItems();
-    }
-
-    private _startFadeAnimator(event: AnimationEvent) {
+    public startFadeAnimator(event: AnimationEvent) {
 
         if (event.fromState === 'hide') {
 
-            const activeItemIndex = this._items.indexOf(this._activeItem);
+            const activeItemIndex = this.items.indexOf(this.activeItem);
 
+            this._state.next('opened');
             this._initItems();
+            this._itemsRef.toArray()[activeItemIndex].initOnCenter();
             const subscription = this._itemsRef.toArray()[activeItemIndex].$animationDone.skip(1).subscribe((animationState) => {
                 if (animationState === 'visible') {
                     this._itemsRef.toArray()[activeItemIndex].zoomDefault();
@@ -130,33 +126,42 @@ export class LightboxPanelComponent {
         }
     }
 
+    public doneFadeAnimator(event: AnimationEvent) {
+
+        if (event.toState === 'hide') {
+            this._pointerEvents = 'none';
+            this._state.next('closed');
+            this.items = [];
+            this.activeItem = null;
+        }
+    }
+
+    @HostListener('window:resize', ['$event'])
+    private _onResize(event) {
+
+        if (this._state.getValue() === 'opened') {
+
+            const activeItemIndex = this.items.indexOf(this.activeItem);
+
+            this._initItems();
+            this._itemsRef.toArray()[activeItemIndex].zoomDefault();
+        }
+    }
+
     private _initItems() {
 
-        const activeItemIndex = this._items.indexOf(this._activeItem);
+        const activeItemIndex = this.items.indexOf(this.activeItem);
 
-        this._items.forEach((item) => {
+        this.items.forEach((item) => {
 
-            const itemIndex = this._items.indexOf(item);
+            const itemIndex = this.items.indexOf(item);
 
             if (itemIndex < activeItemIndex) {
                 this._itemsRef.toArray()[itemIndex].initOnLeft();
-            }
-            if (itemIndex === activeItemIndex) {
-                this._itemsRef.toArray()[itemIndex].initOnCenter();
             }
             if (itemIndex > activeItemIndex) {
                 this._itemsRef.toArray()[itemIndex].initOnRight();
             }
         });
-    }
-
-    private _doneFadeAnimator(event: AnimationEvent) {
-
-        if (event.toState === 'hide') {
-            this._pointerEvents = 'none';
-            this._state.next('closed');
-            this._items = [];
-            this._activeItem = null;
-        }
     }
 }

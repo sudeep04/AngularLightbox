@@ -29,7 +29,7 @@ export class LightboxImgComponent {
 
     @Output() public clickEvent = new EventEmitter();
 
-    private _positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
+    public positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
 
     private _animationStart: BehaviorSubject<string> = new BehaviorSubject<string>('void');
 
@@ -111,22 +111,27 @@ export class LightboxImgComponent {
         });
     }
 
-    private _startPositionAnimator(event: AnimationEvent) {
+    public startPositionAnimator(event: AnimationEvent) {
 
         this._animationStart.next(event.toState);
     }
 
-    private _donePositionAnimator(event: AnimationEvent) {
+    public donePositionAnimator(event: AnimationEvent) {
 
         if (event.toState === 'animating') {
-            this._actualizePosition('visible', this._positionAnimator.params.visibility);
+            this._actualizePosition('visible', this.positionAnimator.params.visibility);
         }
         this._animationDone.next(event.toState);
     }
 
+    public onClick() {
+
+        this.clickEvent.emit();
+    }
+
     private _actualizePosition(value: 'void' | 'visible' | 'animating', visibility: 'hidden' | 'visible') {
 
-        this._positionAnimator = {
+        this.positionAnimator = {
             value,
             params: {
                 width: this.item.actual.width,
@@ -154,7 +159,7 @@ export class LightboxImgComponent {
 
     private _animate(func: () => void) {
 
-        if (this._positionAnimator.value !== 'animating') {
+        if (this.positionAnimator.value !== 'animating') {
             func();
         } else {
             this._actualizePosition('visible', 'visible');
@@ -165,10 +170,5 @@ export class LightboxImgComponent {
                 }
             });
         }
-    }
-
-    private _onClick() {
-
-        this.clickEvent.emit();
     }
 }

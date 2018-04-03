@@ -1,8 +1,8 @@
 <img 
-    [@positionAnimator]="_positionAnimator"
-    (@positionAnimator.start)="_startPositionAnimator($event)"
-    (@positionAnimator.done)="_donePositionAnimator($event)"
-    (click)="_onClick()" 
+    [@positionAnimator]="positionAnimator"
+    (@positionAnimator.start)="startPositionAnimator($event)"
+    (@positionAnimator.done)="donePositionAnimator($event)"
+    (click)="onClick()" 
     src="{{item.url}}"
 />
 
