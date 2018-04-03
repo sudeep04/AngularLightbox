@@ -46,6 +46,12 @@ export class LightboxImgDirective implements OnInit {
             original: {
                 width: this._element.nativeElement.naturalWidth,
                 height: this._element.nativeElement.naturalHeight
+            },
+            actual: {
+                width: this._element.nativeElement.clientWidth,
+                height: this._element.nativeElement.clientHeight,
+                offsetTop: Math.round(this._element.nativeElement.getBoundingClientRect().top),
+                offsetLeft: Math.round(this._element.nativeElement.getBoundingClientRect().left)
             }
         });
     }

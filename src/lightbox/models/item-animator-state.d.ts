@@ -7,6 +7,7 @@ declare namespace Lightbox {
             height: number;
             offsetTop: number;
             offsetLeft: number;
+            visibility: 'hidden' | 'visible';
         };
     }
 }

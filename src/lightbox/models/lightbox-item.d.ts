@@ -10,7 +10,7 @@ declare namespace Lightbox {
             width: number;
             height: number;
         };
-        actual?: {
+        actual: {
             width: number;
             height: number;
             offsetTop: number;

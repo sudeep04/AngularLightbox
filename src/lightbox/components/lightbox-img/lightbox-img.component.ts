@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'lightbox-img',
@@ -10,11 +12,11 @@ import { trigger, state, style, transition, animate, AnimationEvent } from '@ang
             state('void',
                 style({ visibility: 'hidden' })),
             state('visible',
-                style({ visibility: 'visible', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600 } }),
+                style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'visible' } }),
             state('animating',
-                style({ visibility: 'visible', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600 } }),
+                style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'visible' } }),
             transition('visible => animating', [
                 animate('.2s')
             ])
@@ -24,65 +26,70 @@ import { trigger, state, style, transition, animate, AnimationEvent } from '@ang
 export class LightboxImgComponent {
 
     @Input() public item: Lightbox.LightboxItem;
+
     @Output() public clickEvent = new EventEmitter();
 
     private _positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
 
-    public initFromCenter() {
+    private _animationStart: BehaviorSubject<string> = new BehaviorSubject<string>('void');
 
-        this._actualizePosition('visible');
+    private _animationDone: BehaviorSubject<string> = new BehaviorSubject<string>('void');
+
+    public get $animationStart(): Observable<string> {
+
+        return this._animationStart.asObservable();
     }
 
-    public initFromLeft() {
+    public get $animationDone(): Observable<string> {
 
-        const maxWidth = window.innerWidth * 2 / 3;
-        const maxHeight = window.innerHeight * 3 / 4;
-
-        if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
-            this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
-            this.item.actual.width = Math.round(maxWidth);
-        } else {
-            this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
-            this.item.actual.height = Math.round(maxHeight);
-        }
-
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        this.item.actual.offsetLeft = window.innerWidth * -1;
-
-        this._actualizePosition('visible');
+        return this._animationDone.asObservable();
     }
 
-    public initFromRight() {
+    public initOnCenter() {
 
-        const maxWidth = window.innerWidth * 2 / 3;
-        const maxHeight = window.innerHeight * 3 / 4;
+        this._animate(() => {
 
-        if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
-            this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
-            this.item.actual.width = Math.round(maxWidth);
-        } else {
-            this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
-            this.item.actual.height = Math.round(maxHeight);
-        }
+            this._actualizePosition('animating', 'visible');
+        });
+    }
 
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        this.item.actual.offsetLeft = window.innerWidth;
+    public initOnLeft() {
 
-        this._actualizePosition('visible');
+        this._setDefaultDimensions();
+
+        this._animate(() => {
+
+            this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+            this.item.actual.offsetLeft = window.innerWidth * -1;
+            this._actualizePosition('animating', 'hidden');
+        });
+    }
+
+    public initOnRight() {
+
+        this._setDefaultDimensions();
+
+        this._animate(() => {
+            this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+            this.item.actual.offsetLeft = window.innerWidth;
+            this._actualizePosition('animating', 'hidden');
+        });
     }
 
     public sliceLeft() {
 
-        this.item.actual.offsetLeft = window.innerWidth * -1;
-
-        this._actualizePosition('animating');
+        this._animate(() => {
+            this.item.actual.offsetLeft = window.innerWidth * -1;
+            this._actualizePosition('animating', 'hidden');
+        });
     }
 
     public sliceRight() {
 
-        this.item.actual.offsetLeft = window.innerWidth;
-
-        this._actualizePosition('animating');
+        this._animate(() => {
+            this.item.actual.offsetLeft = window.innerWidth;
+            this._actualizePosition('animating', 'hidden');
+        });
     }
 
     public zoomIn() {
@@ -94,39 +101,30 @@ export class LightboxImgComponent {
     }
 
     public zoomDefault() {
-        // Not yet
+
+        this._setDefaultDimensions();
+
+        this._animate(() => {
+            this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+            this.item.actual.offsetLeft = Math.round((window.innerWidth - this.item.actual.width) / 2);
+            this._actualizePosition('animating', 'visible');
+        });
     }
 
     private _startPositionAnimator(event: AnimationEvent) {
-        // Not yet
+
+        this._animationStart.next(event.toState);
     }
 
     private _donePositionAnimator(event: AnimationEvent) {
 
         if (event.toState === 'animating') {
-            this._actualizePosition('visible');
+            this._actualizePosition('visible', this._positionAnimator.params.visibility);
         }
-        if (event.fromState === 'void' && event.toState === 'visible') {
-
-            const maxWidth = window.innerWidth * 2 / 3;
-            const maxHeight = window.innerHeight * 3 / 4;
-
-            if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
-                this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
-                this.item.actual.width = Math.round(maxWidth);
-            } else {
-                this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
-                this.item.actual.height = Math.round(maxHeight);
-            }
-
-            this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-            this.item.actual.offsetLeft = Math.round((window.innerWidth - this.item.actual.width) / 2);
-
-            this._actualizePosition('animating');
-        }
+        this._animationDone.next(event.toState);
     }
 
-    private _actualizePosition(value: 'void' | 'visible' | 'animating') {
+    private _actualizePosition(value: 'void' | 'visible' | 'animating', visibility: 'hidden' | 'visible') {
 
         this._positionAnimator = {
             value,
@@ -134,9 +132,39 @@ export class LightboxImgComponent {
                 width: this.item.actual.width,
                 height: this.item.actual.height,
                 offsetTop: this.item.actual.offsetTop,
-                offsetLeft: this.item.actual.offsetLeft
+                offsetLeft: this.item.actual.offsetLeft,
+                visibility
             }
         };
+    }
+
+    private _setDefaultDimensions() {
+
+        const maxWidth = window.innerWidth * 2 / 3;
+        const maxHeight = window.innerHeight * 3 / 4;
+
+        if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
+            this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
+            this.item.actual.width = Math.round(maxWidth);
+        } else {
+            this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
+            this.item.actual.height = Math.round(maxHeight);
+        }
+    }
+
+    private _animate(func: () => void) {
+
+        if (this._positionAnimator.value !== 'animating') {
+            func();
+        } else {
+            this._actualizePosition('visible', 'visible');
+            const subscription = this.$animationDone.skip(1).subscribe((animationState) => {
+                if (animationState === 'visible') {
+                    func();
+                    subscription.unsubscribe();
+                }
+            });
+        }
     }
 
     private _onClick() {

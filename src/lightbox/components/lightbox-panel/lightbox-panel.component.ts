@@ -1,5 +1,5 @@
-import { Component, HostBinding, HostListener, ElementRef, ViewChild } from '@angular/core';
-import { trigger, state, query, style, transition, animate, AnimationEvent } from '@angular/animations';
+import { Component, ViewChild, NgZone, QueryList, ViewChildren, HostListener } from '@angular/core';
+import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
@@ -40,7 +40,7 @@ export class LightboxPanelComponent {
 
     private _activeItem: Lightbox.LightboxItem;
 
-    @ViewChild('activeItem') private _activeItemRef: LightboxImgComponent;
+    @ViewChildren('items') private _itemsRef: QueryList<LightboxImgComponent>;
 
     private _state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
@@ -51,12 +51,16 @@ export class LightboxPanelComponent {
     private _headerShowAnimator: 'show' | 'hide' = 'hide';
 
     public get state(): 'closed' | 'opened' {
+
         return this._state.getValue();
     }
 
     public get $state(): Observable<'closed' | 'opened'> {
+
         return this._state.asObservable();
     }
+
+    constructor(private _ngZone: NgZone) { }
 
     public open(items: Lightbox.LightboxItem[], activeItem: number) {
 
@@ -73,6 +77,28 @@ export class LightboxPanelComponent {
         this._headerShowAnimator = 'hide';
     }
 
+    public next() {
+
+        const activeItemIndex = this._items.indexOf(this._activeItem);
+
+        if (activeItemIndex >= 0 && activeItemIndex < this._items.length - 1) {
+            this._itemsRef.toArray()[activeItemIndex].sliceLeft();
+            this._itemsRef.toArray()[activeItemIndex + 1].zoomDefault();
+            this._activeItem = this._items[activeItemIndex + 1];
+        }
+    }
+
+    public back() {
+
+        const activeItemIndex = this._items.indexOf(this._activeItem);
+
+        if (activeItemIndex > 0) {
+            this._itemsRef.toArray()[activeItemIndex].sliceRight();
+            this._itemsRef.toArray()[activeItemIndex - 1].zoomDefault();
+            this._activeItem = this._items[activeItemIndex - 1];
+        }
+    }
+
     public toggleHeader() {
 
         if (this._headerShowAnimator === 'show') {
@@ -82,19 +108,51 @@ export class LightboxPanelComponent {
         }
     }
 
+    @HostListener('window:resize', ['$event'])
+    private _onResize(event) {
+
+        this._initItems();
+    }
+
     private _startFadeAnimator(event: AnimationEvent) {
 
         if (event.fromState === 'hide') {
 
-            this._state.next('opened');
-            this._activeItemRef.initFromCenter();
+            const activeItemIndex = this._items.indexOf(this._activeItem);
+
+            this._initItems();
+            const subscription = this._itemsRef.toArray()[activeItemIndex].$animationDone.skip(1).subscribe((animationState) => {
+                if (animationState === 'visible') {
+                    this._itemsRef.toArray()[activeItemIndex].zoomDefault();
+                    subscription.unsubscribe();
+                }
+            });
         }
+    }
+
+    private _initItems() {
+
+        const activeItemIndex = this._items.indexOf(this._activeItem);
+
+        this._items.forEach((item) => {
+
+            const itemIndex = this._items.indexOf(item);
+
+            if (itemIndex < activeItemIndex) {
+                this._itemsRef.toArray()[itemIndex].initOnLeft();
+            }
+            if (itemIndex === activeItemIndex) {
+                this._itemsRef.toArray()[itemIndex].initOnCenter();
+            }
+            if (itemIndex > activeItemIndex) {
+                this._itemsRef.toArray()[itemIndex].initOnRight();
+            }
+        });
     }
 
     private _doneFadeAnimator(event: AnimationEvent) {
 
         if (event.toState === 'hide') {
-
             this._pointerEvents = 'none';
             this._state.next('closed');
             this._items = [];

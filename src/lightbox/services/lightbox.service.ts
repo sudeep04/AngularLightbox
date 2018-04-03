@@ -31,6 +31,7 @@ export class LightboxService {
     }
 
     public get panel(): LightboxPanelComponent {
+
         return this._lightboxPanelRef.instance;
     }
 }

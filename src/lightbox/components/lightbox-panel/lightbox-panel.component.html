@@ -4,5 +4,9 @@
 </div>
 <div [@fadeAnimator]="_fadeAnimator" (@fadeAnimator.start)="_startFadeAnimator($event)" (@fadeAnimator.done)="_doneFadeAnimator($event)" (click)="close()" class="lightbox-panel-background">
 </div>
-<lightbox-img *ngIf="_activeItem" #activeItem [item]="_activeItem" (clickEvent)="toggleHeader()"></lightbox-img>
+<div *ngIf="_activeItem" style="position:relative;top:50%;color:white;z-index:3;">
+    <button lightbox-icon-button (click)="back()"><span class="material-icons">navigate_before</span></button>
+    <button lightbox-icon-button (click)="next()" style="float: right;"><span class="material-icons">navigate_next</span></button>
+</div>
+<lightbox-img #items *ngFor="let item of _items" [item]="item" (clickEvent)="toggleHeader()"></lightbox-img>
 

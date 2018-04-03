@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Injectable()
-export class OverlayContainer {
+export class LightboxOverlayContainerService {
   protected _containerElement: HTMLElement;
 
   constructor(@Inject(DOCUMENT) private _document: any) {}
