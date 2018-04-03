@@ -2,8 +2,26 @@
     color: inherit;
     border: none;
     cursor: pointer;
-    padding: 7px;
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    position: relative;
+    background-color: black;
+    padding: 0px;
+
+    .button-focus-overlay {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        pointer-events: none;
+        border-radius: 50%;
+        padding: 7px;
+    }
+}
+
+:host.disable {
+    opacity: .5;
+    cursor: default;
 }

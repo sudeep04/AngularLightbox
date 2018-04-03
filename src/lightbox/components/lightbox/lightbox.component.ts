@@ -22,7 +22,7 @@ export class LightboxComponent {
 
     public updateItem(id: number, width: number, height: number, offsetTop: number, offsetLeft: number) {
 
-        this._items[id].actual = {
+        this._items[id].original = {
             width,
             height,
             offsetTop,

@@ -1,7 +1,7 @@
 declare namespace Lightbox {
 
     interface ItemAnimatorState {
-        value: 'void' | 'visible' | 'animating';
+        value: 'void' | 'origin' | 'center' | 'right' | 'left';
         params?: {
             width: number;
             height: number;

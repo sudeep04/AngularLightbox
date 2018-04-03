@@ -1,8 +1,11 @@
-import { Component, ViewChild, NgZone, QueryList, ViewChildren, HostListener } from '@angular/core';
+import { Component, ViewChild, QueryList, ViewChildren, HostListener } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
+import { LightboxVideoComponent } from '../lightbox-video/lightbox-video.component';
+import { LightboxItemComponent } from '../../models/lightbox-item-component';
+import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 
 @Component({
     selector: 'lightbox-panel',
@@ -44,7 +47,13 @@ export class LightboxPanelComponent {
 
     public headerShowAnimator: 'show' | 'hide' = 'hide';
 
-    @ViewChildren('items') private _itemsRef: QueryList<LightboxImgComponent>;
+    public hasNext: boolean;
+
+    public hasPrevious: boolean;
+
+    @ViewChildren('items') private _itemsRef: QueryList<LightboxItemComponent>;
+    @ViewChild('_next') private _next: LightboxButtonComponent;
+    @ViewChild('_previous') private _previous: LightboxButtonComponent;
 
     private _state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
@@ -60,14 +69,32 @@ export class LightboxPanelComponent {
         return this._state.asObservable();
     }
 
-    constructor(private _ngZone: NgZone) { }
-
     public open(items: Lightbox.LightboxItem[], activeItem: number) {
 
         this.items = items;
         this.activeItem = this.items.find((x) => x.id === activeItem);
+        const activeItemIndex = this.items.indexOf(this.activeItem);
+
+        this.items.forEach((item) => {
+
+            const itemIndex = this.items.indexOf(item);
+
+            if (itemIndex < activeItemIndex) {
+                item.position = 'left';
+            }
+            if (itemIndex === activeItemIndex) {
+                item.position = 'origin';
+            }
+            if (itemIndex > activeItemIndex) {
+                item.position = 'right';
+            }
+        });
+
+        this._checkNavigation();
         this._pointerEvents = 'auto';
         this.fadeAnimator = 'show';
+        this._previous.show();
+        this._next.show();
         this.headerShowAnimator = 'show';
     }
 
@@ -75,6 +102,8 @@ export class LightboxPanelComponent {
 
         this.fadeAnimator = 'hide';
         this.headerShowAnimator = 'hide';
+        this._previous.hide();
+        this._next.hide();
     }
 
     public next() {
@@ -82,29 +111,35 @@ export class LightboxPanelComponent {
         const activeItemIndex = this.items.indexOf(this.activeItem);
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items.length - 1) {
-            this._itemsRef.toArray()[activeItemIndex].sliceLeft();
-            this._itemsRef.toArray()[activeItemIndex + 1].zoomDefault();
+            this._itemsRef.toArray()[activeItemIndex].changePosition('left');
             this.activeItem = this.items[activeItemIndex + 1];
+            this._itemsRef.toArray()[activeItemIndex + 1].changePosition('center');
         }
+        this._checkNavigation();
     }
 
-    public back() {
+    public previous() {
 
         const activeItemIndex = this.items.indexOf(this.activeItem);
 
         if (activeItemIndex > 0) {
-            this._itemsRef.toArray()[activeItemIndex].sliceRight();
-            this._itemsRef.toArray()[activeItemIndex - 1].zoomDefault();
+            this._itemsRef.toArray()[activeItemIndex].changePosition('right');
             this.activeItem = this.items[activeItemIndex - 1];
+            this._itemsRef.toArray()[activeItemIndex - 1].changePosition('center');
         }
+        this._checkNavigation();
     }
 
-    public toggleHeader() {
+    public toggleControls() {
 
         if (this.headerShowAnimator === 'show') {
             this.headerShowAnimator = 'hide';
+            this._next.hide();
+            this._previous.hide();
         } else {
             this.headerShowAnimator = 'show';
+            this._next.show();
+            this._previous.show();
         }
     }
 
@@ -115,14 +150,7 @@ export class LightboxPanelComponent {
             const activeItemIndex = this.items.indexOf(this.activeItem);
 
             this._state.next('opened');
-            this._initItems();
-            this._itemsRef.toArray()[activeItemIndex].initOnCenter();
-            const subscription = this._itemsRef.toArray()[activeItemIndex].$animationDone.skip(1).subscribe((animationState) => {
-                if (animationState === 'visible') {
-                    this._itemsRef.toArray()[activeItemIndex].zoomDefault();
-                    subscription.unsubscribe();
-                }
-            });
+            this._itemsRef.toArray()[activeItemIndex].changePosition('center');
         }
     }
 
@@ -136,32 +164,20 @@ export class LightboxPanelComponent {
         }
     }
 
-    @HostListener('window:resize', ['$event'])
-    private _onResize(event) {
-
-        if (this._state.getValue() === 'opened') {
-
-            const activeItemIndex = this.items.indexOf(this.activeItem);
-
-            this._initItems();
-            this._itemsRef.toArray()[activeItemIndex].zoomDefault();
-        }
-    }
-
-    private _initItems() {
+    private _checkNavigation() {
 
         const activeItemIndex = this.items.indexOf(this.activeItem);
 
-        this.items.forEach((item) => {
+        if (activeItemIndex > 0) {
+            this.hasPrevious = true;
+        } else {
+            this.hasPrevious = false;
+        }
 
-            const itemIndex = this.items.indexOf(item);
-
-            if (itemIndex < activeItemIndex) {
-                this._itemsRef.toArray()[itemIndex].initOnLeft();
-            }
-            if (itemIndex > activeItemIndex) {
-                this._itemsRef.toArray()[itemIndex].initOnRight();
-            }
-        });
+        if (activeItemIndex >= 0 && activeItemIndex < this.items.length - 1) {
+            this.hasNext = true;
+        } else {
+            this.hasNext = false;
+        }
     }
 }

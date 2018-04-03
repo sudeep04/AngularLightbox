@@ -1,13 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LightboxItemComponent } from '../../models/lightbox-item-component';
 
 @Component({
-    selector: 'lightbox-img',
-    templateUrl: './lightbox-img.component.html',
-    styleUrls: ['./lightbox-img.component.scss'],
+    selector: 'lightbox-video',
+    templateUrl: './lightbox-video.component.html',
+    styleUrls: ['./lightbox-video.component.scss'],
     animations: [
         trigger('positionAnimator', [
             state('void',
@@ -42,11 +42,15 @@ import { LightboxItemComponent } from '../../models/lightbox-item-component';
         ])
     ]
 })
-export class LightboxImgComponent implements OnInit, LightboxItemComponent {
+export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
     @Input() public item: Lightbox.LightboxItem;
 
     @Output() public clickEvent = new EventEmitter();
+
+    @ViewChild('iframe') public iFrame: ElementRef;
+
+    private displayVideo: boolean = false;
 
     public positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
 
@@ -69,6 +73,11 @@ export class LightboxImgComponent implements OnInit, LightboxItemComponent {
 
     public changePosition(position: 'origin' | 'center' | 'right' | 'left') {
 
+        if (this.positionAnimator.value == 'center' && (position == 'left' || position == 'right')) {
+
+            // Pause video.
+        }
+        this.displayVideo = false;
         this.item.position = position;
         this._changePosition(this.item.position);
     }
@@ -80,6 +89,10 @@ export class LightboxImgComponent implements OnInit, LightboxItemComponent {
 
     public donePositionAnimator(event: AnimationEvent) {
 
+        if(event.toState == 'center') {
+            
+            this.displayVideo = true;
+        }
         this._animationDone.next(event.toState);
     }
 
@@ -121,38 +134,26 @@ export class LightboxImgComponent implements OnInit, LightboxItemComponent {
 
         this._setDefaultDimensions();
 
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        this.item.actual.offsetLeft = Math.round((window.innerWidth - this.item.actual.width) / 2);
+        this.item.actual.offsetTop = 0;
+        this.item.actual.offsetLeft = 0;
         this.item.actual.visibility = 'visible';
 
         this._actualizePosition('center');
     }
 
     private _setRightPosition() {
+
+        
         this._setDefaultDimensions();
-
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        if (this.item.actual.width > window.innerWidth) {
-            this.item.actual.offsetLeft = this.item.actual.width;
-        } else {
-            this.item.actual.offsetLeft = window.innerWidth;
-        }
-
+        this.item.actual.offsetLeft = window.innerWidth;
         this.item.actual.visibility = 'hidden';
-
         this._actualizePosition('right');
     }
 
     private _setLeftPosition() {
 
         this._setDefaultDimensions();
-
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        if (this.item.actual.width > window.innerWidth) {
-            this.item.actual.offsetLeft = this.item.actual.width * -1;
-        } else {
-            this.item.actual.offsetLeft = window.innerWidth * -1;
-        }
+        this.item.actual.offsetLeft = window.innerWidth * -1;
 
         this.item.actual.visibility = 'hidden';
 
@@ -175,15 +176,7 @@ export class LightboxImgComponent implements OnInit, LightboxItemComponent {
 
     private _setDefaultDimensions() {
 
-        const maxWidth = window.innerWidth * 2 / 3;
-        const maxHeight = window.innerHeight * 3 / 4;
-
-        if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
-            this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
-            this.item.actual.width = Math.round(maxWidth);
-        } else {
-            this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
-            this.item.actual.height = Math.round(maxHeight);
-        }
+        this.item.actual.height = window.innerHeight;
+        this.item.actual.width = window.innerWidth;
     }
 }

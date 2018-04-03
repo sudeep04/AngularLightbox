@@ -4,9 +4,12 @@
 </div>
 <div [@fadeAnimator]="fadeAnimator" (@fadeAnimator.start)="startFadeAnimator($event)" (@fadeAnimator.done)="doneFadeAnimator($event)" (click)="close()" class="lightbox-panel-background">
 </div>
-<div *ngIf="activeItem" class="lightbox-panel-slice">
-    <button lightbox-icon-button (click)="back()"><span class="material-icons">navigate_before</span></button>
-    <button lightbox-icon-button (click)="next()"><span class="material-icons">navigate_next</span></button>
+<div class="lightbox-panel-slice">
+    <button #_previous [position]="'left'" lightbox-icon-button (click)="previous()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
+    <button #_next [position]="'right'" lightbox-icon-button (click)="next()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
 </div>
-<lightbox-img #items *ngFor="let item of items" [item]="item" (clickEvent)="toggleHeader()"></lightbox-img>
+<div *ngFor="let item of items">
+    <lightbox-img *ngIf="item.type=='img'" #items  [item]="item" (clickEvent)="toggleControls()"></lightbox-img>
+    <lightbox-video *ngIf="item.type=='video'" #items  [item]="item" (clickEvent)="toggleControls()"></lightbox-video>
+</div>
 

@@ -20,6 +20,14 @@
     <mat-card class="example-card">
         <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'the silence of the lambs'" mat-card-image src="assets/images/the-silence-of-the-lambs-video-poster-29x41-in-1991-jonathan-demme-anthony-hopkins.jpg">
     </mat-card>
+    <mat-card class="example-card">
+        <img lightbox-video [lightbox-video-url]="'http://www.youtube.com/embed/xYJrmQA585c'" [lightbox-container]="lightbox1" [lightbox-title]="'Forrest Gump'" mat-card-image src="http://img.youtube.com/vi/xYJrmQA585c/0.jpg">
+    </mat-card>
+    <mat-card class="example-card">
+        <img lightbox-video [lightbox-video-url]="'http://www.youtube.com/embed/YcC2Y6zccSs'" [lightbox-container]="lightbox1" [lightbox-title]="'the silence of the lambs'" mat-card-image src="http://img.youtube.com/vi/YcC2Y6zccSs/0.jpg">
+    </mat-card>
+
+    
 </div>
 
 <lightbox #lightbox1="lightbox"></lightbox>
