@@ -43,20 +43,23 @@ export class LightboxImgDirective implements OnInit {
             title: this.title,
             type: 'img',
             url: this._element.nativeElement.src,
-            originalWidth: this._element.nativeElement.naturalWidth,
-            originalHeight: this._element.nativeElement.naturalHeight
+            original: {
+                width: this._element.nativeElement.naturalWidth,
+                height: this._element.nativeElement.naturalHeight
+            }
         });
     }
 
     private _onClick(event: Event) {
 
-        this.container.openItem(
+        this.container.updateItem(
             this._id,
             this._element.nativeElement.clientWidth,
             this._element.nativeElement.clientHeight,
             Math.round(this._element.nativeElement.getBoundingClientRect().top),
             Math.round(this._element.nativeElement.getBoundingClientRect().left)
         );
+        this.container.openItem( this._id );
         this._hide();
         const panelStateSubscription = this._lightboxService.panel.$state.distinctUntilChanged().skip(1).subscribe((state) => {
             if (state === 'closed') {

@@ -1,7 +1,8 @@
-import { Component, HostBinding, HostListener } from '@angular/core';
+import { Component, HostBinding, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { trigger, state, query, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { LightboxImgComponent } from '../lightbox-img/lightbox-img.component';
 
 @Component({
     selector: 'lightbox-panel',
@@ -27,17 +28,6 @@ import { Observable } from 'rxjs/Observable';
             transition('hide => show', [
                 animate('.2s')
             ])
-        ]),
-        trigger('openItemAnimator', [
-            state('top',
-                style({ top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600 } }),
-            state('origen',
-                style({ top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600 } }),
-            transition('origen => top', [
-                animate('.2s')
-            ])
         ])
     ],
     host: {
@@ -50,13 +40,13 @@ export class LightboxPanelComponent {
 
     private _activeItem: Lightbox.LightboxItem;
 
+    @ViewChild('activeItem') private _activeItemRef: LightboxImgComponent;
+
     private _state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
     private _pointerEvents: string = 'none';
 
     private _fadeAnimator: 'show' | 'hide' = 'hide';
-
-    private _openItemAnimator: Lightbox.OpenItemAnimatorState = { value: 'origen' };
 
     private _headerShowAnimator: 'show' | 'hide' = 'hide';
 
@@ -75,31 +65,12 @@ export class LightboxPanelComponent {
         this._pointerEvents = 'auto';
         this._fadeAnimator = 'show';
         this._headerShowAnimator = 'show';
-        this._openItemAnimator = {
-            value: 'origen',
-            params: {
-                width: this._activeItem.width,
-                height: this._activeItem.height,
-                offsetLeft: this._activeItem.offsetLeft,
-                offsetTop: this._activeItem.offsetTop
-            }
-        };
-
     }
 
     public close() {
 
         this._fadeAnimator = 'hide';
         this._headerShowAnimator = 'hide';
-        this._openItemAnimator = {
-            value: 'origen',
-            params: {
-                width: this._activeItem.width,
-                height: this._activeItem.height,
-                offsetLeft: this._activeItem.offsetLeft,
-                offsetTop: this._activeItem.offsetTop
-            }
-        };
     }
 
     public toggleHeader() {
@@ -116,30 +87,7 @@ export class LightboxPanelComponent {
         if (event.fromState === 'hide') {
 
             this._state.next('opened');
-
-            const maxWidth = window.innerWidth * 2 / 3;
-            const maxHeight = window.innerHeight * 3 / 4;
-
-            let width: number;
-            let height: number;
-
-            if (this._activeItem.originalWidth / maxWidth > this._activeItem.originalHeight / maxHeight) {
-                height = Math.round(maxWidth / this._activeItem.originalWidth * this._activeItem.originalHeight);
-                width = Math.round(maxWidth);
-            } else {
-                width = Math.round(maxHeight / this._activeItem.originalHeight * this._activeItem.originalWidth);
-                height = Math.round(maxHeight);
-            }
-
-            this._openItemAnimator = {
-                value: 'top',
-                params: {
-                    width,
-                    height,
-                    offsetLeft: Math.round((window.innerWidth - width) / 2),
-                    offsetTop: Math.round((window.innerHeight - height) / 2)
-                }
-            };
+            this._activeItemRef.initFromCenter();
         }
     }
 
