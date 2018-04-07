@@ -1,8 +1,15 @@
-<!-- <img 
+<img lazy-loading
     [@itemAnimator]="itemAnimator"
     (@itemAnimator.start) = "itemAnimatorStart($event)"
     (@itemAnimator.done) = "itemAnimatorDone($event)"
-    (load)= "load($event)"
-    src="{{src}}"
-/>
- -->
+    [src]="item.src"
+    [xs-src]="item.xzSrc"
+    [sm-src]="item.smSrc"
+    [md-src]="item.mdSrc"
+    [lg-src]="item.lgSrc"
+    [xs-src]="item.xsSrc"
+    [xs-breakpoint]="item.xsBreakpoint"
+    [sm-breakpoint]="item.smBreakpoint"
+    [md-breakpoint]="item.mdBreakpoint"
+    [lg-breakpoint]="item.lgBreakpoint"/>
+

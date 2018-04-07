@@ -1,4 +1,9 @@
 <lightbox-header #header (closeEvent) = "close()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
+
+<div *ngIf="activeItem">
+    <lightbox-item #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item"> 
+    </lightbox-item>
+</div>
 <!-- <div [@fadeAnimator]="fadeAnimator" (@fadeAnimator.start)="startFadeAnimator($event)" (@fadeAnimator.done)="doneFadeAnimator($event)" (click)="close()" class="lightbox-panel-background">
 </div>
 <div class="lightbox-panel-slice">

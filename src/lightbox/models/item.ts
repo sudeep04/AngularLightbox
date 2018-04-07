@@ -1,5 +1,6 @@
 export class Item {
     title: string;
+    container: string;
     src: string;
     xsSrc: string;
     smSrc: string;

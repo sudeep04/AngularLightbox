@@ -3,11 +3,6 @@ import { LightboxService } from '../services/lightbox.service';
 import { ElementRef, Input } from '@angular/core';
 import { Item } from './item';
 
-const XS_BREAKPOINT = 576;
-const SM_BREAKPOINT = 768;
-const MD_BREAKPOINT = 992;
-const LG_BREAKPOINT = 1200;
-
 export class ItemDirectiveBase {
 
     @Input('container') protected container: string;
@@ -16,13 +11,13 @@ export class ItemDirectiveBase {
 
     @Input('title') protected title: string;
 
-    @Input('xs-breakpoint') protected xsBreakpoint: number = XS_BREAKPOINT;
+    @Input('xs-breakpoint') protected xsBreakpoint: number;
 
-    @Input('sm-breakpoint') protected smBreakpoint: number = SM_BREAKPOINT;
+    @Input('sm-breakpoint') protected smBreakpoint: number;
 
-    @Input('md-breakpoint') protected mdBreakpoint: number = MD_BREAKPOINT;
+    @Input('md-breakpoint') protected mdBreakpoint: number;
 
-    @Input('lg-breakpoint') protected lgBreakpoint: number = LG_BREAKPOINT;
+    @Input('lg-breakpoint') protected lgBreakpoint: number;
 
     @Input('xs-src') protected xsSrc: string;
 
@@ -67,8 +62,8 @@ export class ItemDirectiveBase {
                 offsetTop: Math.round(this.elementRef.nativeElement.getBoundingClientRect().top),
                 offsetLeft: Math.round(this.elementRef.nativeElement.getBoundingClientRect().left)
             };
-
-            this.lightboxService.openItem(position);
+            this.visibility = 'hidden';
+            this.lightboxService.openItem(this.item, position);
         }
     }
 

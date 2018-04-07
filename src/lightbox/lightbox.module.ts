@@ -8,13 +8,15 @@ import { LightboxHeaderComponent } from './components/lightbox-header/lightbox-h
 import { DoomService } from './services/doom.service';
 import { LightboxImgDirective } from './directives/lightbox-img.directive';
 import { LazyLoadingModule } from 'lazy-loading/lazy-loading.module';
+import { LightboxItemComponent } from './components/ligthbox-item/lightbox-item.component';
 
 @NgModule({
     declarations: [
         LightboxButtonComponent,
         LightboxComponent,
         LightboxHeaderComponent,
-        LightboxImgDirective
+        LightboxImgDirective,
+        LightboxItemComponent
     ],
     imports: [
         CommonModule,

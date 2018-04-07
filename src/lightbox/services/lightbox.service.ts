@@ -10,14 +10,14 @@ export class LightboxService {
         private readonly _doomService: DoomService
     ) {}
 
-    public addItem(item: Item, container: string): void {
+    public addItem(item: Item): void {
         
-        this._doomService.lightboxComponentRef.instance.addItem(item, container);
+        this._doomService.lightboxComponentRef.instance.addItem(item);
     }
 
-    public openItem(position: IPosition): void {
+    public openItem(item: Item, position: IPosition): void {
 
-        this._doomService.lightboxComponentRef.instance.openItem(position);
+        this._doomService.lightboxComponentRef.instance.openItem(item, position);
     }
 
     public removeItem(item: Item): void {

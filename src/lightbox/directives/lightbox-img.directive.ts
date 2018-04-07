@@ -33,6 +33,7 @@ export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, O
 
         this.item = <Img>{
             title: this.title,
+            container: this.container,
             src: this.src,
             xsSrc: this.xsSrc,
             smSrc: this.smSrc,
@@ -45,6 +46,6 @@ export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, O
             lgBreakpoint: this.mdBreakpoint
         }
 
-        this._lightboxService.addItem(this.item, this.container);
+        this._lightboxService.addItem(this.item);
     }
 }
