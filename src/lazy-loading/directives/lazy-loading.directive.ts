@@ -3,9 +3,9 @@ import { IBreakpoints } from '../models/iBreakpoints';
 import { DoomSensorService } from '../services/doomSensor.service';
 import { ITrackedProperties } from '../models/iTrackedProperties';
 
-const XS_BREAKPOINT = 576;
-const SM_BREAKPOINT = 768;
-const MD_BREAKPOINT = 992;
+const XS_BREAKPOINT = 150;
+const SM_BREAKPOINT = 300;
+const MD_BREAKPOINT = 600;
 const LG_BREAKPOINT = 1200;
 
 @Directive({
@@ -13,13 +13,13 @@ const LG_BREAKPOINT = 1200;
 })
 export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
 
-    @Input('xs-breakpoint') public xsBreakpoint: number = XS_BREAKPOINT;
+    @Input('xs-breakpoint') public xsBreakpoint;
 
-    @Input('sm-breakpoint') public smBreakpoint: number = SM_BREAKPOINT;
+    @Input('sm-breakpoint') public smBreakpoint;
 
-    @Input('md-breakpoint') public mdBreakpoint: number = MD_BREAKPOINT;
+    @Input('md-breakpoint') public mdBreakpoint;
 
-    @Input('lg-breakpoint') public lgBreakpoint: number = LG_BREAKPOINT;
+    @Input('lg-breakpoint') public lgBreakpoint;
 
     @Input('xs-src') public xsSrc: string;
 
@@ -45,6 +45,26 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
         if(!this.xsSrc && !this.smSrc && !this.mdSrc && !this.lgSrc && !this.xlSrc) {
 
             throw new Error("One of this attributes are required 'xs-src | sm-src | md-src | lg-src | xl-src'");
+        }
+
+        if(!this.xsBreakpoint) {
+
+            this.xsBreakpoint = XS_BREAKPOINT;
+        }
+
+        if(!this.smBreakpoint) {
+            
+            this.smBreakpoint = SM_BREAKPOINT;
+        }
+
+        if(!this.mdBreakpoint) {
+            
+            this.mdBreakpoint = MD_BREAKPOINT;
+        }
+
+        if(!this.lgBreakpoint) {
+            
+            this.lgBreakpoint = LG_BREAKPOINT;
         }
     }
 
