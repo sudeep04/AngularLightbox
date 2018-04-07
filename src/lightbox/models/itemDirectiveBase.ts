@@ -1,7 +1,7 @@
 import { IPosition } from './iPosition';
 import { LightboxService } from '../services/lightbox.service';
 import { ElementRef, Input } from '@angular/core';
-import { LightboxComponent } from '../components/lightbox/lightbox.component';
+import { Item } from './item';
 
 const XS_BREAKPOINT = 576;
 const SM_BREAKPOINT = 768;
@@ -10,29 +10,31 @@ const LG_BREAKPOINT = 1200;
 
 export class ItemDirectiveBase {
 
-    @Input('container') public container: string;
+    @Input('container') protected container: string;
     
-    @Input('src') public src: string;
+    @Input('src') protected src: string;
 
-    @Input('title') public title: string;
+    @Input('title') protected title: string;
 
-    @Input('xs-breakpoint') public xsBreakpoint: number = XS_BREAKPOINT;
+    @Input('xs-breakpoint') protected xsBreakpoint: number = XS_BREAKPOINT;
 
-    @Input('sm-breakpoint') public smBreakpoint: number = SM_BREAKPOINT;
+    @Input('sm-breakpoint') protected smBreakpoint: number = SM_BREAKPOINT;
 
-    @Input('md-breakpoint') public mdBreakpoint: number = MD_BREAKPOINT;
+    @Input('md-breakpoint') protected mdBreakpoint: number = MD_BREAKPOINT;
 
-    @Input('lg-breakpoint') public lgBreakpoint: number = LG_BREAKPOINT;
+    @Input('lg-breakpoint') protected lgBreakpoint: number = LG_BREAKPOINT;
 
-    @Input('xs-src') public xsSrc: string;
+    @Input('xs-src') protected xsSrc: string;
 
-    @Input('sm-src') public smSrc: string;
+    @Input('sm-src') protected smSrc: string;
 
-    @Input('md-src') public mdSrc: string;
+    @Input('md-src') protected mdSrc: string;
 
-    @Input('lg-src') public lgSrc: string;
+    @Input('lg-src') protected lgSrc: string;
 
-    @Input('xl-src') public xlSrc: string;
+    @Input('xl-src') protected xlSrc: string;
+
+    protected item: Item;
 
     protected cursor: 'pointer' | 'default' = 'pointer';
 
@@ -40,25 +42,43 @@ export class ItemDirectiveBase {
 
     private _loaded: boolean = false;
 
-    private _show() {
+    constructor(
+        protected readonly lightboxService: LightboxService,
+        protected readonly elementRef: ElementRef
+    ) {}
+
+    private _show(): void {
 
         this.visibility = 'visible';
     }
 
-    private _hide() {
+    private _hide(): void {
 
         this.visibility = 'hidden';
     }
 
-    protected onClick(event: Event) {
+    protected onClick(event: Event): void {
 
         if(this._loaded) {
+            
+            const position: IPosition = {
+                width: this.elementRef.nativeElement.clientWidth,
+                height: this.elementRef.nativeElement.clientHeight,
+                offsetTop: Math.round(this.elementRef.nativeElement.getBoundingClientRect().top),
+                offsetLeft: Math.round(this.elementRef.nativeElement.getBoundingClientRect().left)
+            };
 
+            this.lightboxService.openItem(position);
         }
     }
 
-    protected onLoad(event: Event) {
+    protected onLoad(event: Event): void {
 
         this._loaded = true;
+    }
+
+    public ngOnDestroy(): void {
+
+        this.lightboxService.removeItem(this.item);
     }
 }

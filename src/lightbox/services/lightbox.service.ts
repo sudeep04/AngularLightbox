@@ -1,8 +1,7 @@
 import { Injectable} from '@angular/core';
-import { ILightboxItemComponent } from '../models/iLightboxItemComponent';
-import { LightboxComponent } from '../components/lightbox/lightbox.component';
 import { DoomService } from './doom.service';
 import { Item } from '../models/item';
+import { IPosition } from '../models/iPosition';
 
 @Injectable()
 export class LightboxService {
@@ -16,7 +15,12 @@ export class LightboxService {
         this._doomService.lightboxComponentRef.instance.addItem(item, container);
     }
 
-    public removeItem(item: Item) {
+    public openItem(position: IPosition): void {
+
+        this._doomService.lightboxComponentRef.instance.openItem(position);
+    }
+
+    public removeItem(item: Item): void {
 
         this._doomService.lightboxComponentRef.instance.removeItem(item);
     }

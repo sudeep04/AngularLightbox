@@ -1,4 +1,4 @@
-import { Directive, OnInit, OnDestroy } from '@angular/core';
+import { Directive, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ItemDirectiveBase } from '../models/itemDirectiveBase';
 import { LightboxService } from '../services/lightbox.service';
 import { Img } from '../models/img';
@@ -15,12 +15,13 @@ import { Img } from '../models/img';
 export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
 
     constructor(
-        private _lightboxService: LightboxService
+        private readonly _lightboxService: LightboxService,
+        private readonly _elementRef: ElementRef
     ) {
-        super();
+        super(_lightboxService, _elementRef);
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
 
         if (!this.container) {
             throw new Error("Attribute 'lightbox-container' is required");
@@ -30,7 +31,7 @@ export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, O
             throw new Error("Attribute 'lightbox-title' is required");
         }
 
-        const img: Img = {
+        this.item = <Img>{
             title: this.title,
             src: this.src,
             xsSrc: this.xsSrc,
@@ -44,11 +45,6 @@ export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, O
             lgBreakpoint: this.mdBreakpoint
         }
 
-        this._lightboxService.addItem(img, this.container);
-    }
-
-    public ngOnDestroy(): void {
-
-
+        this._lightboxService.addItem(this.item, this.container);
     }
 }

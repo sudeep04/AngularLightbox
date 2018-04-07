@@ -41,6 +41,25 @@ import { LightboxService } from '../../services/lightbox.service';
     }
 })
 export class LightboxComponent {
+
+    public addItem(item: Item, container: string): void {
+        console.log(item);
+    }
+
+    public removeItem(item: Item): void {
+        
+    }
+
+    public openItem(position: IPosition): void {
+        console.log(position);
+
+    }
+
+
+
+
+
+
     
     @ViewChild('header') public header: LightboxHeaderComponent;
     
@@ -71,13 +90,7 @@ export class LightboxComponent {
         return this._state.asObservable();
     }
 
-    public addItem(item: Item, container: string) {
-
-    }
-
-    public removeItem(item: Item) {
-        
-    }
+    
 
     public open(activeItem: ILightboxItemComponent, items: ILightboxItemComponent[]) {
         activeItem.animateHostFixed();
