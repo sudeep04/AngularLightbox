@@ -14,16 +14,16 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
     templateUrl: './lightbox.component.html',
     styleUrls: ['./lightbox.component.scss'],
     animations: [
-        // trigger('fadeAnimator', [
-        //     state('hide', style({ opacity: 0 })),
-        //     state('show', style({ opacity: .9 })),
-        //     transition('show => hide', [
-        //         animate('.05s'),
-        //     ]),
-        //     transition('hide => show', [
-        //         animate('.2s')
-        //     ])
-        // ]),
+        trigger('fadeAnimator', [
+            state('hide', style({ opacity: 0 })),
+            state('show', style({ opacity: .9 })),
+            transition('show => hide', [
+                animate('.05s'),
+            ]),
+            transition('hide => show', [
+                animate('.2s')
+            ])
+        ]),
         trigger('headerShowAnimator', [
             state('hide', style({ top: '-64px' })),
             state('show', style({ top: '0px' })),
@@ -45,11 +45,15 @@ export class LightboxComponent {
     
     public items: {[container: string]: Item[]} = {};
 
-    @ViewChildren('lightboxItem') private _itemsRef: QueryList<LightboxItemComponent>;
-
     public activeItem: Item;
 
+    @ViewChildren('lightboxItem') private _itemsRef: QueryList<LightboxItemComponent>;
+
     private _pointerEvents: string = 'none';
+
+    public fadeAnimator: 'show' | 'hide' = 'hide';
+
+    public readonly state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
     public addItem(item: Item): void {
         
@@ -71,17 +75,26 @@ export class LightboxComponent {
     public openItem(item: Item, position: IPosition): void {
 
         this.activeItem = item;
-
+        this.state.next('opened');
         this._pointerEvents = 'auto';
         this.header.open();
+        this.fadeAnimator = 'show';
 
         setTimeout(()=>{
 
             const itemIndex = this.items[item.container].indexOf(item);
             const itemRef = this._itemsRef.toArray()[itemIndex];
-            itemRef.animateOrigin(position).done(()=>{
-                itemRef.animateCenter();
-            });
+            
+            if(itemRef) {
+
+                itemRef.animateOrigin(position).done(()=>{
+
+                    if(itemRef) {
+
+                        itemRef.animateCenter();
+                    }
+                });
+            }
         }, 0);
     }
 
@@ -90,9 +103,18 @@ export class LightboxComponent {
         return Object.keys(this.items);
     }
 
+    public onClose(): void {
+        
+        this._pointerEvents = 'none';
+        this.activeItem = undefined;
+        this.header.close();
+        this.state.next('closed');
+        this.fadeAnimator = 'hide';
+    }
 
-
-
+    public onToggle(): void {
+        this.header.toggle();
+    }
     
 
 

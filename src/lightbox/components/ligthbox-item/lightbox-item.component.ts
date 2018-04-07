@@ -1,5 +1,5 @@
 
-import { Component, Input, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { Item } from '../../models/item';
 import { ILightboxItemComponent } from '../../models/iLightboxItemComponent';
@@ -15,6 +15,8 @@ import 'rxjs/add/operator/filter';
     styleUrls: ['./lightbox-item.component.scss'],
     animations: [
         trigger('itemAnimator', [
+
+            state('null', style({visibility: 'hidden'})),
             state('origin',
                 style({ top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
                 { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
@@ -51,9 +53,13 @@ import 'rxjs/add/operator/filter';
         '(click)': 'onClick($event)'
     }
 })
-export class LightboxItemComponent implements OnInit{
+export class LightboxItemComponent {
 
     @Input('item') public item: Item;
+
+    @ViewChild('img') private _img: ElementRef;
+    
+    @Output() public toggleEvent = new EventEmitter();
     
     public itemAnimator: IImgAnimatorState = { value: 'null' };
 
@@ -61,15 +67,8 @@ export class LightboxItemComponent implements OnInit{
     
     private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
 
-    constructor(
-        private readonly _elementRef: ElementRef
-    ) {}
-
-    public ngOnInit(): void {
-        console.log(this.item);
-    }
-
     public onClick(event: Event): void {
+        this.toggleEvent.emit();
     }
 
     public itemAnimatorStart(event: AnimationEvent): void {
@@ -139,17 +138,17 @@ export class LightboxItemComponent implements OnInit{
         let offsetTop: number;
         let offsetLeft: number;
     
-        if (this._elementRef.nativeElement.width / maxWidth > this._elementRef.nativeElement.height / maxHeight) {
-            height = Math.round(maxWidth / this._elementRef.nativeElement.width * this._elementRef.nativeElement.height);
+        if (this._img.nativeElement.width / maxWidth > this._img.nativeElement.height / maxHeight) {
+            height = Math.round(maxWidth / this._img.nativeElement.width * this._img.nativeElement.height);
             width = Math.round(maxWidth);
         } else {
-            width = Math.round(maxHeight / this._elementRef.nativeElement.height * this._elementRef.nativeElement.width);
+            width = Math.round(maxHeight / this._img.nativeElement.height * this._img.nativeElement.width);
             height = Math.round(maxHeight);
         }
-    
+
         offsetTop = Math.round((window.innerHeight - height) / 2);
         offsetLeft = Math.round((window.innerWidth - width) / 2);
-            
+
         return {width, height, offsetTop, offsetLeft};
     }
 

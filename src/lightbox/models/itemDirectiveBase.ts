@@ -64,6 +64,10 @@ export class ItemDirectiveBase {
             };
             this.visibility = 'hidden';
             this.lightboxService.openItem(this.item, position);
+            this.lightboxService.onClose(()=>{
+                
+                this.visibility = 'visible';
+            });
         }
     }
 

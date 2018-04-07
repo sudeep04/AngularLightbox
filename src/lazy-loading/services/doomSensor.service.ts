@@ -66,7 +66,6 @@ export class DoomSensorService {
             trackedItem.lastState.left != currentState.left) {
 
             trackedItem.lastState = currentState;
-            
             trackedItem.callBack();
         }
     }

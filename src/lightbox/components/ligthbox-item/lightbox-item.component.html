@@ -1,13 +1,13 @@
-<img lazy-loading
+<img #img lazy-loading
     [@itemAnimator]="itemAnimator"
     (@itemAnimator.start) = "itemAnimatorStart($event)"
     (@itemAnimator.done) = "itemAnimatorDone($event)"
     [src]="item.src"
-    [xs-src]="item.xzSrc"
+    [xs-src]="item.xsSrc"
     [sm-src]="item.smSrc"
     [md-src]="item.mdSrc"
     [lg-src]="item.lgSrc"
-    [xs-src]="item.xsSrc"
+    [xl-src]="item.xlSrc"
     [xs-breakpoint]="item.xsBreakpoint"
     [sm-breakpoint]="item.smBreakpoint"
     [md-breakpoint]="item.mdBreakpoint"

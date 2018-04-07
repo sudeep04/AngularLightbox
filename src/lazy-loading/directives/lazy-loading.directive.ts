@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Directive, Input, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { IBreakpoints } from '../models/iBreakpoints';
 import { DoomSensorService } from '../services/doomSensor.service';
 import { ITrackedProperties } from '../models/iTrackedProperties';
@@ -11,7 +11,7 @@ const LG_BREAKPOINT = 1200;
 @Directive({
     selector: 'img[lazy-loading]',
 })
-export class LazyLoadingDirective implements OnInit, AfterViewInit{
+export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
 
     @Input('xs-breakpoint') public xsBreakpoint: number = XS_BREAKPOINT;
 
@@ -31,6 +31,8 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit{
 
     @Input('xl-src') public xlSrc: string;
 
+    @Input('load') public load: boolean;
+
     private _currentResolution: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
     constructor(
@@ -39,7 +41,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit{
     ) {}
 
     public ngOnInit(): void {
-
+        
         if(!this.xsSrc && !this.smSrc && !this.mdSrc && !this.lgSrc && !this.xlSrc) {
 
             throw new Error("One of this attributes are required 'xs-src | sm-src | md-src | lg-src | xl-src'");
@@ -63,9 +65,14 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit{
         });
     }
 
-    private _setSrc(): void {
+    public ngOnDestroy(): void {
 
-        if (this._isInViewPort()) {
+        this._doomSensorService.untrack(this._elementRef.nativeElement);
+    }
+
+    private _setSrc(): void {
+        
+        if (this._isInViewPort() || this.load) {
 
             const width = this._elementRef.nativeElement.clientWidth;
 
