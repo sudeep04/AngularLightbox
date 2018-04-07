@@ -1,0 +1,8 @@
+<lightbox-header #header (closeEvent) = "close()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
+<!-- <div [@fadeAnimator]="fadeAnimator" (@fadeAnimator.start)="startFadeAnimator($event)" (@fadeAnimator.done)="doneFadeAnimator($event)" (click)="close()" class="lightbox-panel-background">
+</div>
+<div class="lightbox-panel-slice">
+    <button #_previous [position]="'left'" lightbox-icon-button (click)="previous()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
+    <button #_next [position]="'right'" lightbox-icon-button (click)="next()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
+</div> -->
+

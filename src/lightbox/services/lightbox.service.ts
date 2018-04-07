@@ -1,37 +1,23 @@
-import { Injectable, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
-import { LightboxDoomService } from './lightbox-doom.service';
-import { LightboxPanelComponent } from '../components/lightbox-panel/lightbox-panel.component';
-import { Observable } from 'rxjs/Observable';
+import { Injectable} from '@angular/core';
+import { ILightboxItemComponent } from '../models/iLightboxItemComponent';
+import { LightboxComponent } from '../components/lightbox/lightbox.component';
+import { DoomService } from './doom.service';
+import { Item } from '../models/item';
 
 @Injectable()
 export class LightboxService {
 
-    private _idIndex: number = 0;
-    private _lightboxPanelRef: ComponentRef<LightboxPanelComponent>;
-
     constructor(
-        private _componentFactoryResolver: ComponentFactoryResolver,
-        private _injector: Injector,
-        private _lightboxDoomService: LightboxDoomService
-    ) {
-        this._lightboxPanelRef = this._componentFactoryResolver
-        .resolveComponentFactory(LightboxPanelComponent)
-        .create(this._injector);
-        this._lightboxDoomService._appendComponentToBody(this._lightboxPanelRef);
+        private readonly _doomService: DoomService
+    ) {}
+
+    public addItem(item: Item, container: string): void {
+        
+        this._doomService.lightboxComponentRef.instance.addItem(item, container);
     }
 
-    public generateId(): number {
+    public removeItem(item: ILightboxItemComponent) {
 
-        return this._idIndex++;
-    }
-
-    public get lightboxPanel(): LightboxPanelComponent {
-
-        return this._lightboxPanelRef.instance;
-    }
-
-    public get panel(): LightboxPanelComponent {
-
-        return this._lightboxPanelRef.instance;
+        this._doomService.lightboxComponentRef.instance.removeItem(item);
     }
 }

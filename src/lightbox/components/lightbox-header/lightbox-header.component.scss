@@ -1,0 +1,15 @@
+:host{
+    
+    height: 64px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    padding: 0px 12px;
+    position: relative;
+    z-index: 2;
+    color:white;
+
+    .header-title{
+        margin-left: 15px;
+    }
+}

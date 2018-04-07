@@ -1,199 +1,199 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { LightboxItemComponent } from '../../models/lightbox-item-component';
+// import { Component, Input, Output, EventEmitter, OnChanges, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+// import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
+// import { Observable } from 'rxjs/Observable';
+// import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// import { LightboxItemComponent } from '../../models/lightbox-item-component';
 
-@Component({
-    selector: 'lightbox-video',
-    templateUrl: './lightbox-video.component.html',
-    styleUrls: ['./lightbox-video.component.scss'],
-    animations: [
-        trigger('positionAnimator', [
-            state('void',
-                style({ visibility: 'hidden' })),
-            state('origin',
-                style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'visible' } }),
-            state('left',
-                style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'hidden' } }),
-            state('right',
-                style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'hidden' } }),
-            state('center',
-                style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'visible' } }),
-            transition('origin => center', [
-                animate('.2s')
-            ]),
-            transition('center => left', [
-                animate('.2s')
-            ]),
-            transition('center => right', [
-                animate('.2s')
-            ]),
-            transition('right => center', [
-                animate('.2s')
-            ]),
-            transition('left => center', [
-                animate('.2s')
-            ])
-        ])
-    ]
-})
-export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
+// @Component({
+//     selector: 'lightbox-video',
+//     templateUrl: './lightbox-video.component.html',
+//     styleUrls: ['./lightbox-video.component.scss'],
+//     animations: [
+//         trigger('positionAnimator', [
+//             state('void',
+//                 style({ visibility: 'hidden' })),
+//             state('origin',
+//                 style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+//                 { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'visible' } }),
+//             state('left',
+//                 style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+//                 { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'hidden' } }),
+//             state('right',
+//                 style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+//                 { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'hidden' } }),
+//             state('center',
+//                 style({ visibility: '{{visibility}}', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+//                 { params: { offsetLeft: 200, offsetTop: 200, width: 400, height: 600, visibility: 'visible' } }),
+//             transition('origin => center', [
+//                 animate('.2s')
+//             ]),
+//             transition('center => left', [
+//                 animate('.2s')
+//             ]),
+//             transition('center => right', [
+//                 animate('.2s')
+//             ]),
+//             transition('right => center', [
+//                 animate('.2s')
+//             ]),
+//             transition('left => center', [
+//                 animate('.2s')
+//             ])
+//         ])
+//     ]
+// })
+// export class LightboxVideoComponent implements OnInit, LightboxItemComponent {
 
-    @Input() public item: Lightbox.LightboxItem;
+//     @Input() public item: Lightbox.LightboxItem;
 
-    @Output() public clickEvent = new EventEmitter();
+//     @Output() public clickEvent = new EventEmitter();
 
-    @ViewChild('iframe') public iFrame: ElementRef;
+//     @ViewChild('iframe') public iFrame: ElementRef;
 
-    public positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
+//     public positionAnimator: Lightbox.ItemAnimatorState = { value: 'void' };
 
-    public displayVideo: boolean = false;
+//     public displayVideo: boolean = false;
 
-    private _animationStart: BehaviorSubject<string> = new BehaviorSubject<string>('void');
+//     private _animationStart: BehaviorSubject<string> = new BehaviorSubject<string>('void');
 
-    private _animationDone: BehaviorSubject<string> = new BehaviorSubject<string>('void');
+//     private _animationDone: BehaviorSubject<string> = new BehaviorSubject<string>('void');
 
-    public ngOnInit() {
+//     public ngOnInit() {
 
-        this.item.actual = {
-            width: this.item.original.width,
-            height: this.item.original.height,
-            offsetTop: this.item.original.offsetTop,
-            offsetLeft: this.item.original.offsetLeft,
-            visibility: 'hidden'
-        };
+//         this.item.actual = {
+//             width: this.item.original.width,
+//             height: this.item.original.height,
+//             offsetTop: this.item.original.offsetTop,
+//             offsetLeft: this.item.original.offsetLeft,
+//             visibility: 'hidden'
+//         };
 
-        this.displayVideo = false;
-        this._changePosition(this.item.position);
-    }
+//         this.displayVideo = false;
+//         this._changePosition(this.item.position);
+//     }
 
-    public changePosition(position: 'origin' | 'center' | 'right' | 'left') {
+//     public changePosition(position: 'origin' | 'center' | 'right' | 'left') {
 
-        if (this.positionAnimator.value === 'center' && (position === 'left' || position === 'right')) {
+//         if (this.positionAnimator.value === 'center' && (position === 'left' || position === 'right')) {
 
-            // Pause video.
-        }
-        this.item.position = position;
-        this._changePosition(this.item.position);
-    }
+//             // Pause video.
+//         }
+//         this.item.position = position;
+//         this._changePosition(this.item.position);
+//     }
 
-    public startPositionAnimator(event: AnimationEvent) {
+//     public startPositionAnimator(event: AnimationEvent) {
 
-        this._animationStart.next(event.toState);
-    }
+//         this._animationStart.next(event.toState);
+//     }
 
-    public donePositionAnimator(event: AnimationEvent) {
+//     public donePositionAnimator(event: AnimationEvent) {
 
-        if (event.toState === 'center') {
-            this.displayVideo = true;
-        }
-        this._animationDone.next(event.toState);
-    }
+//         if (event.toState === 'center') {
+//             this.displayVideo = true;
+//         }
+//         this._animationDone.next(event.toState);
+//     }
 
-    public onClick() {
+//     public onClick() {
 
-        this.clickEvent.emit();
-    }
+//         this.clickEvent.emit();
+//     }
 
-    @HostListener('window:resize', ['$event'])
-    private _onResize(event) {
+//     @HostListener('window:resize', ['$event'])
+//     private _onResize(event) {
 
-        this._changePosition(this.item.position);
-    }
+//         this._changePosition(this.item.position);
+//     }
 
-    private _changePosition(position: 'origin' | 'center' | 'right' | 'left') {
+//     private _changePosition(position: 'origin' | 'center' | 'right' | 'left') {
 
-        switch (position) {
-            case 'origin': this._setOriginalPosition(); break;
-            case 'center': this._setCenterPosition(); break;
-            case 'left': this._setLeftPosition(); break;
-            case 'right': this._setRightPosition(); break;
-        }
-    }
+//         switch (position) {
+//             case 'origin': this._setOriginalPosition(); break;
+//             case 'center': this._setCenterPosition(); break;
+//             case 'left': this._setLeftPosition(); break;
+//             case 'right': this._setRightPosition(); break;
+//         }
+//     }
 
-    private _setOriginalPosition() {
+//     private _setOriginalPosition() {
 
-        this.item.actual = {
-            width: this.item.original.width,
-            height: this.item.original.height,
-            offsetTop: this.item.original.offsetTop,
-            offsetLeft: this.item.original.offsetLeft,
-            visibility: 'visible'
-        };
+//         this.item.actual = {
+//             width: this.item.original.width,
+//             height: this.item.original.height,
+//             offsetTop: this.item.original.offsetTop,
+//             offsetLeft: this.item.original.offsetLeft,
+//             visibility: 'visible'
+//         };
 
-        this._actualizePosition('origin');
-    }
+//         this._actualizePosition('origin');
+//     }
 
-    private _setCenterPosition() {
+//     private _setCenterPosition() {
 
-        this._setDefaultDimensions();
+//         this._setDefaultDimensions();
 
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        this.item.actual.offsetLeft = Math.round((window.innerWidth - this.item.actual.width) / 2);
-        this.item.actual.visibility = 'visible';
+//         this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+//         this.item.actual.offsetLeft = Math.round((window.innerWidth - this.item.actual.width) / 2);
+//         this.item.actual.visibility = 'visible';
 
-        this._actualizePosition('center');
-    }
+//         this._actualizePosition('center');
+//     }
 
-    private _setRightPosition() {
+//     private _setRightPosition() {
 
-        this._setDefaultDimensions();
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        if (this.item.actual.width > window.innerWidth) {
-            this.item.actual.offsetLeft = this.item.actual.width;
-        } else {
-            this.item.actual.offsetLeft = window.innerWidth;
-        }
-        this.item.actual.visibility = 'hidden';
-        this._actualizePosition('right');
-    }
+//         this._setDefaultDimensions();
+//         this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+//         if (this.item.actual.width > window.innerWidth) {
+//             this.item.actual.offsetLeft = this.item.actual.width;
+//         } else {
+//             this.item.actual.offsetLeft = window.innerWidth;
+//         }
+//         this.item.actual.visibility = 'hidden';
+//         this._actualizePosition('right');
+//     }
 
-    private _setLeftPosition() {
+//     private _setLeftPosition() {
 
-        this._setDefaultDimensions();
+//         this._setDefaultDimensions();
 
-        this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
-        if (this.item.actual.width > window.innerWidth) {
-            this.item.actual.offsetLeft = this.item.actual.width * -1;
-        } else {
-            this.item.actual.offsetLeft = window.innerWidth * -1;
-        }
+//         this.item.actual.offsetTop = Math.round((window.innerHeight - this.item.actual.height) / 2);
+//         if (this.item.actual.width > window.innerWidth) {
+//             this.item.actual.offsetLeft = this.item.actual.width * -1;
+//         } else {
+//             this.item.actual.offsetLeft = window.innerWidth * -1;
+//         }
 
-        this.item.actual.visibility = 'hidden';
+//         this.item.actual.visibility = 'hidden';
 
-        this._actualizePosition('left');
-    }
+//         this._actualizePosition('left');
+//     }
 
-    private _actualizePosition(value: 'void' | 'origin' | 'center' | 'right' | 'left') {
+//     private _actualizePosition(value: 'void' | 'origin' | 'center' | 'right' | 'left') {
 
-        this.positionAnimator = {
-            value,
-            params: {
-                width: this.item.actual.width,
-                height: this.item.actual.height,
-                offsetTop: this.item.actual.offsetTop,
-                offsetLeft: this.item.actual.offsetLeft,
-                visibility: this.item.actual.visibility
-            }
-        };
-    }
+//         this.positionAnimator = {
+//             value,
+//             params: {
+//                 width: this.item.actual.width,
+//                 height: this.item.actual.height,
+//                 offsetTop: this.item.actual.offsetTop,
+//                 offsetLeft: this.item.actual.offsetLeft,
+//                 visibility: this.item.actual.visibility
+//             }
+//         };
+//     }
 
-    private _setDefaultDimensions() {
+//     private _setDefaultDimensions() {
 
-        const maxWidth = window.innerWidth;
-        const maxHeight = window.innerHeight;
+//         const maxWidth = window.innerWidth;
+//         const maxHeight = window.innerHeight;
 
-        if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
-            this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
-            this.item.actual.width = Math.round(maxWidth);
-        } else {
-            this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
-            this.item.actual.height = Math.round(maxHeight);
-        }
-    }
-}
+//         if (this.item.original.width / maxWidth > this.item.original.height / maxHeight) {
+//             this.item.actual.height = Math.round(maxWidth / this.item.original.width * this.item.original.height);
+//             this.item.actual.width = Math.round(maxWidth);
+//         } else {
+//             this.item.actual.width = Math.round(maxHeight / this.item.original.height * this.item.original.width);
+//             this.item.actual.height = Math.round(maxHeight);
+//         }
+//     }
+// }

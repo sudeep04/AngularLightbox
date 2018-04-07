@@ -1,12 +1,8 @@
-.example-card img {
-    max-height: 200px;
-    width: auto;
-}
-
 mat-card{
     margin-bottom: 10px;
     padding: 0px;
     overflow: hidden;
+    height: 200px;
 
     .mat-card-image{
         margin: 0px;

@@ -1,0 +1,36 @@
+:host{
+    
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: block;
+    color:white;
+
+    .lightbox-panel-background{
+        height: 100%;
+        width: 100%;
+        background-color: black;
+        position: absolute;
+        top:0;
+        z-index: 1;
+    }
+
+    .lightbox-panel-slice{
+        position: absolute;
+        top:0;
+        left:0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+
+        button{
+            z-index: 3;
+        }
+    }
+}
