@@ -16,7 +16,7 @@ export class LightboxService {
         this._doomService.lightboxComponentRef.instance.addItem(item, container);
     }
 
-    public removeItem(item: ILightboxItemComponent) {
+    public removeItem(item: Item) {
 
         this._doomService.lightboxComponentRef.instance.removeItem(item);
     }

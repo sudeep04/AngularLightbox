@@ -3,24 +3,26 @@ import { LightboxService } from './services/lightbox.service';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LightboxButtonComponent } from './components/lightbox-button/lightbox-button.component';
-import { LightboxImgComponent } from './components/lightbox-img/lightbox-img.component';
 import { LightboxComponent } from './components/lightbox/lightbox.component';
 import { LightboxHeaderComponent } from './components/lightbox-header/lightbox-header.component';
 import { DoomService } from './services/doom.service';
+import { LightboxImgDirective } from './directives/lightbox-img.directive';
+import { LazyLoadingModule } from 'lazy-loading/lazy-loading.module';
 
 @NgModule({
     declarations: [
         LightboxButtonComponent,
-        LightboxImgComponent,
         LightboxComponent,
-        LightboxHeaderComponent
+        LightboxHeaderComponent,
+        LightboxImgDirective
     ],
     imports: [
         CommonModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        LazyLoadingModule
     ],
     exports: [
-        LightboxImgComponent
+        LightboxImgDirective
     ],
     providers: [
         LightboxService,
