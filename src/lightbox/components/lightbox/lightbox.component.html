@@ -1,13 +1,13 @@
 <lightbox-header #header (closeEvent) = "onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
 
-<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-panel-background">
+<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-background">
 </div>
 <div *ngIf="activeItem">
     <lightbox-item (toggleEvent) = "onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item"> 
     </lightbox-item>
 </div>
-<!-- <div class="lightbox-panel-slice">
-    <button #_previous [position]="'left'" lightbox-icon-button (click)="previous()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
-    <button #_next [position]="'right'" lightbox-icon-button (click)="next()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
-</div> -->
+<div class="lightbox-navigation">
+    <button #previous [position]="'left'" lightbox-icon-button (click)="previous()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
+    <button #next [position]="'right'" lightbox-icon-button (click)="next()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
+</div>
 

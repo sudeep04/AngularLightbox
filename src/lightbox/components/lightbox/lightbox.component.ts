@@ -42,6 +42,14 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
 export class LightboxComponent {
     
     @ViewChild('header') public header: LightboxHeaderComponent;
+
+    @ViewChild('next') private _next: LightboxButtonComponent;
+
+    @ViewChild('previous') private _previous: LightboxButtonComponent;
+
+    public hasNext: boolean;
+
+    public hasPrevious: boolean;
     
     public items: {[container: string]: Item[]} = {};
 
@@ -94,6 +102,8 @@ export class LightboxComponent {
                         itemRef.animateCenter();
                     }
                 });
+                
+                this._checkNavigation();
             }
         }, 0);
     }
@@ -114,6 +124,47 @@ export class LightboxComponent {
 
     public onToggle(): void {
         this.header.toggle();
+    }
+
+    public next() {
+        
+        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+
+        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+            this._itemsRef.toArray()[activeItemIndex].animateLeft();
+            this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
+            this._itemsRef.toArray()[activeItemIndex + 1].animateCenter();
+        }
+        this._checkNavigation();
+    }
+
+    public previous() {
+
+        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+
+        if (activeItemIndex > 0) {
+            this._itemsRef.toArray()[activeItemIndex].animateRight();
+            this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
+            this._itemsRef.toArray()[activeItemIndex - 1].animateCenter();
+        }
+        this._checkNavigation();
+    }
+
+    private _checkNavigation() {
+
+        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+
+        if (activeItemIndex > 0) {
+            this.hasPrevious = true;
+        } else {
+            this.hasPrevious = false;
+        }
+
+        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+            this.hasNext = true;
+        } else {
+            this.hasNext = false;
+        }
     }
     
 
