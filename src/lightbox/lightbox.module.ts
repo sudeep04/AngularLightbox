@@ -9,6 +9,7 @@ import { DoomService } from './services/doom.service';
 import { LightboxImgDirective } from './directives/lightbox-img.directive';
 import { LazyLoadingModule } from 'lazy-loading/lazy-loading.module';
 import { LightboxItemComponent } from './components/ligthbox-item/lightbox-item.component';
+import { LightboxVideoDirective } from './directives/lightbox-video.directive';
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import { LightboxItemComponent } from './components/ligthbox-item/lightbox-item.
         LightboxComponent,
         LightboxHeaderComponent,
         LightboxImgDirective,
+        LightboxVideoDirective,
         LightboxItemComponent
     ],
     imports: [
@@ -24,7 +26,8 @@ import { LightboxItemComponent } from './components/ligthbox-item/lightbox-item.
         LazyLoadingModule
     ],
     exports: [
-        LightboxImgDirective
+        LightboxImgDirective,
+        LightboxVideoDirective
     ],
     providers: [
         LightboxService,

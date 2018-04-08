@@ -1,67 +1,61 @@
-// import { Directive, OnInit, ElementRef, Input } from '@angular/core';
-// import { LightboxService } from '../../services/lightbox.service';
-// import { Video } from '../../models/video';
-// import { ItemDirectiveBase } from '../../models/itemDirectiveBase';
+import { Directive, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
+import { ItemDirectiveBase } from '../models/itemDirectiveBase';
+import { LightboxService } from '../services/lightbox.service';
+import { Video } from '../models/video';
+import { DomSanitizer } from '@angular/platform-browser';
 
-// const YOUTUBE_IMG_URL = 'http://img.youtube.com/vi/';
+@Directive({
+    selector: 'img[lightbox-img]',
+    host: {
+        '[style.cursor]': 'cursor',
+        '[style.visibility]': 'visibility',
+        '(click)': 'onClick($event)',
+        '(load)': 'onLoad($event)'
+    }
+})
+export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
 
-// @Directive({
-//     selector: 'img[lightbox-video]',
-//     host: {
-//         '[style.cursor]': 'cursor',
-//         '[style.visibility]': 'visibility',
-//         '(click)': 'onClick($event)'
-//     }
-// })
-// export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit {
+    constructor(
+        private readonly _lightboxService: LightboxService,
+        private readonly _elementRef: ElementRef,
+        private _domSanitizationService: DomSanitizer
+    ) {
+        super(_lightboxService, _elementRef);
+    }
+    
+    @Input('youtube-id') public youtubeId: string;
 
-//     @Input('youtube-id') public youtubeId: string;
+    public ngOnInit(): void {
 
-//     constructor(
-//         protected lightboxService: LightboxService,
-//         protected element: ElementRef
-//     ) { 
-//         super(lightboxService, element);
-//     }
+        if (!this.container) {
+            throw new Error("Attribute 'lightbox-container' is required");
+        }
 
-//     public ngOnInit() {
+        if (!this.title) {
+            throw new Error("Attribute 'lightbox-title' is required");
+        }
 
-//         if (!this.container) {
-//             throw new Error("Attribute 'lightbox-container' is required");
-//         }
+        if (!this.youtubeId) {
+            throw new Error("Attribute 'youtube-id' is required");
+        }
 
-//         if (!this.title) {
-//             throw new Error("Attribute 'lightbox-title' is required");
-//         }
+        this.item = <Video>{
+            title: this.title,
+            container: this.container,
+            youtubeVieoUrl: this._domSanitizationService.bypassSecurityTrustResourceUrl(this.youtubeId),
+            src: this.src,
+            xsSrc: this.xsSrc,
+            smSrc: this.smSrc,
+            mdSrc: this.mdSrc,
+            lgSrc: this.lgSrc,
+            xlSrc: this.xlSrc,
+            xsBreakpoint: this.xsBreakpoint,
+            smBreakpoint: this.smBreakpoint,
+            mdBreakpoint: this.mdBreakpoint,
+            lgBreakpoint: this.mdBreakpoint
+        }
 
-//         if (!this.youtubeId) {
-//             throw new Error("Attribute 'youtube-id' is required");
-//         }
+        this._lightboxService.addItem(this.item);
+    }
+}
 
-//         if (!this.src) {
-//             throw new Error("Attribute 'src' is required");
-//         }
-
-//         const video: Video = {
-//             id: this.lightboxService.generateId(),
-//             title: this.title,
-//             youtubeId: this.youtubeId,
-//             src: this.src,
-//             srcXs: YOUTUBE_IMG_URL + this.youtubeId + '/default.jpg',
-//             srcSm: YOUTUBE_IMG_URL + this.youtubeId + '/mqdefault.jpg',
-//             srcMd: YOUTUBE_IMG_URL + this.youtubeId + '/hqdefault.jpg',
-//             srcLg: YOUTUBE_IMG_URL + this.youtubeId + '/sddefault.jpg',
-//             srcXl: YOUTUBE_IMG_URL + this.youtubeId + '/maxresdefault.jpg',
-//         };
-
-//         this.srcBySize = {
-//             xs: YOUTUBE_IMG_URL + this.youtubeId + '/default.jpg',
-//             sm: YOUTUBE_IMG_URL + this.youtubeId + '/mqdefault.jpg',
-//             md: YOUTUBE_IMG_URL + this.youtubeId + '/hqdefault.jpg',
-//             lg: YOUTUBE_IMG_URL + this.youtubeId + '/sddefault.jpg',
-//             xl: YOUTUBE_IMG_URL + this.youtubeId + '/maxresdefault.jpg',
-//         }
-        
-//         this.container.addItem(video);
-//     }
-// }
