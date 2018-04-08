@@ -1,12 +1,10 @@
 import { Component, ViewChild, QueryList, ViewChildren, HostListener } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 import { Item } from '../../models/item';
 import { IPosition } from '../../models/iPosition';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
-import { LightboxService } from '../../services/lightbox.service';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 
 @Component({
@@ -44,7 +42,6 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
                 animate('.2s')
             ])
         ]),
-        ,
         trigger('navigationPreviousAnimator', [
             state('hide', style({ left: '-80px', right: '0px' })),
             state('show', style({ left: '0px', right: '0px' })),
@@ -139,11 +136,6 @@ export class LightboxComponent {
                 this._checkNavigation();
             }
         }, 0);
-    }
-
-    public getContainers(): string[] {
-
-        return Object.keys(this.items);
     }
 
     public onClose(): void {
