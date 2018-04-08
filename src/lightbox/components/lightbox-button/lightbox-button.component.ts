@@ -23,27 +23,9 @@ const BUTTON_HOST_ATTRIBUTES = [
             transition('enter => leave', [
                 animate('.1s')
             ])
-        ]),
-        trigger('displayAnimator', [
-            state('hideLeft', style({ left: '-80px', right: '0px' })),
-            state('hideRight', style({ left: '120px', right: '0px' })),
-            state('show', style({ left: '0px', right: '0px' })),
-            transition('show => hideLeft', [
-                animate('.05s')
-            ]),
-            transition('show => hideRight', [
-                animate('.05s')
-            ]),
-            transition('hideRight => show', [
-                animate('.2s')
-            ]),
-            transition('hideLeft => show', [
-                animate('.2s')
-            ])
         ])
     ],
     host: {
-        '[@displayAnimator]': '_displayAnimator',
         '(mouseenter)': '_onMouseEnter()',
         '(mouseleave)': '_onMouseLeave()'
     }
@@ -52,13 +34,9 @@ export class LightboxButtonComponent implements OnChanges, OnInit {
 
     @Input() public disable: boolean = false;
 
-    @Input() public position: 'left' | 'right';
-
     public hoverAnimator: 'leave' | 'enter' = 'leave';
 
     private _isIconButton: boolean = this._hasHostAttributes('lightbox-icon-button');
-
-    private _displayAnimator: 'hideLeft' | 'hideRight' | 'show' = 'show';
 
     constructor(
         private _elementRef: ElementRef
@@ -71,26 +49,6 @@ export class LightboxButtonComponent implements OnChanges, OnInit {
     }
 
     public ngOnInit() {
-
-        if (this.position) {
-            this.hide();
-        }
-    }
-
-    public show() {
-
-        this._displayAnimator = 'show';
-    }
-
-    public hide() {
-
-        if (this.position === 'left') {
-
-            this._displayAnimator = 'hideLeft';
-        } else {
-            this._displayAnimator = 'hideRight';
-
-        }
     }
 
     public ngOnChanges() {

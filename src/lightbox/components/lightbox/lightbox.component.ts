@@ -33,19 +33,43 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
             transition('hide => show', [
                 animate('.2s')
             ])
+        ]),
+        trigger('navigationNextAnimator', [
+            state('hide', style({ left: '120px', right: '0px' })),
+            state('show', style({ left: '0px', right: '0px' })),
+            transition('show => hide', [
+                animate('.05s')
+            ]),
+            transition('hide => show', [
+                animate('.2s')
+            ])
+        ]),
+        ,
+        trigger('navigationPreviousAnimator', [
+            state('hide', style({ left: '-80px', right: '0px' })),
+            state('show', style({ left: '0px', right: '0px' })),
+            transition('show => hide', [
+                animate('.05s')
+            ]),
+            transition('hide => show', [
+                animate('.2s')
+            ])
         ])
     ],
     host: {
         '[style.pointer-events]': '_pointerEvents',
     }
 })
-export class LightboxComponent {
+export class LightboxComponent{
+
+    public navigationNextAnimator: 'hide' | 'show' = 'hide';
+    public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
     
     @ViewChild('header') public header: LightboxHeaderComponent;
 
-    @ViewChild('next') private _next: LightboxButtonComponent;
+    @ViewChild('_next') private _next: LightboxButtonComponent;
 
-    @ViewChild('previous') private _previous: LightboxButtonComponent;
+    @ViewChild('_previous') private _previous: LightboxButtonComponent;
 
     public hasNext: boolean;
 
@@ -80,6 +104,18 @@ export class LightboxComponent {
         }
     }
 
+    private _navigationShow() {
+
+        this.navigationNextAnimator = 'show';
+        this.navigationPreviousAnimator = 'show';
+    }
+
+    private _navigationHide() {
+
+        this.navigationNextAnimator = 'hide';
+        this.navigationPreviousAnimator = 'hide';
+    }
+
     public openItem(item: Item, position: IPosition): void {
 
         this.activeItem = item;
@@ -87,6 +123,8 @@ export class LightboxComponent {
         this._pointerEvents = 'auto';
         this.header.open();
         this.fadeAnimator = 'show';
+        
+        this._navigationShow();
 
         setTimeout(()=>{
 
@@ -120,6 +158,7 @@ export class LightboxComponent {
         this.header.close();
         this.state.next('closed');
         this.fadeAnimator = 'hide';
+        this._navigationHide();
     }
 
     public onToggle(): void {
@@ -133,7 +172,9 @@ export class LightboxComponent {
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
             this._itemsRef.toArray()[activeItemIndex].animateLeft();
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
-            this._itemsRef.toArray()[activeItemIndex + 1].animateCenter();
+            this._itemsRef.toArray()[activeItemIndex + 1].animateRight().done(()=>{
+                this._itemsRef.toArray()[activeItemIndex + 1].animateCenter();
+            });
         }
         this._checkNavigation();
     }
@@ -145,7 +186,9 @@ export class LightboxComponent {
         if (activeItemIndex > 0) {
             this._itemsRef.toArray()[activeItemIndex].animateRight();
             this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
-            this._itemsRef.toArray()[activeItemIndex - 1].animateCenter();
+            this._itemsRef.toArray()[activeItemIndex - 1].animateLeft().done(()=>{
+                this._itemsRef.toArray()[activeItemIndex - 1].animateCenter();
+            });
         }
         this._checkNavigation();
     }

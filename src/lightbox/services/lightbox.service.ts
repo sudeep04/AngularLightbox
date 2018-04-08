@@ -3,6 +3,7 @@ import { DoomService } from './doom.service';
 import { Item } from '../models/item';
 import { IPosition } from '../models/iPosition';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 
 @Injectable()
 export class LightboxService {
@@ -28,10 +29,9 @@ export class LightboxService {
 
     public onClose(func: () => void) {
 
-        const s = this._doomService.lightboxComponentRef.instance.state.filter((state)=> state == 'closed').subscribe(()=>{
+        this._doomService.lightboxComponentRef.instance.state.filter((state)=> state == 'closed').first().subscribe(()=>{
             
             func();
-            s.unsubscribe();
         });
     }
 }

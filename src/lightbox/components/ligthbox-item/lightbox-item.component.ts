@@ -8,6 +8,7 @@ import { IAnimatorCallback } from '../../models/iAnimatorCallBack';
 import { IImgAnimatorState } from '../../models/iImgAnimatorState';
 import { IPosition } from '../../models/iPosition';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 
 @Component({
     selector: 'lightbox-item',
@@ -114,15 +115,13 @@ export class LightboxItemComponent {
     private _itemAnimatorCallBack(state: 'null' | 'origin' | 'center' | 'left' | 'right'): IAnimatorCallback{
         return  { 
             start :(func: () => void) => {
-                const s = this._itemAnimatorStart.filter((value)=> value == state).subscribe(()=>{
+                this._itemAnimatorStart.filter((value)=> value == state).first().subscribe(()=>{
                     func();
-                    s.unsubscribe();
                 })
             },
             done :(func: () => void) => {
-                const s = this._itemAnimatorDone.filter((value)=> value == state).subscribe(()=>{
+                this._itemAnimatorDone.filter((value)=> value == state).first().subscribe(()=>{
                     func();
-                    s.unsubscribe();
                 })
             }
         }
