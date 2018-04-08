@@ -130,7 +130,7 @@ export class LightboxItemComponent {
     private _getCenterPosition(): IPosition {
 
         const maxWidth = window.innerWidth * 2 / 3;
-        const maxHeight = window.innerHeight * 3 / 4;
+        const maxHeight = (window.innerHeight - 128) * 9 / 10;
             
         let height: number;
         let width: number;
@@ -145,7 +145,7 @@ export class LightboxItemComponent {
             height = Math.round(maxHeight);
         }
 
-        offsetTop = Math.round((window.innerHeight - height) / 2);
+        offsetTop = Math.round((window.innerHeight  - height) / 2);
         offsetLeft = Math.round((window.innerWidth - width) / 2);
 
         return {width, height, offsetTop, offsetLeft};

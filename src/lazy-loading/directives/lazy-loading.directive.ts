@@ -100,6 +100,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
                 if (!this._currentResolution || this._currentResolution != 'xl') {
                     this._currentResolution = 'xl';
                     this._elementRef.nativeElement.src = this.xlSrc;
+                    this._elementRef.nativeElement.style.background = "url(" + this.xlSrc + ")";
                 }
                 return;
             }
@@ -108,6 +109,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
                 if (!this._currentResolution || this._currentResolution != 'lg') {
                     this._currentResolution = 'lg';
                     this._elementRef.nativeElement.src = this.lgSrc;
+                    this._elementRef.nativeElement.style.background = "url(" + this.lgSrc + ")";
                 }
                 return;
             }
@@ -116,6 +118,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
                 if (!this._currentResolution || this._currentResolution != 'md') {
                     this._currentResolution = 'md';
                     this._elementRef.nativeElement.src = this.mdSrc;
+                    this._elementRef.nativeElement.style.background = "url(" + this.mdSrc + ")";
                 }
                 return;
             }
@@ -124,6 +127,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
                 if (!this._currentResolution || this._currentResolution != 'sm') {
                     this._currentResolution = 'sm';
                     this._elementRef.nativeElement.src = this.smSrc;
+                    this._elementRef.nativeElement.style.background = "url(" + this.smSrc + ")";
                 }
                 return;
             }
@@ -132,6 +136,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy{
                 if (!this._currentResolution || this._currentResolution != 'xs') {
                     this._currentResolution = 'xs';
                     this._elementRef.nativeElement.src = this.xsSrc;
+                    this._elementRef.nativeElement.style.background = "url(" + this.xsSrc + ")";
                 }
                 return;
             }

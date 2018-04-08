@@ -104,6 +104,18 @@ export class LightboxComponent{
         }
     }
 
+    @HostListener('window:resize', ['$event'])
+    private _onResize(event) {
+
+        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+        const itemRef = this._itemsRef.toArray()[activeItemIndex];
+            
+            if(itemRef) {
+
+                itemRef.animateCenter();
+            }
+    }
+
     private _navigationShow() {
 
         this.navigationNextAnimator = 'show';
