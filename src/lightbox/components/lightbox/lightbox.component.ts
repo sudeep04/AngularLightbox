@@ -228,15 +228,18 @@ export class LightboxComponent {
     @HostListener('window:resize', ['$event'])
     private _onResize(event) {
 
-        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
-        const itemRef = this._itemsRef.toArray()[activeItemIndex];
+        if (this.activeItem) {
 
-        if (itemRef.isVideo()) {
+            const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+            const itemRef = this._itemsRef.toArray()[activeItemIndex];
 
-            itemRef.displayVideo();
-        } else {
+            if (itemRef.isVideo()) {
 
-            itemRef.animateCenter();
+                itemRef.displayVideo();
+            } else {
+
+                itemRef.animateCenter();
+            }
         }
     }
 
