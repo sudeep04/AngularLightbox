@@ -1,34 +1,42 @@
 
-<h2>Some Example</h2>
+<h2>Simple Example</h2>
 <br>
 <div fxLayout="row wrap" fxLayoutAlign="center none" fxLayoutGap="10px">
     <mat-card class="example-card">
-        <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'The Godfather'" mat-card-image src="assets/images/bc93a9a752e5916980ddc3e86c19ecf6.jpg">
+        <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'The Godfather'" mat-card-image 
+            [xs-src]="'assets/images/the-godfather-xs.gif'"
+            [sm-src]="'assets/images/the-godfather-sm.gif'"
+            [md-src]="'assets/images/the-godfather-md.gif'"
+            [lg-src]="'assets/images/the-godfather-lg.gif'"
+            [xl-src]="'assets/images/the-godfather-xl.gif'"/>
     </mat-card>
     <mat-card class="example-card">
-        <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'The Shawshank Redemption'" mat-card-image src="assets/images/hlf.jpg">
+        <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'The Shawshank Redemption'" mat-card-image 
+            [xs-src]="'assets/images/the-shawshank-redemption-xs.gif'"
+            [sm-src]="'assets/images/the-shawshank-redemption-sm.gif'"
+            [md-src]="'assets/images/the-shawshank-redemption-md.gif'"
+            [lg-src]="'assets/images/the-shawshank-redemption-lg.gif'"
+            [xl-src]="'assets/images/the-shawshank-redemption-xl.gif'"/>
     </mat-card>
     <mat-card class="example-card">
-        <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'Schindlers List'" mat-card-image src="assets/images/schindlers-list.22323.jpg">
+        <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'Schindler\'s List'" mat-card-image 
+            [xs-src]="'assets/images/schindlers-list-xs.gif'"
+            [sm-src]="'assets/images/schindlers-list-sm.gif'"
+            [md-src]="'assets/images/schindlers-list-md.gif'"
+            [lg-src]="'assets/images/schindlers-list-lg.gif'"
+            [xl-src]="'assets/images/schindlers-list-xl.gif'"/>
     </mat-card>
     <mat-card class="example-card">
-        <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'Pulp Fiction'" mat-card-image src="assets/images/d52375334766.original.jpeg">
+        <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'Forrest Gump'" mat-card-image 
+            [xs-src]="'assets/images/forrest-gump-xs.gif'"
+            [sm-src]="'assets/images/forrest-gump-sm.gif'"
+            [md-src]="'assets/images/forrest-gump-md.gif'"
+            [lg-src]="'assets/images/forrest-gump-lg.gif'"
+            [xl-src]="'assets/images/forrest-gump-xl.gif'"/>
     </mat-card>
     <mat-card class="example-card">
-        <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'Forrest Gump'" mat-card-image src="assets/images/forrest-gump-poster.jpg">
+        <img lightbox-video lazy-loading [container]="'lightbox1'" [title]="'Video 1'" [youtube-id]="'Z0FETzb32Hs'" mat-card-image 
+            [xs-src]="'http://img.youtube.com/vi/Z0FETzb32Hs/mqdefault.jpg?7'"
+            [lg-src]="'http://img.youtube.com/vi/Z0FETzb32Hs/maxresdefault.jpg?7'"/>
     </mat-card>
-    <mat-card class="example-card">
-        <img lightbox-img [lightbox-container]="lightbox1" [lightbox-title]="'the silence of the lambs'" mat-card-image src="assets/images/the-silence-of-the-lambs-video-poster-29x41-in-1991-jonathan-demme-anthony-hopkins.jpg">
-    </mat-card>
-    <mat-card class="example-card">
-        <img lightbox-video [lightbox-video-url]="'http://www.youtube.com/embed/Z0FETzb32Hs'" [lightbox-container]="lightbox1" [lightbox-title]="'Forrest Gump'" mat-card-image src="http://img.youtube.com/vi/Z0FETzb32Hs/maxresdefault.jpg">
-    </mat-card>
-    <mat-card class="example-card">
-        <img lightbox-video [lightbox-video-url]="'http://www.youtube.com/embed/gbrkMDkHRqc'" [lightbox-container]="lightbox1" [lightbox-title]="'the silence of the lambs'" mat-card-image src="http://img.youtube.com/vi/gbrkMDkHRqc/maxresdefault.jpg">
-    </mat-card>
-
-    
 </div>
-
-<lightbox #lightbox1="lightbox"></lightbox>
-<lightbox #lightbox2="lightbox"></lightbox>
