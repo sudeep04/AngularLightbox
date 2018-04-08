@@ -109,11 +109,14 @@ export class LightboxComponent{
 
         const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
         const itemRef = this._itemsRef.toArray()[activeItemIndex];
-            
-            if(itemRef) {
 
-                itemRef.animateCenter();
-            }
+        if(itemRef.isVideo()){
+
+            itemRef.displayVideo();
+        } else {
+            
+            itemRef.animateCenter();
+        }
     }
 
     private _navigationShow() {
@@ -149,7 +152,13 @@ export class LightboxComponent{
 
                     if(itemRef) {
 
-                        itemRef.animateCenter();
+                        itemRef.animateCenter().done(()=>{
+
+                            if(itemRef.isVideo()){
+
+                                itemRef.displayVideo();
+                            }
+                        });
                     }
                 });
                 
@@ -182,10 +191,20 @@ export class LightboxComponent{
         const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
-            this._itemsRef.toArray()[activeItemIndex].animateLeft();
+
+            const activeItemRef = this._itemsRef.toArray()[activeItemIndex];
+            const nextItemRef = this._itemsRef.toArray()[activeItemIndex + 1];
+
+            activeItemRef.animateLeft();
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
-            this._itemsRef.toArray()[activeItemIndex + 1].animateRight().done(()=>{
-                this._itemsRef.toArray()[activeItemIndex + 1].animateCenter();
+            nextItemRef.animateRight().done(()=>{
+                nextItemRef.animateCenter().done(()=>{
+
+                    if(nextItemRef.isVideo()){
+
+                        nextItemRef.displayVideo();
+                    }
+                });
             });
         }
         this._checkNavigation();
@@ -196,10 +215,22 @@ export class LightboxComponent{
         const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
 
         if (activeItemIndex > 0) {
-            this._itemsRef.toArray()[activeItemIndex].animateRight();
+            
+            const activeItemRef = this._itemsRef.toArray()[activeItemIndex];
+            const previousItemRef = this._itemsRef.toArray()[activeItemIndex - 1];
+
+
+            activeItemRef.animateRight();
             this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
-            this._itemsRef.toArray()[activeItemIndex - 1].animateLeft().done(()=>{
-                this._itemsRef.toArray()[activeItemIndex - 1].animateCenter();
+
+            previousItemRef.animateLeft().done(()=>{
+                previousItemRef.animateCenter().done(()=>{
+
+                    if(previousItemRef.isVideo()){
+
+                        previousItemRef.displayVideo();
+                    }
+                });
             });
         }
         this._checkNavigation();

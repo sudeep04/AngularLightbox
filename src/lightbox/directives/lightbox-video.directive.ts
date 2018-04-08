@@ -3,9 +3,11 @@ import { ItemDirectiveBase } from '../models/itemDirectiveBase';
 import { LightboxService } from '../services/lightbox.service';
 import { Video } from '../models/video';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Item } from '../models/item';
+import { Img } from '../models/img';
 
 @Directive({
-    selector: 'img[lightbox-img]',
+    selector: 'img[lightbox-video]',
     host: {
         '[style.cursor]': 'cursor',
         '[style.visibility]': 'visibility',
@@ -39,22 +41,22 @@ export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit,
             throw new Error("Attribute 'youtube-id' is required");
         }
 
-        this.item = <Video>{
-            title: this.title,
-            container: this.container,
-            youtubeVieoUrl: this._domSanitizationService.bypassSecurityTrustResourceUrl(this.youtubeId),
-            src: this.src,
-            xsSrc: this.xsSrc,
-            smSrc: this.smSrc,
-            mdSrc: this.mdSrc,
-            lgSrc: this.lgSrc,
-            xlSrc: this.xlSrc,
-            xsBreakpoint: this.xsBreakpoint,
-            smBreakpoint: this.smBreakpoint,
-            mdBreakpoint: this.mdBreakpoint,
-            lgBreakpoint: this.mdBreakpoint
-        }
-
+        const item = new Video();
+        item.title = this.title;
+        item.container = this.container;
+        item.youtubeVieoUrl = this._domSanitizationService.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.youtubeId);
+        item.src = this.src;
+        item.xsSrc = this.xsSrc;
+        item.smSrc = this.smSrc;
+        item.mdSrc = this.mdSrc;
+        item.lgSrc = this.lgSrc;
+        item.xlSrc = this.xlSrc;
+        item.xsBreakpoint = this.xsBreakpoint;
+        item.smBreakpoint = this.smBreakpoint;
+        item.mdBreakpoint = this.mdBreakpoint;
+        item.lgBreakpoint = this.mdBreakpoint;
+        this.item = item;
+        
         this._lightboxService.addItem(this.item);
     }
 }

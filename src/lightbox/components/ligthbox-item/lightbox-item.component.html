@@ -13,3 +13,12 @@
     [md-breakpoint]="item.mdBreakpoint"
     [lg-breakpoint]="item.lgBreakpoint"/>
 
+<iframe
+    *ngIf="isVideo()"
+    [@videoAnimator]="videoAnimator"
+    [src]="item.youtubeVieoUrl" 
+    style="position:absolute;z-index:1;top:64;height:calc(100% - 64px); width:100%;" 
+    frameborder="0" 
+    allowfullscreen>
+</iframe>
+

@@ -1,5 +1,5 @@
-import { Item } from './Item';
+import { Item } from './item';
 
 export class Video extends Item {
-    youtubeVieoUrl: string;
+    youtubeVieoUrl: any;
 }

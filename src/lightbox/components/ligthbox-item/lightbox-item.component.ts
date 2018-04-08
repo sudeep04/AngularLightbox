@@ -1,5 +1,5 @@
 
-import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { Item } from '../../models/item';
 import { ILightboxItemComponent } from '../../models/iLightboxItemComponent';
@@ -9,6 +9,7 @@ import { IImgAnimatorState } from '../../models/iImgAnimatorState';
 import { IPosition } from '../../models/iPosition';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
+import { Video } from '../../models/video';
 
 @Component({
     selector: 'lightbox-item',
@@ -48,27 +49,53 @@ import 'rxjs/add/operator/first';
             transition('left => center', [
                 animate('.2s')
             ])
+        ]),
+        trigger('videoAnimator', [
+
+            state('hide', style({visibility: 'hidden'})),
+            state('show',
+            style({visibility: 'visible'}))
         ])
     ],
     host:{
         '(click)': 'onClick($event)'
     }
 })
-export class LightboxItemComponent {
+export class LightboxItemComponent implements OnInit{
 
     @Input('item') public item: Item;
 
     @ViewChild('img') private _img: ElementRef;
     
     @Output() public toggleEvent = new EventEmitter();
+
+    private _isVideo: boolean;
     
     public itemAnimator: IImgAnimatorState = { value: 'null' };
+
+    public videoAnimator: 'hide' | 'show' = 'hide';
 
     private _itemAnimatorStart: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
     
     private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
 
+    public ngOnInit(): void {
+        this._isVideo = this.item instanceof Video;
+    }
+
+    public isVideo(): boolean {
+
+        return this._isVideo;
+    }
+
+    public displayVideo(): void {
+
+        this.itemAnimator = {value: 'null'};
+        this.videoAnimator = 'show';
+    }
+
     public onClick(event: Event): void {
+
         this.toggleEvent.emit();
     }
 
@@ -85,30 +112,35 @@ export class LightboxItemComponent {
     public animateNull(): IAnimatorCallback {
 
         this.itemAnimator = { value: 'null' };
+        this.videoAnimator = 'hide';
         return this._itemAnimatorCallBack('null');
     }
 
     public animateOrigin(position: IPosition): IAnimatorCallback {
         
         this.itemAnimator = { value: 'origin', params: position };
+        this.videoAnimator = 'hide';
         return this._itemAnimatorCallBack('origin');
     }
 
     public animateCenter(): IAnimatorCallback {
 
         this.itemAnimator = { value: 'center', params: this._getCenterPosition() };
+        this.videoAnimator = 'hide';
         return this._itemAnimatorCallBack('center');
     }
 
     public animateLeft(): IAnimatorCallback {
         
         this.itemAnimator = { value: 'left', params: this._getLeftPosition() };
+        this.videoAnimator = 'hide';
         return this._itemAnimatorCallBack('left');
     }
 
     public animateRight(): IAnimatorCallback {
         
         this.itemAnimator = { value: 'right', params: this._getRightPosition() };
+        this.videoAnimator = 'hide';
         return this._itemAnimatorCallBack('right');
     }
 

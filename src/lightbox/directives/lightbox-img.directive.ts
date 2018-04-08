@@ -31,20 +31,20 @@ export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, O
             throw new Error("Attribute 'lightbox-title' is required");
         }
 
-        this.item = <Img>{
-            title: this.title,
-            container: this.container,
-            src: this.src,
-            xsSrc: this.xsSrc,
-            smSrc: this.smSrc,
-            mdSrc: this.mdSrc,
-            lgSrc: this.lgSrc,
-            xlSrc: this.xlSrc,
-            xsBreakpoint: this.xsBreakpoint,
-            smBreakpoint: this.smBreakpoint,
-            mdBreakpoint: this.mdBreakpoint,
-            lgBreakpoint: this.mdBreakpoint
-        }
+        const item = new Img();
+        item.title = this.title;
+        item.container = this.container;
+        item.src = this.src;
+        item.xsSrc = this.xsSrc;
+        item.smSrc = this.smSrc;
+        item.mdSrc = this.mdSrc;
+        item.lgSrc = this.lgSrc;
+        item.xlSrc = this.xlSrc;
+        item.xsBreakpoint = this.xsBreakpoint;
+        item.smBreakpoint = this.smBreakpoint;
+        item.mdBreakpoint = this.mdBreakpoint;
+        item.lgBreakpoint = this.mdBreakpoint;
+        this.item = item;
 
         this._lightboxService.addItem(this.item);
     }
