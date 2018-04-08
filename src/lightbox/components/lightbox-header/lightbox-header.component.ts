@@ -25,7 +25,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         ])
 
     ],
-    host:{
+    host: {
         '[@animator]': 'animator'
     }
 })
@@ -50,9 +50,9 @@ export class LightboxHeaderComponent {
     }
 
     public toggle(): void {
-        if(this.animator == 'hidden') {
+        if (this.animator === 'hidden') {
             this.animator = 'showed';
-        }else{
+        } else {
             this.animator = 'hidden';
         }
     }

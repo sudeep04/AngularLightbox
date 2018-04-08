@@ -17,6 +17,8 @@ import { Img } from '../models/img';
 })
 export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
 
+    @Input('youtube-id') public youtubeId: string;
+
     constructor(
         private readonly _lightboxService: LightboxService,
         private readonly _elementRef: ElementRef,
@@ -24,8 +26,6 @@ export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit,
     ) {
         super(_lightboxService, _elementRef);
     }
-    
-    @Input('youtube-id') public youtubeId: string;
 
     public ngOnInit(): void {
 
@@ -56,8 +56,7 @@ export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit,
         item.mdBreakpoint = this.mdBreakpoint;
         item.lgBreakpoint = this.mdBreakpoint;
         this.item = item;
-        
+
         this._lightboxService.addItem(this.item);
     }
 }
-

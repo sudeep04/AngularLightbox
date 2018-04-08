@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ITrackedProperties } from '../models/iTrackedProperties';
 import { ITrackedItem } from '../models/iTrackedItem';
 import { ITrackedItemState } from '../models/iTackedItemState';
@@ -8,7 +8,7 @@ export class DoomSensorService {
 
     private _trackedItems: ITrackedItem[] = [];
 
-    private _trackInterval: NodeJS.Timer;
+    private _trackInterval: any;
 
     constructor() {
 
@@ -17,18 +17,18 @@ export class DoomSensorService {
 
     public track(nativeElement: any, trackedProperties: ITrackedProperties, callBack: () => void ): void {
 
-        if (this._trackedItems.find((item) => item.nativeElement == nativeElement)) {
+        if (this._trackedItems.find((item) => item.nativeElement === nativeElement)) {
 
-            throw new Error("Duplicate tracked element");
+            throw new Error('Duplicate tracked element');
         }
 
-        if(trackedProperties.width || trackedProperties.height || trackedProperties.top || trackedProperties.left) {
+        if (trackedProperties.width || trackedProperties.height || trackedProperties.top || trackedProperties.left) {
 
             const trackedItem: ITrackedItem = {
-                nativeElement: nativeElement,
+                nativeElement,
                 lastState: this._getState(nativeElement, trackedProperties),
-                trackedProperties: trackedProperties,
-                callBack: callBack
+                trackedProperties,
+                callBack
             };
 
             this._trackedItems.push(trackedItem);
@@ -37,10 +37,10 @@ export class DoomSensorService {
 
     public untrack(nativeElement: any): void {
 
-        const trackedItem = this._trackedItems.find((item) => item.nativeElement == nativeElement);
+        const trackedItem = this._trackedItems.find((item) => item.nativeElement === nativeElement);
 
         if (!trackedItem) {
-            throw new Error("tracked item not found");
+            throw new Error('tracked item not found');
         }
 
         const index = this._trackedItems.indexOf(trackedItem);
@@ -51,7 +51,7 @@ export class DoomSensorService {
     private _testList = () => {
 
         this._trackedItems.forEach((item) => {
-            
+
             this._testItem(item);
         });
     }
@@ -60,37 +60,37 @@ export class DoomSensorService {
 
         const currentState = this._getState(trackedItem.nativeElement, trackedItem.trackedProperties);
 
-        if (trackedItem.lastState.width != currentState.width ||
-            trackedItem.lastState.height != currentState.height ||
-            trackedItem.lastState.top != currentState.top ||
-            trackedItem.lastState.left != currentState.left) {
+        if (trackedItem.lastState.width !== currentState.width ||
+            trackedItem.lastState.height !== currentState.height ||
+            trackedItem.lastState.top !== currentState.top ||
+            trackedItem.lastState.left !== currentState.left) {
 
             trackedItem.lastState = currentState;
             trackedItem.callBack();
         }
     }
 
-    private _getState(nativeElement: any, trackedProperties: ITrackedProperties) : ITrackedItemState {
+    private _getState(nativeElement: any, trackedProperties: ITrackedProperties): ITrackedItemState {
 
-        let trackedItemState: ITrackedItemState = {};
+        const trackedItemState: ITrackedItemState = {};
 
-        if(trackedProperties.width) {
+        if (trackedProperties.width) {
 
             trackedItemState.width = nativeElement.clientWidth;
         }
 
-        if(trackedProperties.height) {
-            
+        if (trackedProperties.height) {
+
             trackedItemState.height = nativeElement.clientHeight;
         }
 
-        if(trackedProperties.top) {
-            
+        if (trackedProperties.top) {
+
             trackedItemState.top = Math.round(nativeElement.getBoundingClientRect().top);
         }
 
-        if(trackedProperties.left) {
-            
+        if (trackedProperties.left) {
+
             trackedItemState.left = Math.round(nativeElement.getBoundingClientRect().left);
         }
 

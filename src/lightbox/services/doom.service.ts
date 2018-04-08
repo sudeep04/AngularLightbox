@@ -14,13 +14,13 @@ export class DoomService {
         @Inject(DOCUMENT) private readonly _document: any
     ) {
         this._lightboxComponentRef = this._componentFactoryResolver
-        .resolveComponentFactory(LightboxComponent)
-        .create(this._injector);
+            .resolveComponentFactory(LightboxComponent)
+            .create(this._injector);
 
         this._appRef.attachView(this._lightboxComponentRef.hostView);
 
         const domElement = (this._lightboxComponentRef.hostView as EmbeddedViewRef<any>)
-        .rootNodes[0] as HTMLElement;
+            .rootNodes[0] as HTMLElement;
 
         const container = this._document.createElement('div');
 

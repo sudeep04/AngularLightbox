@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DoomService } from './doom.service';
 import { Item } from '../models/item';
 import { IPosition } from '../models/iPosition';
@@ -10,10 +10,10 @@ export class LightboxService {
 
     constructor(
         private readonly _doomService: DoomService
-    ) {}
+    ) { }
 
     public addItem(item: Item): void {
-        
+
         this._doomService.lightboxComponentRef.instance.addItem(item);
     }
 
@@ -29,8 +29,8 @@ export class LightboxService {
 
     public onClose(func: () => void) {
 
-        this._doomService.lightboxComponentRef.instance.state.filter((state)=> state == 'closed').first().subscribe(()=>{
-            
+        this._doomService.lightboxComponentRef.instance.state.filter((state) => state === 'closed').first().subscribe(() => {
+
             func();
         });
     }

@@ -1,12 +1,12 @@
 import { IPosition } from './iPosition';
 import { LightboxService } from '../services/lightbox.service';
-import { ElementRef, Input } from '@angular/core';
+import { ElementRef, Input, OnDestroy } from '@angular/core';
 import { Item } from './item';
 
-export class ItemDirectiveBase {
+export class ItemDirectiveBase implements OnDestroy {
 
     @Input('container') protected container: string;
-    
+
     @Input('src') protected src: string;
 
     @Input('title') protected title: string;
@@ -42,20 +42,15 @@ export class ItemDirectiveBase {
         protected readonly elementRef: ElementRef
     ) {}
 
-    private _show(): void {
+    public ngOnDestroy(): void {
 
-        this.visibility = 'visible';
-    }
-
-    private _hide(): void {
-
-        this.visibility = 'hidden';
+        this.lightboxService.removeItem(this.item);
     }
 
     protected onClick(event: Event): void {
 
-        if(this._loaded) {
-            
+        if (this._loaded) {
+
             const position: IPosition = {
                 width: this.elementRef.nativeElement.clientWidth,
                 height: this.elementRef.nativeElement.clientHeight,
@@ -64,8 +59,8 @@ export class ItemDirectiveBase {
             };
             this.visibility = 'hidden';
             this.lightboxService.openItem(this.item, position);
-            this.lightboxService.onClose(()=>{
-                
+            this.lightboxService.onClose(() => {
+
                 this.visibility = 'visible';
             });
         }
@@ -76,8 +71,13 @@ export class ItemDirectiveBase {
         this._loaded = true;
     }
 
-    public ngOnDestroy(): void {
+    private _show(): void {
 
-        this.lightboxService.removeItem(this.item);
+        this.visibility = 'visible';
+    }
+
+    private _hide(): void {
+
+        this.visibility = 'hidden';
     }
 }

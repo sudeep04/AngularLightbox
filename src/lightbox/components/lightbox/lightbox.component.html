@@ -7,7 +7,7 @@
     </lightbox-item>
 </div>
 <div class="lightbox-navigation">
-    <button [@navigationPreviousAnimator]="navigationPreviousAnimator" #_previous lightbox-icon-button (click)="previous()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
-    <button [@navigationNextAnimator]="navigationNextAnimator" #_next lightbox-icon-button (click)="next()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
+    <button [@navigationPreviousAnimator]="navigationPreviousAnimator" #previous lightbox-icon-button (click)="onPrevious()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
+    <button [@navigationNextAnimator]="navigationNextAnimator" #next lightbox-icon-button (click)="onNext()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges } from '@angular/core';
 import { LightboxService } from '../../services/lightbox.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
@@ -30,7 +30,7 @@ const BUTTON_HOST_ATTRIBUTES = [
         '(mouseleave)': '_onMouseLeave()'
     }
 })
-export class LightboxButtonComponent implements OnChanges, OnInit {
+export class LightboxButtonComponent implements OnChanges {
 
     @Input() public disable: boolean = false;
 
@@ -46,9 +46,6 @@ export class LightboxButtonComponent implements OnChanges, OnInit {
                 (_elementRef.nativeElement as HTMLElement).classList.add(attr);
             }
         }
-    }
-
-    public ngOnInit() {
     }
 
     public ngOnChanges() {

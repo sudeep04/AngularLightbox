@@ -1,14 +1,14 @@
 export class Item {
-    title: string;
-    container: string;
-    src: string;
-    xsSrc: string;
-    smSrc: string;
-    mdSrc: string;
-    lgSrc: string;
-    xlSrc: string;
-    xsBreakpoint: number;
-    smBreakpoint: number;
-    mdBreakpoint: number;
-    lgBreakpoint: number;
+    public title: string;
+    public container: string;
+    public src: string;
+    public xsSrc: string;
+    public smSrc: string;
+    public mdSrc: string;
+    public lgSrc: string;
+    public xlSrc: string;
+    public xsBreakpoint: number;
+    public smBreakpoint: number;
+    public mdBreakpoint: number;
+    public lgBreakpoint: number;
 }

@@ -12,7 +12,7 @@ import { Img } from '../models/img';
         '(load)': 'onLoad($event)'
     }
 })
-export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
+export class LightboxImgDirective extends ItemDirectiveBase implements OnInit {
 
     constructor(
         private readonly _lightboxService: LightboxService,
