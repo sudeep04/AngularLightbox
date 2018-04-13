@@ -1,37 +1,37 @@
-import { Injectable, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
-import { LightboxDoomService } from './lightbox-doom.service';
-import { LightboxPanelComponent } from '../components/lightbox-panel/lightbox-panel.component';
-import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { DoomService } from './doom.service';
+import { Item } from '../models/item';
+import { IPosition } from '../models/iPosition';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 
 @Injectable()
 export class LightboxService {
 
-    private _idIndex: number = 0;
-    private _lightboxPanelRef: ComponentRef<LightboxPanelComponent>;
-
     constructor(
-        private _componentFactoryResolver: ComponentFactoryResolver,
-        private _injector: Injector,
-        private _lightboxDoomService: LightboxDoomService
-    ) {
-        this._lightboxPanelRef = this._componentFactoryResolver
-        .resolveComponentFactory(LightboxPanelComponent)
-        .create(this._injector);
-        this._lightboxDoomService._appendComponentToBody(this._lightboxPanelRef);
+        private readonly _doomService: DoomService
+    ) { }
+
+    public addItem(item: Item): void {
+
+        this._doomService.lightboxComponentRef.instance.addItem(item);
     }
 
-    public generateId(): number {
+    public openItem(item: Item, position: IPosition): void {
 
-        return this._idIndex++;
+        this._doomService.lightboxComponentRef.instance.openItem(item, position);
     }
 
-    public get lightboxPanel(): LightboxPanelComponent {
+    public removeItem(item: Item): void {
 
-        return this._lightboxPanelRef.instance;
+        this._doomService.lightboxComponentRef.instance.removeItem(item);
     }
 
-    public get panel(): LightboxPanelComponent {
+    public onClose(func: () => void) {
 
-        return this._lightboxPanelRef.instance;
+        this._doomService.lightboxComponentRef.instance.state.filter((state) => state === 'closed').first().subscribe(() => {
+
+            func();
+        });
     }
 }
