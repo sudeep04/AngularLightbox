@@ -13,12 +13,20 @@
     [md-breakpoint]="item.mdBreakpoint"
     [lg-breakpoint]="item.lgBreakpoint"/>
 
-<iframe
+<!-- <iframe
     *ngIf="isVideo()"
-    [@videoAnimator]="videoAnimator"
+    [style.visibility]="displayVideo"
     [src]="item.youtubeVieoUrl" 
     style="position:absolute;z-index:1;top:64;height:calc(100% - 64px); width:100%;" 
     frameborder="0" 
     allowfullscreen>
-</iframe>
+</iframe> -->
+<youtube
+    *ngIf="isVideo()"
+    [style.visibility]="displayVideo"
+    [videoId]="item.youtubeVieoId"
+    (ready)="onReady($event)"
+    (change)="onChange($event)"
+    (error)="onError($event)"
+></youtube>
 

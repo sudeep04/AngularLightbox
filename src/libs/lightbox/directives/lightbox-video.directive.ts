@@ -2,7 +2,6 @@ import { Directive, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
 import { ItemDirectiveBase } from '../models/itemDirectiveBase';
 import { LightboxService } from '../services/lightbox.service';
 import { Video } from '../models/video';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Item } from '../models/item';
 import { Img } from '../models/img';
 
@@ -21,8 +20,7 @@ export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit,
 
     constructor(
         private readonly _lightboxService: LightboxService,
-        private readonly _elementRef: ElementRef,
-        private _domSanitizationService: DomSanitizer
+        private readonly _elementRef: ElementRef
     ) {
         super(_lightboxService, _elementRef);
     }
@@ -44,7 +42,7 @@ export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit,
         const item = new Video();
         item.title = this.title;
         item.container = this.container;
-        item.youtubeVieoUrl = this._domSanitizationService.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.youtubeId);
+        item.youtubeVieoId = this.youtubeId;
         item.src = this.src;
         item.xsSrc = this.xsSrc;
         item.smSrc = this.smSrc;

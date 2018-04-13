@@ -127,7 +127,7 @@ export class LightboxComponent {
 
                             if (itemRef.isVideo()) {
 
-                                itemRef.displayVideo();
+                                itemRef.openVideo();
                             }
                         });
                     }
@@ -184,7 +184,7 @@ export class LightboxComponent {
 
                     if (nextItemRef.isVideo()) {
 
-                        nextItemRef.displayVideo();
+                        nextItemRef.openVideo();
                     }
                 });
             });
@@ -209,7 +209,7 @@ export class LightboxComponent {
 
                     if (previousItemRef.isVideo()) {
 
-                        previousItemRef.displayVideo();
+                        previousItemRef.openVideo();
                     }
                 });
             });
@@ -227,7 +227,7 @@ export class LightboxComponent {
 
             if (itemRef.isVideo()) {
 
-                itemRef.displayVideo();
+                itemRef.openVideo();
             } else {
 
                 itemRef.animateCenter();

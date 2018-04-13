@@ -1,0 +1,18 @@
+lightbox-item {
+    img {
+        position: absolute;
+        z-index: 1;
+    }
+
+    youtube {
+        iframe{
+
+            position:absolute;
+            z-index:1;
+            top:64;
+            height:calc(100% - 64px); 
+            width:100%;
+        }
+    }
+    
+}
