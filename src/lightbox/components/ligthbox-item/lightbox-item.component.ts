@@ -4,7 +4,7 @@ import { trigger, state, style, transition, animate, AnimationEvent } from '@ang
 import { Item } from '../../models/item';
 import { ILightboxItemComponent } from '../../models/iLightboxItemComponent';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { IAnimatorCallback } from '../../models/iAnimatorCallBack';
+import { IAnimatorCallback } from '../../models/iAnimatorCallback';
 import { IImgAnimatorState } from '../../models/iImgAnimatorState';
 import { IPosition } from '../../models/iPosition';
 import 'rxjs/add/operator/filter';
