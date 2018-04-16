@@ -44,7 +44,6 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
                 animate('.2s')
             ])
         ]),
-        ,
         trigger('navigationPreviousAnimator', [
             state('hide', style({ left: '-80px', right: '0px' })),
             state('show', style({ left: '0px', right: '0px' })),
