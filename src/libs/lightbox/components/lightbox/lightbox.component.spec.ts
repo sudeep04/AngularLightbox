@@ -6,9 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
-import { LazyLoadingModule } from 'lazy-loading/lazy-loading.module';
+import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
 import { LightboxImgDirective } from '../../directives/lightbox-img.directive';
 import { LightboxVideoDirective } from '../../directives/lightbox-video.directive';
+import { YoutubeModule } from '../../../youtube/youtube.module';
 
 describe('Create LightboxComponent', () => {
     beforeEach(() => {
@@ -24,7 +25,8 @@ describe('Create LightboxComponent', () => {
             imports: [
                 CommonModule,
                 BrowserAnimationsModule,
-                LazyLoadingModule
+                LazyLoadingModule,
+                YoutubeModule
             ]
         });
     });

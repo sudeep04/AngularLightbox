@@ -1,4 +1,4 @@
-export interface ITrackedItemState {
+export interface TrackedItemState {
     width?: number;
     height?: number;
     top?: number;

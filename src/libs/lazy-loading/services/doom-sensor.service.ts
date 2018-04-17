@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ITrackedProperties } from '../models/iTrackedProperties';
-import { ITrackedItem } from '../models/iTrackedItem';
-import { ITrackedItemState } from '../models/iTackedItemState';
+import { TrackedProperties } from '../models/tracked-properties.interface';
+import { TrackedItem } from '../models/tracked-item.interface';
+import { TrackedItemState } from '../models/tacked-item-state.interface';
 
 @Injectable()
 export class DoomSensorService {
 
-    private _trackedItems: ITrackedItem[] = [];
+    private _trackedItems: TrackedItem[] = [];
 
     private _trackInterval: any;
 
@@ -15,7 +15,7 @@ export class DoomSensorService {
         this._trackInterval = setInterval(this._testList, 20);
     }
 
-    public track(nativeElement: any, trackedProperties: ITrackedProperties, callBack: () => void ): void {
+    public track(nativeElement: any, trackedProperties: TrackedProperties, callBack: () => void ): void {
 
         if (this._trackedItems.find((item) => item.nativeElement === nativeElement)) {
 
@@ -24,7 +24,7 @@ export class DoomSensorService {
 
         if (trackedProperties.width || trackedProperties.height || trackedProperties.top || trackedProperties.left) {
 
-            const trackedItem: ITrackedItem = {
+            const trackedItem: TrackedItem = {
                 nativeElement,
                 lastState: this._getState(nativeElement, trackedProperties),
                 trackedProperties,
@@ -56,7 +56,7 @@ export class DoomSensorService {
         });
     }
 
-    private _testItem(trackedItem: ITrackedItem): void {
+    private _testItem(trackedItem: TrackedItem): void {
 
         const currentState = this._getState(trackedItem.nativeElement, trackedItem.trackedProperties);
 
@@ -70,9 +70,9 @@ export class DoomSensorService {
         }
     }
 
-    private _getState(nativeElement: any, trackedProperties: ITrackedProperties): ITrackedItemState {
+    private _getState(nativeElement: any, trackedProperties: TrackedProperties): TrackedItemState {
 
-        const trackedItemState: ITrackedItemState = {};
+        const trackedItemState: TrackedItemState = {};
 
         if (trackedProperties.width) {
 

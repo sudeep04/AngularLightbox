@@ -4,9 +4,9 @@ import { trigger, state, style, transition, animate, AnimationEvent } from '@ang
 import { Item } from '../../models/item';
 import { ILightboxItemComponent } from '../../models/iLightboxItemComponent';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { IAnimatorCallback } from '../../models/iAnimatorCallBack';
-import { IImgAnimatorState } from '../../models/iImgAnimatorState';
-import { IPosition } from '../../models/iPosition';
+import { AnimatorCallback } from '../../models/animator-callBack.interface';
+import { ImgAnimatorState } from '../../models/img-animator-state.interface';
+import { Position } from '../../models/position.interface';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
 import { Video } from '../../models/video';
@@ -61,8 +61,8 @@ export class LightboxItemComponent implements OnInit {
 
     @Output() public toggleEvent = new EventEmitter();
 
-    public itemAnimator: IImgAnimatorState = { value: 'null' };
-    
+    public itemAnimator: ImgAnimatorState = { value: 'null' };
+
     public displayVideo: 'visible' | 'hidden' = 'hidden';
 
     @ViewChild('img') private _img: ElementRef;
@@ -73,7 +73,7 @@ export class LightboxItemComponent implements OnInit {
 
     private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
 
-    private _player:  YT.Player
+    private _player: YT.Player;
 
     public ngOnInit(): void {
 
@@ -99,25 +99,14 @@ export class LightboxItemComponent implements OnInit {
     public onReady(event: YT.PlayerEvent): void {
 
         this._player = event.target;
-        console.log(event.target)
     }
 
     public onError(event) {
-        console.log('error' + event);
+        // on error
     }
 
     public onChange(event): void {
-        console.log(event.data)
-        switch(event.data) {
-            case 0:
-              console.log('video ended');
-              break;
-            case 1:
-            console.log('video playing from '+this._player.getCurrentTime());
-              break;
-            case 2:
-            console.log('video paused at '+this._player.getCurrentTime());
-          }
+        // on change
     }
 
     public itemAnimatorStart(event: AnimationEvent): void {
@@ -130,42 +119,42 @@ export class LightboxItemComponent implements OnInit {
         this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'center' | 'left' | 'right');
     }
 
-    public animateNull(): IAnimatorCallback {
+    public animateNull(): AnimatorCallback {
 
         this.itemAnimator = { value: 'null' };
         this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('null');
     }
 
-    public animateOrigin(position: IPosition): IAnimatorCallback {
+    public animateOrigin(position: Position): AnimatorCallback {
 
         this.itemAnimator = { value: 'origin', params: position };
         this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('origin');
     }
 
-    public animateCenter(): IAnimatorCallback {
+    public animateCenter(): AnimatorCallback {
 
         this.itemAnimator = { value: 'center', params: this._getCenterPosition() };
         this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('center');
     }
 
-    public animateLeft(): IAnimatorCallback {
+    public animateLeft(): AnimatorCallback {
 
         this.itemAnimator = { value: 'left', params: this._getLeftPosition() };
         this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('left');
     }
 
-    public animateRight(): IAnimatorCallback {
+    public animateRight(): AnimatorCallback {
 
         this.itemAnimator = { value: 'right', params: this._getRightPosition() };
         this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('right');
     }
 
-    private _itemAnimatorCallBack(itemState: 'null' | 'origin' | 'center' | 'left' | 'right'): IAnimatorCallback {
+    private _itemAnimatorCallBack(itemState: 'null' | 'origin' | 'center' | 'left' | 'right'): AnimatorCallback {
         return {
             start: (func: () => void) => {
                 this._itemAnimatorStart.filter((value) => value === itemState).first().subscribe(() => {
@@ -180,7 +169,7 @@ export class LightboxItemComponent implements OnInit {
         };
     }
 
-    private _getCenterPosition(): IPosition {
+    private _getCenterPosition(): Position {
 
         const maxWidth = window.innerWidth * 2 / 3;
         const maxHeight = (window.innerHeight - 128) * 9 / 10;
@@ -204,7 +193,7 @@ export class LightboxItemComponent implements OnInit {
         return { width, height, offsetTop, offsetLeft };
     }
 
-    private _getLeftPosition(): IPosition {
+    private _getLeftPosition(): Position {
 
         const centerPosition = this._getCenterPosition();
 
@@ -219,7 +208,7 @@ export class LightboxItemComponent implements OnInit {
         return { width: centerPosition.width, height: centerPosition.height, offsetTop: centerPosition.offsetTop, offsetLeft };
     }
 
-    private _getRightPosition(): IPosition {
+    private _getRightPosition(): Position {
 
         const centerPosition = this._getCenterPosition();
 

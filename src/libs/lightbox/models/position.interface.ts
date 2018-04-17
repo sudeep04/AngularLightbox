@@ -1,4 +1,4 @@
-export interface IPosition {
+export interface Position {
     width: number;
     height: number;
     offsetTop: number;

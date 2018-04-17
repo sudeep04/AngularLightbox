@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { DoomSensorService } from './services/doomSensor.service';
+import { DoomSensorService } from './services/doom-sensor.service';
 import { LazyLoadingDirective } from './directives/lazy-loading.directive';
 
 @NgModule({

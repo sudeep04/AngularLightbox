@@ -1,5 +1,5 @@
 import { Directive, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
-import { ItemDirectiveBase } from '../models/itemDirectiveBase';
+import { ItemDirectiveBase } from '../models/item-directive-base';
 import { LightboxService } from '../services/lightbox.service';
 import { Video } from '../models/video';
 import { Item } from '../models/item';

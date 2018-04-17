@@ -1,69 +1,80 @@
-import { Component, OnInit, Input, AfterContentInit, Renderer2, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { YoutubeApiService } from '../services/youtube.api.service';
-import { YoutubePlayerService } from '../services/youtube.player.service';
-import {} from '@types/youtube';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { YoutubeApiService } from '../services/youtube-api.service';
+import { YoutubePlayerService } from '../services/youtube-player.service';
+import {  } from '@types/youtube';
 import { DomSanitizer } from '@angular/platform-browser';
 
-
 @Component({
-	selector: 'youtube',
+    selector: 'youtube',
     templateUrl: './youtube.component.html',
 })
 export class YoutubeComponent implements OnInit, OnDestroy {
 
-	@Input() videoId: string;
+    @Input() public videoId: string;
 
-	@Output() ready = new EventEmitter<YT.PlayerEvent>();
-	@Output() change = new EventEmitter<YT.PlayerEvent>();
-	@Output() error = new EventEmitter<YT.OnErrorEvent>();
+    @Output() public ready = new EventEmitter<YT.PlayerEvent>();
+    @Output() public change = new EventEmitter<YT.PlayerEvent>();
+    @Output() public error = new EventEmitter<YT.OnErrorEvent>();
 
-	ytPlayer: YT.Player;
+    public ytPlayer: YT.Player;
 
-	iframeUrl: any;
+    public iframeUrl: any;
 
-	constructor(
-		public youtubeApi: YoutubeApiService,
-		public youtubePlayer: YoutubePlayerService,
-		private _domSanitizer: DomSanitizer
-	) {
-		this.youtubeApi.loadApi();
-	}
+    constructor(
+        public youtubeApi: YoutubeApiService,
+        public youtubePlayer: YoutubePlayerService,
+        private _domSanitizer: DomSanitizer
+    ) {
+        this.youtubeApi.loadApi();
+    }
 
-	ngOnInit() {
-	
-		this.iframeUrl = this._domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.videoId + '?enablejsapi=1&rel=0')
+    public ngOnInit() {
 
-		const config = {
-			events: {
-				onReady: this.onReady.bind(this),
-				onError: this.onError.bind(this)
-			}
-		}
-	
-		this.youtubePlayer.initialise(this.videoId, config);
-	}
+        this.iframeUrl = this._domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.videoId + '?enablejsapi=1&rel=0');
 
-	onReady(event: YT.PlayerEvent): void {
-		this.ytPlayer = event.target;
-		this.ytPlayer.addEventListener('onStateChange', (e) => {
-			this.onChange(e);
-		});
-		console.log('11')
-		this.ytPlayer.loadVideoById(this.videoId);
-		console.log('12')
+        const config = {
+            height: '390',
+            width: '640',
+            videoId: this.videoId,
+            playerVars: {
+                rel: 0,
+                showinfo: 0,
+                // color:
+            },
+            events: {
+                onReady: this.onReady.bind(this),
+                onError: this.onError.bind(this)
+            }
+        };
 
-		this.ready.emit(event);
-	}
+        this.youtubePlayer.initialise(this.videoId, config);
+    }
 
-	onChange(event: YT.PlayerEvent): void {
-		this.change.emit(event);
-	}
+    public onReady(event: YT.PlayerEvent): void {
+        this.ytPlayer = event.target;
+        this.ytPlayer.addEventListener('onStateChange', (e) => {
+            this.onChange(e);
+        });
 
-	onError(event: YT.OnErrorEvent): void {
-		this.error.emit(event);
-	}
+        this.ytPlayer.cueVideoById(this.videoId);
 
-	ngOnDestroy() {
-		this.ytPlayer.destroy();
-	}
+        this.ready.emit(event);
+    }
+
+    public onChange(event: YT.PlayerEvent): void {
+
+        this.change.emit(event);
+    }
+
+    public onError(event: YT.OnErrorEvent): void {
+        this.error.emit(event);
+    }
+
+    public ngOnDestroy() {
+
+        if (this.ytPlayer) {
+            
+            this.ytPlayer.destroy();
+        }
+    }
 }

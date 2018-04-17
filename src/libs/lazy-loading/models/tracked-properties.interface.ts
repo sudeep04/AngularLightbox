@@ -1,4 +1,4 @@
-export interface ITrackedProperties {
+export interface TrackedProperties {
     width: boolean;
     height: boolean;
     top: boolean;

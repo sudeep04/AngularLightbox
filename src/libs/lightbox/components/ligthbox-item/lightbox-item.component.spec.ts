@@ -2,9 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { LightboxItemComponent } from './lightbox-item.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LazyLoadingModule } from 'lazy-loading/lazy-loading.module';
+import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
 import { LightboxImgDirective } from '../../directives/lightbox-img.directive';
 import { LightboxVideoDirective } from '../../directives/lightbox-video.directive';
+import { YoutubeModule } from '../../../youtube/youtube.module';
 
 describe('Create LightboxItemComponent', () => {
     beforeEach(() => {
@@ -17,7 +18,8 @@ describe('Create LightboxItemComponent', () => {
             imports: [
                 CommonModule,
                 BrowserAnimationsModule,
-                LazyLoadingModule
+                LazyLoadingModule,
+                YoutubeModule
             ]
         });
     });

@@ -3,7 +3,7 @@ import { trigger, state, style, transition, animate, AnimationEvent } from '@ang
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 import { Item } from '../../models/item';
-import { IPosition } from '../../models/iPosition';
+import { Position } from '../../models/position.interface';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 
@@ -102,7 +102,7 @@ export class LightboxComponent {
         }
     }
 
-    public openItem(item: Item, position: IPosition): void {
+    public openItem(item: Item, position: Position): void {
 
         this.activeItem = item;
         this.state.next('opened');

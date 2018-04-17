@@ -1,4 +1,4 @@
-import { IPosition } from './iPosition';
+import { Position } from './position.interface';
 import { LightboxService } from '../services/lightbox.service';
 import { ElementRef, Input, OnDestroy } from '@angular/core';
 import { Item } from './item';
@@ -51,7 +51,7 @@ export class ItemDirectiveBase implements OnDestroy {
 
         if (this._loaded) {
 
-            const position: IPosition = {
+            const position: Position = {
                 width: this.elementRef.nativeElement.clientWidth,
                 height: this.elementRef.nativeElement.clientHeight,
                 offsetTop: Math.round(this.elementRef.nativeElement.getBoundingClientRect().top),

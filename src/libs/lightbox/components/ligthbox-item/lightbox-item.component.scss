@@ -6,11 +6,10 @@ lightbox-item {
 
     youtube {
         iframe{
-
+            top:0;
             position:absolute;
             z-index:1;
-            top:64;
-            height:calc(100% - 64px); 
+            height:100%; 
             width:100%;
         }
     }

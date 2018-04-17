@@ -1,7 +1,7 @@
 import { Directive, Input, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { IBreakpoints } from '../models/iBreakpoints';
-import { DoomSensorService } from '../services/doomSensor.service';
-import { ITrackedProperties } from '../models/iTrackedProperties';
+import { DoomSensorService } from '../services/doom-sensor.service';
+import { TrackedProperties } from '../models/tracked-properties.interface';
 
 const XS_BREAKPOINT = 150;
 const SM_BREAKPOINT = 300;
@@ -72,7 +72,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
 
         this._setSrc();
 
-        const trackedProperties: ITrackedProperties = {
+        const trackedProperties: TrackedProperties = {
             width: true,
             height: true,
             top: true,
