@@ -1,31 +1,26 @@
 import { Injectable, NgZone } from '@angular/core';
-
 import { YoutubeApiService } from './youtube-api.service';
-
-const getWindow = () => window;
 
 @Injectable()
 export class YoutubePlayerService {
 
-    private _window: Window;
     private _player: YT.Player;
 
     constructor(
         private zone: NgZone,
         private youtubeApi: YoutubeApiService,
-    ) {
-        this._window = getWindow();
-    }
+    ) { }
 
     public initialise(playerId: string, config: any): void {
 
         if (!this._player) {
-            if (this._window['YT'] === undefined) {
+
+            if (window['YT'] === undefined) {
 
                 this.youtubeApi.apiEmitter.subscribe(() => this.zone.run(() => {
                     this._newPlayer(playerId, config);
                 }));
-            }else {
+            } else {
 
                 this.zone.run(() => this._newPlayer(playerId, config));
             }

@@ -15,8 +15,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
 
-    private _ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
     @Input() public videoId: string;
 
     @Input() public height: number;
@@ -33,6 +31,8 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
 
     public ytPlayer: YT.Player;
 
+    private _ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     private _config: YT.PlayerOptions;
 
     constructor(
@@ -46,10 +46,10 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
     public ngOnInit(): void {
 
         this._config = {
-            height: this.height? this.height : 390,
-            width:  this.width? this.width : 390,
+            height: this.height ? this.height : 390,
+            width:  this.width ? this.width : 390,
             videoId: '',
-            playerVars: this.playerVars? this.playerVars : {
+            playerVars: this.playerVars ? this.playerVars : {
                 rel: 0,
                 showinfo: 0
             },
@@ -60,16 +60,16 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
         };
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(changes: SimpleChanges): void {
 
         if (changes['videoId'] && changes['videoId'].currentValue) {
             this._config.videoId = changes['videoId'].currentValue;
             this.youtubePlayer.initialise('lightbox-youtube-player', this._config);
 
             this._ready.filter((value) => value).first().subscribe(() => {
-                console.log('ready');
-                if(this.videoId) {
-                    
+
+                if (this.videoId) {
+
                     this.ytPlayer.cueVideoById(this.videoId);
                 }
             });
@@ -77,8 +77,7 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public onReady(event: YT.PlayerEvent): void {
-        
-        console.log('ready1');
+
         this.ytPlayer = event.target;
         this._ready.next(true);
         this.ytPlayer.addEventListener('onStateChange', (e) => {
@@ -101,7 +100,7 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
     public ngOnDestroy(): void {
 
         if (this.ytPlayer) {
-            
+
             this.ytPlayer.destroy();
         }
     }
