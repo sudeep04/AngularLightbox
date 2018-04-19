@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "An Angular 5 project",
   "author": "David Cuellar",
-  "license": "MIT",
   "scripts": {
     "clean:aot": "rimraf -- compiled",
     "clean:dist": "rimraf -- dist",

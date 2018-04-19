@@ -10,4 +10,11 @@
     <button [@navigationPreviousAnimator]="navigationPreviousAnimator" #previous lightbox-icon-button (click)="onPrevious()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
     <button [@navigationNextAnimator]="navigationNextAnimator" #next lightbox-icon-button (click)="onNext()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
 </div>
+<youtube
+    [style.visibility]="displayPlayer"
+    [videoId]="activeItem? activeItem.youtubeVieoId : undefined"
+    (ready)="onReady($event)"
+    (change)="onChange($event)"
+    (error)="onError($event)"
+></youtube>
 
