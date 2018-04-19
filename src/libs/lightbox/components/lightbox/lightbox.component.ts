@@ -6,6 +6,7 @@ import { Item } from '../../models/item';
 import { Position } from '../../models/position.interface';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
+import { Video } from '../../models/video';
 
 @Component({
     selector: 'lightbox',
@@ -59,6 +60,8 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
 })
 export class LightboxComponent {
 
+    public displayPlayer: 'hidden' | 'visible' = 'hidden';
+
     public navigationNextAnimator: 'hide' | 'show' = 'hide';
 
     public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
@@ -91,12 +94,14 @@ export class LightboxComponent {
 
             this.items[item.container] = [];
         }
+
         this.items[item.container].push(item);
     }
 
     public removeItem(item: Item): void {
 
-        const index = this.items[item.container].indexOf(item);
+        const index = this._itemIndex(item);
+
         if (index > -1) {
             this.items[item.container].splice(index, 1);
         }
@@ -107,15 +112,12 @@ export class LightboxComponent {
         this.activeItem = item;
         this.state.next('opened');
         this._pointerEvents = 'auto';
-        this.header.open();
         this.fadeAnimator = 'show';
-
-        this._navigationShow();
+        this._openControls();
 
         setTimeout(() => {
 
-            const itemIndex = this.items[item.container].indexOf(item);
-            const itemRef = this._itemsRef.toArray()[itemIndex];
+            const itemRef = this._itemRef(this._itemIndex(item));
 
             if (itemRef) {
 
@@ -127,7 +129,11 @@ export class LightboxComponent {
 
                             if (itemRef.isVideo()) {
 
-                                itemRef.openVideo();
+                                itemRef.animateNull();
+                                this.displayPlayer = 'visible';
+                            } else {
+
+                                this.displayPlayer = 'hidden';
                             }
                         });
                     }
@@ -142,10 +148,10 @@ export class LightboxComponent {
 
         this._pointerEvents = 'none';
         this.activeItem = undefined;
-        this.header.close();
         this.state.next('closed');
         this.fadeAnimator = 'hide';
-        this._navigationHide();
+        this.displayPlayer = 'hidden';
+        this._closeControls();
     }
 
     public onToggle(): void {
@@ -170,51 +176,117 @@ export class LightboxComponent {
 
     public onNext() {
 
-        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem);
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
 
-            const activeItemRef = this._itemsRef.toArray()[activeItemIndex];
-            const nextItemRef = this._itemsRef.toArray()[activeItemIndex + 1];
+            const nextItemRef = this._itemRef(activeItemIndex + 1);
+            const activeItemRef = this._itemRef(activeItemIndex);
 
-            activeItemRef.animateLeft();
+            if (activeItemRef.isVideo()) {
+
+                this.displayPlayer = 'hidden';
+                activeItemRef.animateCenter().done(() => {
+
+                    activeItemRef.animateLeft();
+                });
+            } else {
+
+                activeItemRef.animateLeft();
+            }
+
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
+
             nextItemRef.animateRight().done(() => {
+
                 nextItemRef.animateCenter().done(() => {
 
                     if (nextItemRef.isVideo()) {
 
-                        nextItemRef.openVideo();
+                        nextItemRef.animateNull();
+                        this.displayPlayer = 'visible';
+                    } else {
+
+                        this.displayPlayer = 'hidden';
                     }
                 });
             });
         }
+
         this._checkNavigation();
     }
 
     public onPrevious() {
 
-        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem);
 
         if (activeItemIndex > 0) {
 
-            const activeItemRef = this._itemsRef.toArray()[activeItemIndex];
-            const previousItemRef = this._itemsRef.toArray()[activeItemIndex - 1];
+            const previousItemRef = this._itemRef(activeItemIndex - 1);
+            const activeItemRef = this._itemRef(activeItemIndex);
 
-            activeItemRef.animateRight();
+            if (activeItemRef.isVideo()) {
+
+                this.displayPlayer = 'hidden';
+                activeItemRef.animateCenter().done(() => {
+
+                    activeItemRef.animateRight();
+                });
+            } else {
+
+                activeItemRef.animateRight();
+            }
+
             this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
 
             previousItemRef.animateLeft().done(() => {
+
                 previousItemRef.animateCenter().done(() => {
 
                     if (previousItemRef.isVideo()) {
 
-                        previousItemRef.openVideo();
+                        previousItemRef.animateNull();
+                        this.displayPlayer = 'visible';
+                    } else {
+
+                        this.displayPlayer = 'hidden';
                     }
                 });
             });
         }
+
         this._checkNavigation();
+    }
+
+    public onReady(event: YT.PlayerEvent): void {
+
+        // on ready
+    }
+
+    public onError(event: YT.OnErrorEvent) {
+        // on error
+    }
+
+    public onChange(event): void {
+
+        switch (event.data) {
+            case YT.PlayerState.PLAYING:
+                this._closeControls();
+                break;
+            case YT.PlayerState.PAUSED:
+                this._openControls();
+                break;
+        }
+    }
+
+    private _itemRef(index: number): LightboxItemComponent {
+
+        return this._itemsRef.toArray()[index];
+    }
+
+    private _itemIndex(item: Item): number {
+
+        return this.items[item.container].indexOf(item);
     }
 
     @HostListener('window:resize', ['$event'])
@@ -222,15 +294,11 @@ export class LightboxComponent {
 
         if (this.activeItem) {
 
-            const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
-            const itemRef = this._itemsRef.toArray()[activeItemIndex];
+            const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
 
-            if (itemRef.isVideo()) {
+            if (!activeItemRef.isVideo()) {
 
-                itemRef.openVideo();
-            } else {
-
-                itemRef.animateCenter();
+                activeItemRef.animateCenter();
             }
         }
     }
@@ -249,18 +317,34 @@ export class LightboxComponent {
 
     private _checkNavigation() {
 
-        const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem);
 
         if (activeItemIndex > 0) {
+
             this.hasPrevious = true;
         } else {
+
             this.hasPrevious = false;
         }
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+
             this.hasNext = true;
         } else {
+
             this.hasNext = false;
         }
+    }
+
+    private _openControls(): void {
+
+        this.header.open();
+        this._navigationShow();
+    }
+
+    private _closeControls(): void {
+
+        this.header.close();
+        this._navigationHide();
     }
 }
