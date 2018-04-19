@@ -29,6 +29,14 @@ export class LightboxImgControlComponent {
 
     @Output() public zoomOutEvent = new EventEmitter();
 
+    @Output() public resetZoomEvent = new EventEmitter();
+
+    @Output() public feetToWidthEvent = new EventEmitter();
+    @Input() public disableZoomIn: boolean;
+    @Input() public disableZoomOut: boolean;
+    @Input() public disableResetZoom: boolean;
+    @Input() public disableFeetToWidth: boolean;
+
     public animator: 'hidden' | 'showed' = 'hidden';
 
     public close(): void {
@@ -53,11 +61,22 @@ export class LightboxImgControlComponent {
     }
 
     public zoomIn(){
+
         this.zoomInEvent.emit();
     }
 
     public zoomOut(){
+
         this.zoomOutEvent.emit();
+    }
+
+    public resetZoom(){
         
+        this.resetZoomEvent.emit();
+    }
+
+    public feetToWidth(){
+
+        this.feetToWidthEvent.emit();
     }
 }

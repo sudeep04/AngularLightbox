@@ -51,9 +51,6 @@ import { Video } from '../../models/video';
             state('zoom7',
                 style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
                 { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
-            state('zoom8',
-                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
-                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
             transition('* => null', [
                 animate(0)
             ]),
@@ -84,9 +81,9 @@ export class LightboxItemComponent implements OnInit {
 
     private _isVideo: boolean;
 
-    private _itemAnimatorStart: BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'> = new BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'>('null');
+    private _itemAnimatorStart: BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'> = new BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'>('null');
 
-    private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'> = new BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'>('null');
+    private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'> = new BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'>('null');
 
     public ngOnInit(): void {
 
@@ -108,12 +105,13 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimatorStart(event: AnimationEvent): void {
 
-        this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8');
+        this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
 
-        this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8');
+        console.log('from ' + event.fromState + ' to ' + event.toState);
+        this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
     public animateNull(): AnimatorCallback {
@@ -133,7 +131,7 @@ export class LightboxItemComponent implements OnInit {
         this._initZoom();
         this._position = 0;
         this.itemAnimator = { value: 'zoom0', params: this._getCenterPosition() };
-        return this._itemAnimatorCallBack('center');
+        return this._itemAnimatorCallBack('zoom0');
     }
 
     public animateLeft(): AnimatorCallback {
@@ -148,7 +146,7 @@ export class LightboxItemComponent implements OnInit {
         return this._itemAnimatorCallBack('right');
     }
 
-    private _itemAnimatorCallBack(itemState: 'null' | 'origin' | 'center' | 'left' | 'right'): AnimatorCallback {
+    private _itemAnimatorCallBack(itemState: 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'): AnimatorCallback {
         return {
             start: (func: () => void) => {
                 this._itemAnimatorStart.filter((value) => value === itemState).first().subscribe(() => {
@@ -263,16 +261,16 @@ export class LightboxItemComponent implements OnInit {
         const defaultPosition = this._getCenterPosition();
         const feetToWidthPosition = this._getFeetToWidthPosition();
 
-        const zoomCount = Math.round(((feetToWidthPosition.width - defaultPosition.width) / 2) / (window.innerWidth / 12));
+        this._feetToWidthPosition = Math.round(((feetToWidthPosition.width - defaultPosition.width) / 2) / (window.innerWidth / 12));
 
         this._zoomList = [];
 
-        for(var i = 0; i < 9; i++) {
+        for(var i = 0; i < 8; i++) {
             if (i === 0) {
                 this._zoomList.push(defaultPosition);
                 continue;
             }
-            if (i === zoomCount) {
+            if (i === this._feetToWidthPosition) {
                 this._zoomList.push(feetToWidthPosition);
                 continue;
             }
@@ -294,7 +292,36 @@ export class LightboxItemComponent implements OnInit {
         }
     }
 
+    public resetZoom(){
+        
+        this._position = 0;
+        this.itemAnimator = { value: 'zoom' + this._position, params: this._zoomList[this._position] } as ImgAnimatorState;
+    }
+
+    public feetToWidth(){
+        
+        this._position = this._feetToWidthPosition;
+        this.itemAnimator = { value: 'zoom' + this._position, params: this._zoomList[this._position] } as ImgAnimatorState;
+    }
+
+    public get feetToWidthPosition(): number{
+        
+        return this._feetToWidthPosition;
+    }
+
+    public get position(): number{
+        
+        return this._position;
+    }
+
+    public get zoomMax(): number{
+        
+        return 7;
+    }
+
     private _zoomList = [];
 
     private _position = 0;
+
+    private _feetToWidthPosition;
 }

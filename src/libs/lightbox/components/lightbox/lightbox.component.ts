@@ -148,6 +148,7 @@ export class LightboxComponent {
 
                 this._checkImgControls();
                 this._checkNavigation();
+                this._checkImageControlVisibility(itemRef);
             }
         }, 0);
     }
@@ -221,6 +222,7 @@ export class LightboxComponent {
                         this.displayPlayer = 'visible';
                     } else {
 
+                        this._checkImageControlVisibility(nextItemRef);
                         this.displayPlayer = 'hidden';
                     }
                 });
@@ -230,14 +232,38 @@ export class LightboxComponent {
         this._checkNavigation();
     }
 
+    public disableZoomIn: boolean;
+
+    public disableZoomOut: boolean;
+
+    public disableResetZoom: boolean;
+
+    public disableFeetToWidth: boolean;
+
     public zoomIn(){
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
         activeItemRef.zoomIn();
+        this._checkImageControlVisibility(activeItemRef);
     }
 
     public zoomOut(){
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
         activeItemRef.zoomOut();
+        this._checkImageControlVisibility(activeItemRef);
+    }
+
+    public resetZoom(){
+        
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.resetZoom();
+        this._checkImageControlVisibility(activeItemRef);
+    }
+
+    public feetToWidth(){
+        
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.feetToWidth();
+        this._checkImageControlVisibility(activeItemRef);
     }
 
     public onPrevious() {
@@ -274,6 +300,7 @@ export class LightboxComponent {
                         this.displayPlayer = 'visible';
                     } else {
 
+                        this._checkImageControlVisibility(previousItemRef);
                         this.displayPlayer = 'hidden';
                     }
                 });
@@ -324,6 +351,7 @@ export class LightboxComponent {
             if (!activeItemRef.isVideo()) {
 
                 activeItemRef.resize();
+                this._checkImageControlVisibility(activeItemRef);
             }
         }
     }
@@ -370,6 +398,14 @@ export class LightboxComponent {
 
             this.displayImgControls = 'visible';
         }
+    }
+
+    private _checkImageControlVisibility(item: LightboxItemComponent) {
+
+        this.disableZoomIn = item.position == item.zoomMax;
+        this.disableZoomOut = item.position == 0;
+        this.disableResetZoom = item.position == 0;
+        this.disableFeetToWidth = item.position == item.feetToWidthPosition;
     }
 
     private _openControls(): void {

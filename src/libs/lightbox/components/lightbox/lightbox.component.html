@@ -18,4 +18,14 @@
 </div>
 <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
     (change)="onChange($event)" (error)="onError($event)"></youtube>
-<lightbox-img-control [style.visibility]="displayImgControls" #controls (zoomInEvent)="zoomIn()" (zoomOutEvent)="zoomOut()"></lightbox-img-control>
+<lightbox-img-control #controls
+    [style.visibility]="displayImgControls"
+    [disableZoomIn]="disableZoomIn"
+    [disableZoomOut]="disableZoomOut"
+    [disableResetZoom]="disableResetZoom"
+    [disableFeetToWidth]="disableFeetToWidth"
+    (zoomInEvent)="zoomIn()"
+    (zoomOutEvent)="zoomOut()"
+    (resetZoomEvent)="resetZoom()"
+    (feetToWidthEvent)="feetToWidth()">
+</lightbox-img-control>
