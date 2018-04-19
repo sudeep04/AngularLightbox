@@ -1,24 +1,39 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { YoutubeApiService } from '../services/youtube-api.service';
 import { YoutubePlayerService } from '../services/youtube-player.service';
 import {  } from '@types/youtube';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 import { DomSanitizer } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'youtube',
     templateUrl: './youtube.component.html',
+    styleUrls: ['./youtube.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class YoutubeComponent implements OnInit, OnDestroy {
+export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
+
+    private _ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     @Input() public videoId: string;
 
+    @Input() public height: number;
+
+    @Input() public width: number;
+
+    @Input() public playerVars: YT.PlayerVars;
+
     @Output() public ready = new EventEmitter<YT.PlayerEvent>();
+
     @Output() public change = new EventEmitter<YT.PlayerEvent>();
+
     @Output() public error = new EventEmitter<YT.OnErrorEvent>();
 
     public ytPlayer: YT.Player;
 
-    public iframeUrl: any;
+    private _config: YT.PlayerOptions;
 
     constructor(
         public youtubeApi: YoutubeApiService,
@@ -28,35 +43,47 @@ export class YoutubeComponent implements OnInit, OnDestroy {
         this.youtubeApi.loadApi();
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
 
-        this.iframeUrl = this._domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.videoId + '?enablejsapi=1&rel=0');
-
-        const config = {
-            height: '390',
-            width: '640',
-            videoId: this.videoId,
-            playerVars: {
+        this._config = {
+            height: this.height? this.height : 390,
+            width:  this.width? this.width : 390,
+            videoId: '',
+            playerVars: this.playerVars? this.playerVars : {
                 rel: 0,
-                showinfo: 0,
-                // color:
+                showinfo: 0
             },
             events: {
                 onReady: this.onReady.bind(this),
                 onError: this.onError.bind(this)
             }
         };
+    }
 
-        this.youtubePlayer.initialise(this.videoId, config);
+    ngOnChanges(changes: SimpleChanges): void {
+
+        if (changes['videoId'] && changes['videoId'].currentValue) {
+            this._config.videoId = changes['videoId'].currentValue;
+            this.youtubePlayer.initialise('lightbox-youtube-player', this._config);
+
+            this._ready.filter((value) => value).first().subscribe(() => {
+                console.log('ready');
+                if(this.videoId) {
+                    
+                    this.ytPlayer.cueVideoById(this.videoId);
+                }
+            });
+        }
     }
 
     public onReady(event: YT.PlayerEvent): void {
+        
+        console.log('ready1');
         this.ytPlayer = event.target;
+        this._ready.next(true);
         this.ytPlayer.addEventListener('onStateChange', (e) => {
             this.onChange(e);
         });
-
-        this.ytPlayer.cueVideoById(this.videoId);
 
         this.ready.emit(event);
     }
@@ -67,10 +94,11 @@ export class YoutubeComponent implements OnInit, OnDestroy {
     }
 
     public onError(event: YT.OnErrorEvent): void {
+
         this.error.emit(event);
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
 
         if (this.ytPlayer) {
             

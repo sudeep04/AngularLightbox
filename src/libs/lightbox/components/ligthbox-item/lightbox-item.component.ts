@@ -52,8 +52,7 @@ import { Video } from '../../models/video';
     ],
     host: {
         '(click)': 'onClick($event)'
-    },
-    encapsulation: ViewEncapsulation.None,
+    }
 })
 export class LightboxItemComponent implements OnInit {
 
@@ -63,8 +62,6 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimator: ImgAnimatorState = { value: 'null' };
 
-    public displayVideo: 'visible' | 'hidden' = 'hidden';
-
     @ViewChild('img') private _img: ElementRef;
 
     private _isVideo: boolean;
@@ -72,8 +69,6 @@ export class LightboxItemComponent implements OnInit {
     private _itemAnimatorStart: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
 
     private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
-
-    private _player: YT.Player;
 
     public ngOnInit(): void {
 
@@ -85,28 +80,12 @@ export class LightboxItemComponent implements OnInit {
         return this._isVideo;
     }
 
-    public openVideo(): void {
-
-        this.itemAnimator = { value: 'null' };
-        this.displayVideo = 'visible';
-    }
-
     public onClick(event: Event): void {
 
-        this.toggleEvent.emit();
-    }
+        if (!this._isVideo) {
 
-    public onReady(event: YT.PlayerEvent): void {
-
-        this._player = event.target;
-    }
-
-    public onError(event) {
-        // on error
-    }
-
-    public onChange(event): void {
-        // on change
+            this.toggleEvent.emit();
+        }
     }
 
     public itemAnimatorStart(event: AnimationEvent): void {
@@ -122,35 +101,30 @@ export class LightboxItemComponent implements OnInit {
     public animateNull(): AnimatorCallback {
 
         this.itemAnimator = { value: 'null' };
-        this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('null');
     }
 
     public animateOrigin(position: Position): AnimatorCallback {
 
         this.itemAnimator = { value: 'origin', params: position };
-        this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('origin');
     }
 
     public animateCenter(): AnimatorCallback {
 
         this.itemAnimator = { value: 'center', params: this._getCenterPosition() };
-        this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('center');
     }
 
     public animateLeft(): AnimatorCallback {
 
         this.itemAnimator = { value: 'left', params: this._getLeftPosition() };
-        this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('left');
     }
 
     public animateRight(): AnimatorCallback {
 
         this.itemAnimator = { value: 'right', params: this._getRightPosition() };
-        this.displayVideo = 'hidden';
         return this._itemAnimatorCallBack('right');
     }
 

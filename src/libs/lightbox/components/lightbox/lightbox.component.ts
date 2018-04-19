@@ -6,6 +6,7 @@ import { Item } from '../../models/item';
 import { Position } from '../../models/position.interface';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
+import { Video } from '../../models/video';
 
 @Component({
     selector: 'lightbox',
@@ -58,6 +59,8 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
     }
 })
 export class LightboxComponent {
+
+    public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
     public navigationNextAnimator: 'hide' | 'show' = 'hide';
 
@@ -127,7 +130,11 @@ export class LightboxComponent {
 
                             if (itemRef.isVideo()) {
 
-                                itemRef.openVideo();
+                                itemRef.animateNull();
+                                this.displayPlayer = 'visible';
+                            } else {
+
+                                this.displayPlayer = 'hidden';
                             }
                         });
                     }
@@ -145,6 +152,7 @@ export class LightboxComponent {
         this.header.close();
         this.state.next('closed');
         this.fadeAnimator = 'hide';
+        this.displayPlayer = 'hidden';
         this._navigationHide();
     }
 
@@ -177,14 +185,27 @@ export class LightboxComponent {
             const activeItemRef = this._itemsRef.toArray()[activeItemIndex];
             const nextItemRef = this._itemsRef.toArray()[activeItemIndex + 1];
 
-            activeItemRef.animateLeft();
+            if (activeItemRef.isVideo()) {
+
+                this.displayPlayer = 'hidden';
+                activeItemRef.animateCenter().done(() => {
+
+                    activeItemRef.animateLeft();
+                });
+            } else {
+                activeItemRef.animateLeft();
+            }
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
             nextItemRef.animateRight().done(() => {
                 nextItemRef.animateCenter().done(() => {
 
                     if (nextItemRef.isVideo()) {
 
-                        nextItemRef.openVideo();
+                        nextItemRef.animateNull();
+                        this.displayPlayer = 'visible';
+                    } else {
+
+                        this.displayPlayer = 'hidden';
                     }
                 });
             });
@@ -201,20 +222,59 @@ export class LightboxComponent {
             const activeItemRef = this._itemsRef.toArray()[activeItemIndex];
             const previousItemRef = this._itemsRef.toArray()[activeItemIndex - 1];
 
-            activeItemRef.animateRight();
+            if (activeItemRef.isVideo()) {
+                this.displayPlayer = 'hidden';
+                activeItemRef.animateCenter().done(() => {
+
+                    activeItemRef.animateRight();
+                });
+            } else {
+                activeItemRef.animateRight();
+            }
             this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
 
             previousItemRef.animateLeft().done(() => {
                 previousItemRef.animateCenter().done(() => {
-
+                    
                     if (previousItemRef.isVideo()) {
 
-                        previousItemRef.openVideo();
+                        previousItemRef.animateNull();
+                        this.displayPlayer = 'visible';
+                    } else {
+
+                        this.displayPlayer = 'hidden';
                     }
                 });
             });
         }
         this._checkNavigation();
+    }
+
+    public onReady(event: YT.PlayerEvent): void {
+
+        //on ready
+    }
+
+    public onError(event: YT.OnErrorEvent) {
+        // on error
+    }
+
+    public onChange(event): void {
+        // on change
+        console.log(event.data)
+        switch(event.data) {
+            case YT.PlayerState.PLAYING:
+                this.header.close();
+                this.navigationNextAnimator = 'hide';
+                this.navigationPreviousAnimator = 'hide';
+                break; 
+            case YT.PlayerState.PAUSED:
+                this.header.open();
+                this.navigationNextAnimator = 'show';
+                this.navigationPreviousAnimator = 'show';
+
+                break;
+        }
     }
 
     @HostListener('window:resize', ['$event'])
@@ -225,10 +285,7 @@ export class LightboxComponent {
             const activeItemIndex = this.items[this.activeItem.container].indexOf(this.activeItem);
             const itemRef = this._itemsRef.toArray()[activeItemIndex];
 
-            if (itemRef.isVideo()) {
-
-                itemRef.openVideo();
-            } else {
+            if (!itemRef.isVideo()) {
 
                 itemRef.animateCenter();
             }

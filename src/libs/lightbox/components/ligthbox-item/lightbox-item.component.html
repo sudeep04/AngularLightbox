@@ -21,12 +21,4 @@
     frameborder="0" 
     allowfullscreen>
 </iframe> -->
-<youtube
-    *ngIf="isVideo()"
-    [style.visibility]="displayVideo"
-    [videoId]="item.youtubeVieoId"
-    (ready)="onReady($event)"
-    (change)="onChange($event)"
-    (error)="onError($event)"
-></youtube>
 
