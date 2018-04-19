@@ -7,6 +7,7 @@ import { Position } from '../../models/position.interface';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 import { Video } from '../../models/video';
+import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
 
 @Component({
     selector: 'lightbox',
@@ -15,7 +16,7 @@ import { Video } from '../../models/video';
     animations: [
         trigger('fadeAnimator', [
             state('hide', style({ opacity: 0 })),
-            state('show', style({ opacity: .9 })),
+            state('show', style({ opacity: .86 })),
             transition('show => hide', [
                 animate('.05s'),
             ]),
@@ -62,11 +63,15 @@ export class LightboxComponent {
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
+    public displayImgControls: 'hidden' | 'visible' = 'hidden';
+
     public navigationNextAnimator: 'hide' | 'show' = 'hide';
 
     public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
 
     @ViewChild('header') public header: LightboxHeaderComponent;
+
+    @ViewChild('controls') public imgControls: LightboxImgControlComponent;
 
     @ViewChild('next') public next: LightboxButtonComponent;
 
@@ -115,6 +120,7 @@ export class LightboxComponent {
         this.fadeAnimator = 'show';
         this._openControls();
 
+
         setTimeout(() => {
 
             const itemRef = this._itemRef(this._itemIndex(item));
@@ -139,6 +145,7 @@ export class LightboxComponent {
                     }
                 });
 
+                this._checkImgControls();
                 this._checkNavigation();
             }
         }, 0);
@@ -157,6 +164,7 @@ export class LightboxComponent {
     public onToggle(): void {
 
         this.header.toggle();
+        this.imgControls.toggle();
 
         if (this.navigationNextAnimator === 'show') {
 
@@ -196,6 +204,7 @@ export class LightboxComponent {
             }
 
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
+            this._checkImgControls();
 
             nextItemRef.animateRight().done(() => {
 
@@ -238,6 +247,7 @@ export class LightboxComponent {
             }
 
             this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
+            this._checkImgControls();
 
             previousItemRef.animateLeft().done(() => {
 
@@ -336,15 +346,28 @@ export class LightboxComponent {
         }
     }
 
+    private _checkImgControls() {
+
+        if (this._itemRef(this._itemIndex(this.activeItem)).isVideo()) {
+            
+            this.displayImgControls = 'hidden';
+        } else {
+
+            this.displayImgControls = 'visible';
+        }
+    }
+
     private _openControls(): void {
 
         this.header.open();
+        this.imgControls.open();
         this._navigationShow();
     }
 
     private _closeControls(): void {
 
         this.header.close();
+        this.imgControls.close();
         this._navigationHide();
     }
 }

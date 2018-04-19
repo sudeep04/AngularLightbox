@@ -1,20 +1,18 @@
-<lightbox-header #header (closeEvent) = "onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
-
-<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-background">
-</div>
+<lightbox-header #header (closeEvent)="onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
+<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-background"></div>
 <div *ngIf="activeItem">
-    <lightbox-item (toggleEvent) = "onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item"> 
+    <lightbox-item (toggleEvent)="onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item">
     </lightbox-item>
 </div>
 <div class="lightbox-navigation">
-    <button [@navigationPreviousAnimator]="navigationPreviousAnimator" #previous lightbox-icon-button (click)="onPrevious()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
-    <button [@navigationNextAnimator]="navigationNextAnimator" #next lightbox-icon-button (click)="onNext()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
+    <button #previous lightbox-icon-button [@navigationPreviousAnimator]="navigationPreviousAnimator" (click)="onPrevious()"
+        [disable]="!hasPrevious">
+        <span class="material-icons">navigate_before</span>
+    </button>
+    <button #next lightbox-icon-button [@navigationNextAnimator]="navigationNextAnimator" (click)="onNext()" [disable]="!hasNext">
+        <span class="material-icons">navigate_next</span>
+    </button>
 </div>
-<youtube
-    [style.visibility]="displayPlayer"
-    [videoId]="activeItem? activeItem.youtubeVieoId : undefined"
-    (ready)="onReady($event)"
-    (change)="onChange($event)"
-    (error)="onError($event)"
-></youtube>
-
+<youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
+    (change)="onChange($event)" (error)="onError($event)"></youtube>
+<lightbox-img-control [style.visibility]="displayImgControls" #controls></lightbox-img-control>

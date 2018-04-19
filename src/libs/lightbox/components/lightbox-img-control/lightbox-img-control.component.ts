@@ -2,15 +2,15 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
-    selector: 'lightbox-header',
-    templateUrl: './lightbox-header.component.html',
-    styleUrls: ['./lightbox-header.component.scss'],
+    selector: 'lightbox-img-control',
+    templateUrl: './lightbox-img-control.component.html',
+    styleUrls: ['./lightbox-img-control.component.scss'],
     animations: [
         trigger('animator', [
             state('hidden',
-                style({ top: '-64px' })),
+                style({ bottom: '-64px' })),
             state('showed',
-                style({ top: '0px' })),
+                style({ bottom: '0px' })),
             transition('hidden => showed', [
                 animate('.2s')
             ]),
@@ -23,22 +23,13 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         '[@animator]': 'animator'
     }
 })
-export class LightboxHeaderComponent {
-
-    @Output() public closeEvent = new EventEmitter();
-
-    @Input() public title: string;
+export class LightboxImgControlComponent {
 
     public animator: 'hidden' | 'showed' = 'hidden';
 
     public close(): void {
 
         this.animator = 'hidden';
-    }
-
-    public onClose(): void {
-
-        this.closeEvent.emit();
     }
 
     public open(): void {
