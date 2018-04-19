@@ -19,7 +19,7 @@ import { Video } from '../../models/video';
         trigger('itemAnimator', [
             state('null', style({ visibility: 'hidden' })),
             state('origin',
-                style({ top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
                 { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
             state('left',
                 style({ visibility: 'hidden', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
@@ -27,25 +27,43 @@ import { Video } from '../../models/video';
             state('right',
                 style({ visibility: 'hidden', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
                 { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
-            state('center',
-                style({ top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+            state('zoom0',
+                style({ visibility: 'visible', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
                 { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
-            transition('origin => center', [
-                animate('.2s')
+            state('zoom1',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom2',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom3',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom4',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom5',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom6',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom7',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            state('zoom8',
+                style({ visibility: 'visible',top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
+                { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
+            transition('* => null', [
+                animate(0)
             ]),
-            transition('center => origin', [
-                animate('.2s')
+            transition('null => *', [
+                animate(0)
             ]),
-            transition('center => left', [
-                animate('.2s')
+            transition('void => *', [
+                animate(0)
             ]),
-            transition('center => right', [
-                animate('.2s')
-            ]),
-            transition('right => center', [
-                animate('.2s')
-            ]),
-            transition('left => center', [
+            transition('* => *', [
                 animate('.2s')
             ])
         ])
@@ -66,9 +84,9 @@ export class LightboxItemComponent implements OnInit {
 
     private _isVideo: boolean;
 
-    private _itemAnimatorStart: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
+    private _itemAnimatorStart: BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'> = new BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'>('null');
 
-    private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'> = new BehaviorSubject<'null' | 'origin' | 'center' | 'left' | 'right'>('null');
+    private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'> = new BehaviorSubject<'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8'>('null');
 
     public ngOnInit(): void {
 
@@ -90,12 +108,12 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimatorStart(event: AnimationEvent): void {
 
-        this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'center' | 'left' | 'right');
+        this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8');
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
 
-        this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'center' | 'left' | 'right');
+        this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left'| 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7' | 'zoom8');
     }
 
     public animateNull(): AnimatorCallback {
@@ -112,7 +130,9 @@ export class LightboxItemComponent implements OnInit {
 
     public animateCenter(): AnimatorCallback {
 
-        this.itemAnimator = { value: 'center', params: this._getCenterPosition() };
+        this._initZoom();
+        this._position = 0;
+        this.itemAnimator = { value: 'zoom0', params: this._getCenterPosition() };
         return this._itemAnimatorCallBack('center');
     }
 
@@ -167,6 +187,22 @@ export class LightboxItemComponent implements OnInit {
         return { width, height, offsetTop, offsetLeft };
     }
 
+    private _getFeetToWidthPosition(): Position {
+
+        let height: number;
+        let width: number;
+        let offsetTop: number;
+        let offsetLeft: number;
+
+        height = Math.round(window.innerWidth / this._img.nativeElement.width * this._img.nativeElement.height);
+        width = Math.round(window.innerWidth);
+
+        offsetTop = Math.round((window.innerHeight - height) / 2);
+        offsetLeft = 0;
+
+        return { width, height, offsetTop, offsetLeft };
+    }
+
     private _getLeftPosition(): Position {
 
         const centerPosition = this._getCenterPosition();
@@ -196,4 +232,69 @@ export class LightboxItemComponent implements OnInit {
 
         return { width: centerPosition.width, height: centerPosition.height, offsetTop: centerPosition.offsetTop, offsetLeft };
     }
+
+    private _getZoom(zoom: number): Position {
+
+        const step = window.innerWidth * zoom / 6;
+
+        const centerPosition = this._getCenterPosition();
+
+        let height: number;
+        let width: number;
+        let offsetTop: number;
+        let offsetLeft: number;
+
+        height = Math.round((centerPosition.width + step) / this._img.nativeElement.width * this._img.nativeElement.height);
+        width = Math.round(centerPosition.width + step);
+
+        offsetTop = Math.round((window.innerHeight - height) / 2);
+        offsetLeft = Math.round((window.innerWidth - width) / 2);
+
+        return { width, height, offsetTop, offsetLeft };
+    }
+
+    public resize(){
+        this._initZoom();
+        this.itemAnimator = { value: 'zoom' + this._position, params: this._zoomList[this._position] } as ImgAnimatorState;
+    }
+
+    private _initZoom(): void {
+
+        const defaultPosition = this._getCenterPosition();
+        const feetToWidthPosition = this._getFeetToWidthPosition();
+
+        const zoomCount = Math.round(((feetToWidthPosition.width - defaultPosition.width) / 2) / (window.innerWidth / 12));
+
+        this._zoomList = [];
+
+        for(var i = 0; i < 9; i++) {
+            if (i === 0) {
+                this._zoomList.push(defaultPosition);
+                continue;
+            }
+            if (i === zoomCount) {
+                this._zoomList.push(feetToWidthPosition);
+                continue;
+            }
+            this._zoomList.push(this._getZoom(i));
+        }
+    }
+
+    public zoomIn(){
+        if(this._position + 1 < this._zoomList.length) {
+            this._position++;
+            this.itemAnimator = { value: 'zoom' + this._position, params: this._zoomList[this._position] } as ImgAnimatorState;
+        }
+    }
+
+    public zoomOut(){
+        if(this._position > 0) {
+            this._position--;
+            this.itemAnimator = { value: 'zoom' + this._position, params: this._zoomList[this._position] }as ImgAnimatorState;
+        }
+    }
+
+    private _zoomList = [];
+
+    private _position = 0;
 }

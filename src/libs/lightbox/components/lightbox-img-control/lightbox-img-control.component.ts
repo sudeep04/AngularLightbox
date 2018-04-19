@@ -25,6 +25,10 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class LightboxImgControlComponent {
 
+    @Output() public zoomInEvent = new EventEmitter();
+
+    @Output() public zoomOutEvent = new EventEmitter();
+
     public animator: 'hidden' | 'showed' = 'hidden';
 
     public close(): void {
@@ -46,5 +50,14 @@ export class LightboxImgControlComponent {
 
             this.animator = 'hidden';
         }
+    }
+
+    public zoomIn(){
+        this.zoomInEvent.emit();
+    }
+
+    public zoomOut(){
+        this.zoomOutEvent.emit();
+        
     }
 }

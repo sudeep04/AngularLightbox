@@ -61,6 +61,8 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
 })
 export class LightboxComponent {
 
+    private _ytPlayer: YT.Player;
+
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
     public displayImgControls: 'hidden' | 'visible' = 'hidden';
@@ -120,7 +122,6 @@ export class LightboxComponent {
         this.fadeAnimator = 'show';
         this._openControls();
 
-
         setTimeout(() => {
 
             const itemRef = this._itemRef(this._itemIndex(item));
@@ -159,6 +160,10 @@ export class LightboxComponent {
         this.fadeAnimator = 'hide';
         this.displayPlayer = 'hidden';
         this._closeControls();
+        if(this._ytPlayer) {
+            
+            this._ytPlayer.stopVideo();
+        }
     }
 
     public onToggle(): void {
@@ -225,6 +230,16 @@ export class LightboxComponent {
         this._checkNavigation();
     }
 
+    public zoomIn(){
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.zoomIn();
+    }
+
+    public zoomOut(){
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.zoomOut();
+    }
+
     public onPrevious() {
 
         const activeItemIndex = this._itemIndex(this.activeItem);
@@ -270,7 +285,7 @@ export class LightboxComponent {
 
     public onReady(event: YT.PlayerEvent): void {
 
-        // on ready
+        this._ytPlayer = event.target;
     }
 
     public onError(event: YT.OnErrorEvent) {
@@ -308,7 +323,7 @@ export class LightboxComponent {
 
             if (!activeItemRef.isVideo()) {
 
-                activeItemRef.animateCenter();
+                activeItemRef.resize();
             }
         }
     }

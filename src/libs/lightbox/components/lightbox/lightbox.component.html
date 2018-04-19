@@ -6,13 +6,16 @@
 </div>
 <div class="lightbox-navigation">
     <button #previous lightbox-icon-button [@navigationPreviousAnimator]="navigationPreviousAnimator" (click)="onPrevious()"
+        title="Previous"
         [disable]="!hasPrevious">
         <span class="material-icons">navigate_before</span>
     </button>
-    <button #next lightbox-icon-button [@navigationNextAnimator]="navigationNextAnimator" (click)="onNext()" [disable]="!hasNext">
+    <button #next lightbox-icon-button [@navigationNextAnimator]="navigationNextAnimator" (click)="onNext()" 
+        title="Next"
+        [disable]="!hasNext">
         <span class="material-icons">navigate_next</span>
     </button>
 </div>
 <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
     (change)="onChange($event)" (error)="onError($event)"></youtube>
-<lightbox-img-control [style.visibility]="displayImgControls" #controls></lightbox-img-control>
+<lightbox-img-control [style.visibility]="displayImgControls" #controls (zoomInEvent)="zoomIn()" (zoomOutEvent)="zoomOut()"></lightbox-img-control>
