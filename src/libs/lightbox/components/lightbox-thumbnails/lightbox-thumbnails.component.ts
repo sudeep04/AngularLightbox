@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ThumbnailAnimatorState } from '../../models/thumbnail-animator-state.interface';
+import { Item } from '../../models/item';
 
 @Component({
     selector: 'lightbox-thumbnails',
@@ -27,45 +28,52 @@ import { ThumbnailAnimatorState } from '../../models/thumbnail-animator-state.in
 })
 export class LightboxThumbnailsComponent {
 
-    public animator: ThumbnailAnimatorState = {value:'hidden'};
+    public animator: ThumbnailAnimatorState = { value: 'hidden' };
+
+    @Input('items') public items: Item[] = [];
 
     public close(): void {
 
-        this.animator = {value:'hidden'};
+        this.animator = { value: 'hidden' };
     }
 
     public open(): void {
 
 
-        this.animator = {value:'showed', params:{maxWidth: this._getMaxWidth}};
+        this.animator = { value: 'showed', params: { maxWidth: this._getMaxWidth } };
     }
 
     public toggle(): void {
 
         if (this.animator.value === 'hidden') {
 
-            this.animator = {value:'showed', params:{maxWidth: this._getMaxWidth}};
+            this.animator = { value: 'showed', params: { maxWidth: this._getMaxWidth } };
         } else {
 
-            this.animator = {value:'hidden'};
+            this.animator = { value: 'hidden' };
         }
     }
 
-    public resize(): void
-    {
+    public resize(): void {
         if (this.animator.value === 'showed') {
 
-            this.animator = {value:'showed', params:{maxWidth: this._getMaxWidth}};
+            this.animator = { value: 'showed', params: { maxWidth: this._getMaxWidth } };
         }
+    }
+
+    public getItemSrc(item: Item): string {
+        if (item.src) return item.src;
+        if (item.xsSrc) return item.xsSrc;
+        if (item.smSrc) return item.smSrc;
+        if (item.mdSrc) return item.mdSrc;
+        if (item.lgSrc) return item.lgSrc;
+        if (item.xlSrc) return item.xlSrc;
     }
 
     private get _getMaxWidth(): number {
         let maxWidth = 0;
-        if ( window.innerWidth > 599) {
+        if (window.innerWidth > 599) {
             maxWidth = 150;
-        }
-        if ( window.innerWidth > 800) {
-            maxWidth = 200;
         }
         return maxWidth;
     }

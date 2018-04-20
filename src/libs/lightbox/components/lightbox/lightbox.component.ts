@@ -187,21 +187,17 @@ export class LightboxComponent {
 
         this.header.toggle();
         this.imgControls.toggle();
-        this.thumbnails.toggle();
 
         if (this.navigationNextAnimator === 'show') {
 
             this.navigationNextAnimator = 'hide';
+            this.navigationPreviousAnimator = 'hide';
+            this.thumbnails.close();
         } else {
 
             this.navigationNextAnimator = 'show';
-        }
-        if (this.navigationPreviousAnimator === 'show') {
-
-            this.navigationPreviousAnimator = 'hide';
-        } else {
-
             this.navigationPreviousAnimator = 'show';
+            this.thumbnails.open();
         }
     }
 

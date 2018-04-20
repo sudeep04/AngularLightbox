@@ -35,6 +35,6 @@
             <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
                 (change)="onChange($event)" (error)="onError($event)"></youtube>
     </div>
-    <lightbox-thumbnails #thumbnails>
+    <lightbox-thumbnails #thumbnails [items]="activeItem? items[activeItem.container]:[]">
     </lightbox-thumbnails>
 </div>
