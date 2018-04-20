@@ -6,10 +6,14 @@
     align-items: center;
     padding: 0px 12px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
     color:white;
 
     .header-title{
-        margin-left: 15px;
+        margin-left: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: calc(100% - 64px);
     }
 }

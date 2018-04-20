@@ -16,6 +16,14 @@
         z-index: 1;
     }
 
+    .lightbox-items-background{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top:0;
+        z-index: 1;
+    }
+
     .lightbox-navigation{
         position: absolute;
         top:0;
@@ -29,7 +37,7 @@
         padding: 0 36px;
 
         button{
-            z-index: 3;
+            z-index: 2;
         }
     }
 }

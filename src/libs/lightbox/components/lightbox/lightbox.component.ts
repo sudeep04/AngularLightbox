@@ -8,6 +8,7 @@ import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.comp
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 import { Video } from '../../models/video';
 import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
+import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
 
 @Component({
     selector: 'lightbox',
@@ -21,7 +22,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s'),
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ]),
         trigger('headerShowAnimator', [
@@ -31,7 +32,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s')
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ]),
         trigger('navigationNextAnimator', [
@@ -41,7 +42,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s')
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ]),
         trigger('navigationPreviousAnimator', [
@@ -51,7 +52,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s')
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ])
     ],
@@ -70,6 +71,8 @@ export class LightboxComponent {
     public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
 
     @ViewChild('header') public header: LightboxHeaderComponent;
+
+    @ViewChild('thumbnails') public thumbnails: LightboxThumbnailsComponent;
 
     @ViewChild('controls') public imgControls: LightboxImgControlComponent;
 
@@ -179,6 +182,7 @@ export class LightboxComponent {
 
         this.header.toggle();
         this.imgControls.toggle();
+        this.thumbnails.toggle();
 
         if (this.navigationNextAnimator === 'show') {
 
@@ -351,6 +355,7 @@ export class LightboxComponent {
             if (!activeItemRef.isVideo()) {
 
                 activeItemRef.resize();
+                this.thumbnails.resize();
                 this._checkImageControlVisibility(activeItemRef);
             }
         }
@@ -402,7 +407,7 @@ export class LightboxComponent {
 
     private _checkImageControlVisibility(item: LightboxItemComponent) {
 
-        this.disableZoomIn = item.position === item.zoomMax;
+        this.disableZoomIn = item.position + 1 === item.zoomMax;
         this.disableZoomOut = item.position === 0;
         this.disableResetZoom = item.position === 0;
         this.disableFeetToWidth = item.position === item.feetToWidthPosition;
@@ -413,6 +418,7 @@ export class LightboxComponent {
         this.header.open();
         this.imgControls.open();
         this._navigationShow();
+        this.thumbnails.open();
     }
 
     private _closeControls(): void {
@@ -420,5 +426,6 @@ export class LightboxComponent {
         this.header.close();
         this.imgControls.close();
         this._navigationHide();
+        this.thumbnails.close();
     }
 }

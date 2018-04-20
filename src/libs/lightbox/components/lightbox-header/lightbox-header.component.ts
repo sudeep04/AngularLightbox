@@ -12,7 +12,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
             state('showed',
                 style({ top: '0px' })),
             transition('hidden => showed', [
-                animate('.2s')
+                animate('.4s')
             ]),
             transition('showed => hidden', [
                 animate('.05s')

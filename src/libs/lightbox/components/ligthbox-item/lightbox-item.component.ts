@@ -83,17 +83,17 @@ import { Video } from '../../models/video';
             ]),
             transition('* => left', [
                 query('img', [
-                    animate('.2s', style({ visibility: 'hidden', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }))
+                    animate('.4s', style({ visibility: 'hidden', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }))
                 ])
             ], { params: { paddingLeft: 0, paddingTop: 0, offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
             transition('* => right', [
                 query('img', [
-                    animate('.2s', style({ visibility: 'hidden', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }))
+                    animate('.4s', style({ visibility: 'hidden', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }))
                 ])
             ], { params: { paddingLeft: 0, paddingTop: 0, offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
             transition('* => *', [
                 query('img', [
-                    animate('.2s', style({ visibility: 'visible', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }))
+                    animate('.4s', style({ visibility: 'visible', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }))
                 ])
             ], { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } })
         ]),
@@ -131,7 +131,6 @@ export class LightboxItemComponent implements OnInit {
 
     constructor(private readonly _elementRef: ElementRef){
         
-        this._elementRef.nativeElement.scrollTop += 100;
     }
 
     public ngOnInit(): void {
@@ -154,13 +153,31 @@ export class LightboxItemComponent implements OnInit {
         }
     }
 
+    private _scrollInterval: any;
+
     public itemAnimatorStart(event: AnimationEvent): void {
 
+        if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
+
+            this._scrollInterval = setInterval(()=>{
+            
+                const top = (this._img.nativeElement.clientHeight - window.innerHeight) / 2;
+                const left = (this._img.nativeElement.clientWidth - window.innerWidth) / 2;
+    
+                this._elementRef.nativeElement.scrollTop = Math.round(top);
+                this._elementRef.nativeElement.scrollLeft = Math.round(left);
+                //this._elementRef.nativeElement.scrollLeft = this._elementRef.nativeElement.offset().top + (this._elementRef.nativeElement.height() / 2);
+            },0)
+        }
         this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
 
+        if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
+
+            clearInterval(this._scrollInterval);
+        }
         this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
@@ -171,6 +188,9 @@ export class LightboxItemComponent implements OnInit {
     }
 
     public animateOrigin(position: Position): AnimatorCallback {
+
+        position.offsetTop = position.offsetTop - (this._elementRef.nativeElement.clientHeight - position.height) /2;
+        position.offsetLeft = position.offsetLeft - (this._elementRef.nativeElement.clientWidth - position.width) /2;
 
         this.itemAnimator = {
             value: 'origin', params: position
@@ -282,13 +302,11 @@ export class LightboxItemComponent implements OnInit {
 
     private _getCenterPosition(): Position {
 
-        const maxWidth = window.innerWidth * 2 / 3;
-        const maxHeight = (window.innerHeight - 128) * 9 / 10;
+        const maxWidth = this._elementRef.nativeElement.clientWidth * 2 / 3;
+        const maxHeight = (this._elementRef.nativeElement.clientHeight - 128) * 9 / 10;
 
         let height: number;
         let width: number;
-        let offsetTop: number;
-        let offsetLeft: number;
 
         if (this._img.nativeElement.width / maxWidth > this._img.nativeElement.height / maxHeight) {
             height = Math.round(maxWidth / this._img.nativeElement.width * this._img.nativeElement.height);
@@ -298,10 +316,7 @@ export class LightboxItemComponent implements OnInit {
             height = Math.round(maxHeight);
         }
 
-        offsetTop = Math.round((window.innerHeight - height) / 2);
-        offsetLeft = Math.round((window.innerWidth - width) / 2);
-
-        return { width, height, offsetTop, offsetLeft };
+        return { width, height, offsetTop: 0, offsetLeft: 0 };
     }
 
     private _getFeetToWidthPosition(): Position {
@@ -311,14 +326,10 @@ export class LightboxItemComponent implements OnInit {
         let offsetTop: number;
         let offsetLeft: number;
 
-        height = Math.round((window.innerWidth - 17) / this._img.nativeElement.width * this._img.nativeElement.height);
-        width = Math.round(window.innerWidth - 17);
+        height = Math.round((this._elementRef.nativeElement.clientWidth - 17) / this._img.nativeElement.width * this._img.nativeElement.height);
+        width = Math.round(this._elementRef.nativeElement.clientWidth - 17);
 
-        offsetTop = Math.round((window.innerHeight - height) / 2);
-        offsetTop = offsetTop > 0? offsetTop: 0;
-        offsetLeft = 0;
-
-        return { width, height, offsetTop, offsetLeft };
+        return { width, height, offsetTop: 0, offsetLeft: 0 };
     }
 
     private _getLeftPosition(): Position {
@@ -327,10 +338,10 @@ export class LightboxItemComponent implements OnInit {
 
         let offsetLeft: number;
 
-        if (centerPosition.width > window.innerWidth) {
+        if (centerPosition.width > this._elementRef.nativeElement.clientWidth) {
             offsetLeft = centerPosition.width * -1;
         } else {
-            offsetLeft = window.innerWidth * -1;
+            offsetLeft = this._elementRef.nativeElement.clientWidth * -1;
         }
 
         return { width: centerPosition.width, height: centerPosition.height, offsetTop: centerPosition.offsetTop, offsetLeft };
@@ -342,10 +353,10 @@ export class LightboxItemComponent implements OnInit {
 
         let offsetLeft: number;
 
-        if (centerPosition.width > window.innerWidth) {
+        if (centerPosition.width >this._elementRef.nativeElement.clientWidth) {
             offsetLeft = centerPosition.width;
         } else {
-            offsetLeft = window.innerWidth;
+            offsetLeft = this._elementRef.nativeElement.clientWidth;
         }
 
         return { width: centerPosition.width, height: centerPosition.height, offsetTop: centerPosition.offsetTop, offsetLeft };
@@ -353,24 +364,17 @@ export class LightboxItemComponent implements OnInit {
 
     private _getZoom(zoom: number): Position {
 
-        const step = window.innerWidth * zoom / 6;
+        const step = this._elementRef.nativeElement.clientWidth * zoom / 6;
 
         const centerPosition = this._getCenterPosition();
 
         let height: number;
         let width: number;
-        let offsetTop: number;
-        let offsetLeft: number;
 
         height = Math.round((centerPosition.width + step) / this._img.nativeElement.width * this._img.nativeElement.height);
         width = Math.round(centerPosition.width + step);
 
-        offsetTop = Math.round((window.innerHeight - height) / 2);
-        offsetTop = offsetTop > 0? offsetTop: 0;
-        offsetLeft = Math.round((window.innerWidth - width) / 2);
-        offsetLeft = offsetLeft > 0? offsetLeft: 0;
-
-        return { width, height, offsetTop, offsetLeft };
+        return { width, height, offsetTop: 0, offsetLeft: 0 };
     }
 
     private _initZoom(): void {
@@ -378,7 +382,7 @@ export class LightboxItemComponent implements OnInit {
         const defaultPosition = this._getCenterPosition();
         const feetToWidthPosition = this._getFeetToWidthPosition();
 
-        this._feetToWidthPosition = Math.round(((feetToWidthPosition.width - defaultPosition.width) / 2) / (window.innerWidth / 12));
+        this._feetToWidthPosition = Math.round(((feetToWidthPosition.width - defaultPosition.width) / 2) / (this._elementRef.nativeElement.clientWidth / 12));
 
         this._zoomList = [];
 
