@@ -18,6 +18,7 @@ import { Video } from '../../models/video';
     animations: [
         trigger('itemAnimatorState', [
             state('null', style({ visibility: 'hidden' })),
+            state('void', style({ visibility: 'hidden' })),
             state('origin',
                 style({ visibility: 'visible', top: '{{offsetTop}}px', left: '{{offsetLeft}}px', width: '{{width}}px', height: '{{height}}px' }),
                 { params: { offsetLeft: 0, offsetTop: 0, width: 0, height: 0 } }),
@@ -54,6 +55,7 @@ import { Video } from '../../models/video';
         ]),
         trigger('hostAnimatorState', [
             state('null', style({ visibility: 'hidden' })),
+            state('void', style({ visibility: 'hidden' })),
             state('origin',
                 style({ visibility: 'visible' })),
             state('left',
@@ -76,7 +78,7 @@ import { Video } from '../../models/video';
             ]),
             transition('* => null', [
                 query(':self, img', [
-                    animate(0)
+                    animate(0, style({ visibility: 'hidden'}))
                 ])
             ]),
             transition('* => left', [
@@ -121,11 +123,16 @@ export class LightboxItemComponent implements OnInit {
     private _itemAnimatorDone: BehaviorSubject<'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'>
         = new BehaviorSubject<'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7'>('null');
 
-    private _zoomList = [];
+    private _zoomList: Position[];
 
     private _position = 0;
 
     private _feetToWidthPosition;
+
+    constructor(private readonly _elementRef: ElementRef){
+        
+        this._elementRef.nativeElement.scrollTop += 100;
+    }
 
     public ngOnInit(): void {
 
@@ -205,11 +212,7 @@ export class LightboxItemComponent implements OnInit {
         if (this._position + 1 < this._zoomList.length) {
 
             this._position++;
-
-            this.itemAnimator = {
-
-                value: 'zoom' + this._position, params: this._zoomList[this._position]
-            } as ImgAnimatorState;
+            this._animatePosition(this._position);
         }
     }
 
@@ -218,31 +221,20 @@ export class LightboxItemComponent implements OnInit {
         if (this._position > 0) {
 
             this._position--;
-
-            this.itemAnimator = {
-                value: 'zoom' + this._position, params: this._zoomList[this._position]
-            } as ImgAnimatorState;
+            this._animatePosition(this._position);
         }
     }
 
     public resetZoom(): void {
 
         this._position = 0;
-
-        this.itemAnimator = {
-
-            value: 'zoom' + this._position, params: this._zoomList[this._position]
-        } as ImgAnimatorState;
+        this._animatePosition(this._position);
     }
 
     public feetToWidth(): void {
 
         this._position = this._feetToWidthPosition;
-
-        this.itemAnimator = {
-
-            value: 'zoom' + this._position, params: this._zoomList[this._position]
-        } as ImgAnimatorState;
+        this._animatePosition(this._position);
     }
 
     public get feetToWidthPosition(): number {
@@ -263,8 +255,13 @@ export class LightboxItemComponent implements OnInit {
     public resize(): void {
 
         this._initZoom();
+        this._animatePosition(this._position);
+    }
+
+    private _animatePosition(position: number) {
+        
         this.itemAnimator = {
-            value: 'zoom' + this._position, params: this._zoomList[this._position]
+            value: 'zoom' + position, params: this._zoomList[position]
         } as ImgAnimatorState;
     }
 
@@ -318,6 +315,7 @@ export class LightboxItemComponent implements OnInit {
         width = Math.round(window.innerWidth - 17);
 
         offsetTop = Math.round((window.innerHeight - height) / 2);
+        offsetTop = offsetTop > 0? offsetTop: 0;
         offsetLeft = 0;
 
         return { width, height, offsetTop, offsetLeft };
@@ -368,7 +366,9 @@ export class LightboxItemComponent implements OnInit {
         width = Math.round(centerPosition.width + step);
 
         offsetTop = Math.round((window.innerHeight - height) / 2);
+        offsetTop = offsetTop > 0? offsetTop: 0;
         offsetLeft = Math.round((window.innerWidth - width) / 2);
+        offsetLeft = offsetLeft > 0? offsetLeft: 0;
 
         return { width, height, offsetTop, offsetLeft };
     }
