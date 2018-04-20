@@ -26,6 +26,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 export class LightboxHeaderComponent {
 
     @Output() public closeEvent = new EventEmitter();
+    
+    @Output() public thumbnailsToggleEvent = new EventEmitter();
 
     @Input() public title: string;
 
@@ -39,6 +41,10 @@ export class LightboxHeaderComponent {
     public onClose(): void {
 
         this.closeEvent.emit();
+    }
+
+    public onToggleThumbnails(){
+        this.thumbnailsToggleEvent.emit();
     }
 
     public open(): void {

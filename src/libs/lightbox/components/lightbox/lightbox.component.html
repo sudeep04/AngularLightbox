@@ -1,8 +1,7 @@
-<lightbox-header #header (closeEvent)="onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
+<lightbox-header #header (closeEvent)="onClose()" [title]="activeItem? activeItem.title : ''" (thumbnailsToggleEvent)="thumbnailsToggle()"></lightbox-header>
 <div [@fadeAnimator]="fadeAnimator" class="lightbox-background"></div>
-<div style="display:flex;height:100%;top:-64px;position:relative;">
-    <div style="flex: 1 1 0%;
-    box-sizing: border-box; height: 100%; position: relative;">
+<div class="lightbox-container">
+    <div class="lightbox-items-container">
         <div class="lightbox-navigation">
                 <button #previous lightbox-icon-button [@navigationPreviousAnimator]="navigationPreviousAnimator" (click)="onPrevious()"
                     title="Previous"

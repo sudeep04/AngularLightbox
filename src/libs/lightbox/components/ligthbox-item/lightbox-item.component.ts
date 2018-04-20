@@ -157,27 +157,35 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimatorStart(event: AnimationEvent): void {
 
-        if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
+        // if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
 
-            this._scrollInterval = setInterval(()=>{
+        //     this._scrollInterval = setInterval(()=>{
+
+                
+        //         const top = (this._img.nativeElement.clientHeight - window.innerHeight) / 2;
+        //         const left = (this._img.nativeElement.clientWidth - window.innerWidth) / 2;
             
-                const top = (this._img.nativeElement.clientHeight - window.innerHeight) / 2;
-                const left = (this._img.nativeElement.clientWidth - window.innerWidth) / 2;
-    
-                this._elementRef.nativeElement.scrollTop = Math.round(top);
-                this._elementRef.nativeElement.scrollLeft = Math.round(left);
-                //this._elementRef.nativeElement.scrollLeft = this._elementRef.nativeElement.offset().top + (this._elementRef.nativeElement.height() / 2);
-            },0)
-        }
+        //         if(event.fromState < event.toState) {
+
+        //             this._elementRef.nativeElement.scrollTop += Math.round(window.innerHeight/16);
+        //             this._elementRef.nativeElement.scrollLeft += Math.round(window.innerWidth/24);
+        //         }else{
+                    
+        //             this._elementRef.nativeElement.scrollTop -= Math.round(window.innerHeight/16);
+        //             this._elementRef.nativeElement.scrollLeft -= Math.round(window.innerWidth/24);
+        //         }
+        //         //this._elementRef.nativeElement.scrollLeft = this._elementRef.nativeElement.offset().top + (this._elementRef.nativeElement.height() / 2);
+        //     },0)
+        // }
         this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
 
-        if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
+        // if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
 
-            clearInterval(this._scrollInterval);
-        }
+        //     clearInterval(this._scrollInterval);
+        // }
         this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 

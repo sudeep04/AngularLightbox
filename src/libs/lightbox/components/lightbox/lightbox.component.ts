@@ -17,7 +17,7 @@ import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thu
     animations: [
         trigger('fadeAnimator', [
             state('hide', style({ backgroundColor: 'rgba(0,0,0,0)' })),
-            state('show', style({ backgroundColor: 'rgba(0,0,0,.86)' })),
+            state('show', style({ backgroundColor: 'rgba(0,0,0,.9)' })),
             transition('show => hide', [
                 animate('.05s'),
             ]),
@@ -114,6 +114,11 @@ export class LightboxComponent {
         }
 
         this.items[item.container].push(item);
+    }
+
+    public thumbnailsToggle() {
+
+        this.thumbnails.toggle();
     }
 
     public removeItem(item: Item): void {

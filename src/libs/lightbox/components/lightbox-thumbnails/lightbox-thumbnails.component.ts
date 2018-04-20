@@ -61,7 +61,7 @@ export class LightboxThumbnailsComponent {
 
     private get _getMaxWidth(): number {
         let maxWidth = 0;
-        if ( window.innerWidth > 500) {
+        if ( window.innerWidth > 599) {
             maxWidth = 150;
         }
         if ( window.innerWidth > 800) {
