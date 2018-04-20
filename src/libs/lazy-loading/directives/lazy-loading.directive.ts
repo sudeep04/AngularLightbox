@@ -148,8 +148,10 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
     private _isInViewPort(): boolean {
 
         const elementTop = Math.round(this._elementRef.nativeElement.getBoundingClientRect().top);
+        const elementBottom = elementTop + this._elementRef.nativeElement.clientHeight;
         const elementLeft = Math.round(this._elementRef.nativeElement.getBoundingClientRect().left);
+        const elementRight = elementLeft + this._elementRef.nativeElement.clientWidth;
 
-        return (elementTop >= 0 && elementTop < window.innerHeight && elementLeft >= 0 && elementLeft < window.innerWidth);
+        return (elementLeft <= window.innerWidth && elementRight >= 0 && elementTop <= window.innerHeight && elementBottom >= 0);
     }
 }

@@ -1,20 +1,34 @@
-<lightbox-header #header (closeEvent) = "onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
+<lightbox-header #header (closeEvent)="onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
 
-<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-background">
-</div>
-<div *ngIf="activeItem">
-    <lightbox-item (toggleEvent) = "onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item"> 
-    </lightbox-item>
-</div>
 <div class="lightbox-navigation">
-    <button [@navigationPreviousAnimator]="navigationPreviousAnimator" #previous lightbox-icon-button (click)="onPrevious()" [disable]="!hasPrevious"><span class="material-icons">navigate_before</span></button>
-    <button [@navigationNextAnimator]="navigationNextAnimator" #next lightbox-icon-button (click)="onNext()" [disable]="!hasNext"><span class="material-icons">navigate_next</span></button>
+    <button #previous lightbox-icon-button [@navigationPreviousAnimator]="navigationPreviousAnimator" (click)="onPrevious()"
+        title="Previous"
+        [disable]="!hasPrevious">
+        <span class="material-icons">navigate_before</span>
+    </button>
+    <button #next lightbox-icon-button [@navigationNextAnimator]="navigationNextAnimator" (click)="onNext()" 
+        title="Next"
+        [disable]="!hasNext">
+        <span class="material-icons">navigate_next</span>
+    </button>
 </div>
-<youtube
-    [style.visibility]="displayPlayer"
-    [videoId]="activeItem? activeItem.youtubeVieoId : undefined"
-    (ready)="onReady($event)"
-    (change)="onChange($event)"
-    (error)="onError($event)"
-></youtube>
+<lightbox-img-control #controls
+    [style.visibility]="displayImgControls"
+    [disableZoomIn]="disableZoomIn"
+    [disableZoomOut]="disableZoomOut"
+    [disableResetZoom]="disableResetZoom"
+    [disableFeetToWidth]="disableFeetToWidth"
+    (zoomInEvent)="zoomIn()"
+    (zoomOutEvent)="zoomOut()"
+    (resetZoomEvent)="resetZoom()"
+    (feetToWidthEvent)="feetToWidth()">
+</lightbox-img-control>
+<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-background">
+    <div *ngIf="activeItem" class="item-list">
+        <lightbox-item (toggleEvent)="onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item">
+        </lightbox-item>
+    </div>
+</div>
 
+<youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
+    (change)="onChange($event)" (error)="onError($event)"></youtube>

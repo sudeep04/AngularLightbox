@@ -5,9 +5,6 @@ import { YoutubePlayerService } from './services/youtube-player.service';
 import { YoutubeComponent } from './components/youtube.component';
 
 @NgModule({
-    imports: [
-        CommonModule
-    ],
     providers: [
         YoutubeApiService,
         YoutubePlayerService
