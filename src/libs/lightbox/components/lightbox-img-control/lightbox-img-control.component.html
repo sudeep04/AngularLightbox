@@ -1,0 +1,13 @@
+<button [disable]="disableZoomOut" lightbox-icon-button (click)="zoomOut()" title="Zoom out">
+    <span class="material-icons">remove</span>
+</button>
+<button [disable]="disableResetZoom" lightbox-icon-button (click)="resetZoom()" title="Reset zoom">
+    <span class="material-icons">zoom_out</span>
+</button>
+<button [disable]="disableFeetToWidth" lightbox-icon-button (click)="feetToWidth()" title="Feet to width">
+    <span class="material-icons">zoom_in</span>
+</button>
+<button [disable]="disableZoomIn" lightbox-icon-button (click)="zoomIn()" title="Zoom in">
+    <span class="material-icons">add</span>
+</button>
+

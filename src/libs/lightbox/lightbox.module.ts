@@ -11,6 +11,7 @@ import { LightboxItemComponent } from './components/ligthbox-item/lightbox-item.
 import { LightboxVideoDirective } from './directives/lightbox-video.directive';
 import { YoutubeModule } from 'libs/youtube/youtube.module';
 import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
+import { LightboxImgControlComponent } from './components/lightbox-img-control/lightbox-img-control.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
         LightboxHeaderComponent,
         LightboxImgDirective,
         LightboxVideoDirective,
-        LightboxItemComponent
+        LightboxItemComponent,
+        LightboxImgControlComponent
     ],
     imports: [
         CommonModule,

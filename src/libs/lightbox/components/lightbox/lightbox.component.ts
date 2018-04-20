@@ -7,6 +7,7 @@ import { Position } from '../../models/position.interface';
 import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 import { Video } from '../../models/video';
+import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
 
 @Component({
     selector: 'lightbox',
@@ -14,8 +15,8 @@ import { Video } from '../../models/video';
     styleUrls: ['./lightbox.component.scss'],
     animations: [
         trigger('fadeAnimator', [
-            state('hide', style({ opacity: 0 })),
-            state('show', style({ opacity: .9 })),
+            state('hide', style({ backgroundColor: 'rgba(0,0,0,0)' })),
+            state('show', style({ backgroundColor: 'rgba(0,0,0,.86)' })),
             transition('show => hide', [
                 animate('.05s'),
             ]),
@@ -34,7 +35,7 @@ import { Video } from '../../models/video';
             ])
         ]),
         trigger('navigationNextAnimator', [
-            state('hide', style({ left: '120px', right: '0px' })),
+            state('hide', style({ left: '144px', right: '0px' })),
             state('show', style({ left: '0px', right: '0px' })),
             transition('show => hide', [
                 animate('.05s')
@@ -44,7 +45,7 @@ import { Video } from '../../models/video';
             ])
         ]),
         trigger('navigationPreviousAnimator', [
-            state('hide', style({ left: '-80px', right: '0px' })),
+            state('hide', style({ left: '-104px', right: '0px' })),
             state('show', style({ left: '0px', right: '0px' })),
             transition('show => hide', [
                 animate('.05s')
@@ -62,11 +63,15 @@ export class LightboxComponent {
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
+    public displayImgControls: 'hidden' | 'visible' = 'hidden';
+
     public navigationNextAnimator: 'hide' | 'show' = 'hide';
 
     public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
 
     @ViewChild('header') public header: LightboxHeaderComponent;
+
+    @ViewChild('controls') public imgControls: LightboxImgControlComponent;
 
     @ViewChild('next') public next: LightboxButtonComponent;
 
@@ -83,6 +88,16 @@ export class LightboxComponent {
     public fadeAnimator: 'show' | 'hide' = 'hide';
 
     public readonly state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
+
+    public disableZoomIn: boolean;
+
+    public disableZoomOut: boolean;
+
+    public disableResetZoom: boolean;
+
+    public disableFeetToWidth: boolean;
+
+    private _ytPlayer: YT.Player;
 
     @ViewChildren('lightboxItem') private _itemsRef: QueryList<LightboxItemComponent>;
 
@@ -139,7 +154,9 @@ export class LightboxComponent {
                     }
                 });
 
+                this._checkImgControls();
                 this._checkNavigation();
+                this._checkImageControlVisibility(itemRef);
             }
         }, 0);
     }
@@ -152,11 +169,16 @@ export class LightboxComponent {
         this.fadeAnimator = 'hide';
         this.displayPlayer = 'hidden';
         this._closeControls();
+        if (this._ytPlayer) {
+
+            this._ytPlayer.stopVideo();
+        }
     }
 
     public onToggle(): void {
 
         this.header.toggle();
+        this.imgControls.toggle();
 
         if (this.navigationNextAnimator === 'show') {
 
@@ -196,6 +218,7 @@ export class LightboxComponent {
             }
 
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
+            this._checkImgControls();
 
             nextItemRef.animateRight().done(() => {
 
@@ -207,6 +230,7 @@ export class LightboxComponent {
                         this.displayPlayer = 'visible';
                     } else {
 
+                        this._checkImageControlVisibility(nextItemRef);
                         this.displayPlayer = 'hidden';
                     }
                 });
@@ -214,6 +238,32 @@ export class LightboxComponent {
         }
 
         this._checkNavigation();
+    }
+
+    public zoomIn() {
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.zoomIn();
+        this._checkImageControlVisibility(activeItemRef);
+    }
+
+    public zoomOut() {
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.zoomOut();
+        this._checkImageControlVisibility(activeItemRef);
+    }
+
+    public resetZoom() {
+
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.resetZoom();
+        this._checkImageControlVisibility(activeItemRef);
+    }
+
+    public feetToWidth() {
+
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        activeItemRef.feetToWidth();
+        this._checkImageControlVisibility(activeItemRef);
     }
 
     public onPrevious() {
@@ -238,6 +288,7 @@ export class LightboxComponent {
             }
 
             this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
+            this._checkImgControls();
 
             previousItemRef.animateLeft().done(() => {
 
@@ -249,6 +300,7 @@ export class LightboxComponent {
                         this.displayPlayer = 'visible';
                     } else {
 
+                        this._checkImageControlVisibility(previousItemRef);
                         this.displayPlayer = 'hidden';
                     }
                 });
@@ -260,7 +312,7 @@ export class LightboxComponent {
 
     public onReady(event: YT.PlayerEvent): void {
 
-        // on ready
+        this._ytPlayer = event.target;
     }
 
     public onError(event: YT.OnErrorEvent) {
@@ -298,7 +350,8 @@ export class LightboxComponent {
 
             if (!activeItemRef.isVideo()) {
 
-                activeItemRef.animateCenter();
+                activeItemRef.resize();
+                this._checkImageControlVisibility(activeItemRef);
             }
         }
     }
@@ -336,15 +389,36 @@ export class LightboxComponent {
         }
     }
 
+    private _checkImgControls() {
+
+        if (this._itemRef(this._itemIndex(this.activeItem)).isVideo()) {
+
+            this.displayImgControls = 'hidden';
+        } else {
+
+            this.displayImgControls = 'visible';
+        }
+    }
+
+    private _checkImageControlVisibility(item: LightboxItemComponent) {
+
+        this.disableZoomIn = item.position === item.zoomMax;
+        this.disableZoomOut = item.position === 0;
+        this.disableResetZoom = item.position === 0;
+        this.disableFeetToWidth = item.position === item.feetToWidthPosition;
+    }
+
     private _openControls(): void {
 
         this.header.open();
+        this.imgControls.open();
         this._navigationShow();
     }
 
     private _closeControls(): void {
 
         this.header.close();
+        this.imgControls.close();
         this._navigationHide();
     }
 }

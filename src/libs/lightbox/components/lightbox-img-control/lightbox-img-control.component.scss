@@ -4,12 +4,12 @@
     background-color: black;
     display: flex;
     align-items: center;
+    place-content: center;
+    align-content: center;
+    justify-content: center;
     padding: 0px 12px;
-    position: relative;
+    position: absolute;
+    width:100%;
     z-index: 2;
     color:white;
-
-    .header-title{
-        margin-left: 15px;
-    }
 }
