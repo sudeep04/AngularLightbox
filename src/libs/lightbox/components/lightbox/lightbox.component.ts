@@ -15,8 +15,8 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
     styleUrls: ['./lightbox.component.scss'],
     animations: [
         trigger('fadeAnimator', [
-            state('hide', style({ opacity: 0 })),
-            state('show', style({ opacity: .86 })),
+            state('hide', style({ backgroundColor: 'rgba(0,0,0,0)' })),
+            state('show', style({ backgroundColor: 'rgba(0,0,0,.86)' })),
             transition('show => hide', [
                 animate('.05s'),
             ]),
@@ -35,7 +35,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
             ])
         ]),
         trigger('navigationNextAnimator', [
-            state('hide', style({ left: '120px', right: '0px' })),
+            state('hide', style({ left: '144px', right: '0px' })),
             state('show', style({ left: '0px', right: '0px' })),
             transition('show => hide', [
                 animate('.05s')
@@ -45,7 +45,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
             ])
         ]),
         trigger('navigationPreviousAnimator', [
-            state('hide', style({ left: '-80px', right: '0px' })),
+            state('hide', style({ left: '-104px', right: '0px' })),
             state('show', style({ left: '0px', right: '0px' })),
             transition('show => hide', [
                 animate('.05s')
@@ -60,8 +60,6 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
     }
 })
 export class LightboxComponent {
-
-    private _ytPlayer: YT.Player;
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
@@ -90,6 +88,16 @@ export class LightboxComponent {
     public fadeAnimator: 'show' | 'hide' = 'hide';
 
     public readonly state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
+
+    public disableZoomIn: boolean;
+
+    public disableZoomOut: boolean;
+
+    public disableResetZoom: boolean;
+
+    public disableFeetToWidth: boolean;
+
+    private _ytPlayer: YT.Player;
 
     @ViewChildren('lightboxItem') private _itemsRef: QueryList<LightboxItemComponent>;
 
@@ -161,8 +169,8 @@ export class LightboxComponent {
         this.fadeAnimator = 'hide';
         this.displayPlayer = 'hidden';
         this._closeControls();
-        if(this._ytPlayer) {
-            
+        if (this._ytPlayer) {
+
             this._ytPlayer.stopVideo();
         }
     }
@@ -232,35 +240,27 @@ export class LightboxComponent {
         this._checkNavigation();
     }
 
-    public disableZoomIn: boolean;
-
-    public disableZoomOut: boolean;
-
-    public disableResetZoom: boolean;
-
-    public disableFeetToWidth: boolean;
-
-    public zoomIn(){
+    public zoomIn() {
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
         activeItemRef.zoomIn();
         this._checkImageControlVisibility(activeItemRef);
     }
 
-    public zoomOut(){
+    public zoomOut() {
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
         activeItemRef.zoomOut();
         this._checkImageControlVisibility(activeItemRef);
     }
 
-    public resetZoom(){
-        
+    public resetZoom() {
+
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
         activeItemRef.resetZoom();
         this._checkImageControlVisibility(activeItemRef);
     }
 
-    public feetToWidth(){
-        
+    public feetToWidth() {
+
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
         activeItemRef.feetToWidth();
         this._checkImageControlVisibility(activeItemRef);
@@ -392,7 +392,7 @@ export class LightboxComponent {
     private _checkImgControls() {
 
         if (this._itemRef(this._itemIndex(this.activeItem)).isVideo()) {
-            
+
             this.displayImgControls = 'hidden';
         } else {
 
@@ -402,10 +402,10 @@ export class LightboxComponent {
 
     private _checkImageControlVisibility(item: LightboxItemComponent) {
 
-        this.disableZoomIn = item.position == item.zoomMax;
-        this.disableZoomOut = item.position == 0;
-        this.disableResetZoom = item.position == 0;
-        this.disableFeetToWidth = item.position == item.feetToWidthPosition;
+        this.disableZoomIn = item.position === item.zoomMax;
+        this.disableZoomOut = item.position === 0;
+        this.disableResetZoom = item.position === 0;
+        this.disableFeetToWidth = item.position === item.feetToWidthPosition;
     }
 
     private _openControls(): void {

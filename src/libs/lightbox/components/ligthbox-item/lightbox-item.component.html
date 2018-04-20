@@ -1,7 +1,6 @@
 <img #img lazy-loading
-    [@itemAnimator]="itemAnimator"
-    (@itemAnimator.start) = "itemAnimatorStart($event)"
-    (@itemAnimator.done) = "itemAnimatorDone($event)"
+    (click)="onClick($event)"
+    [@itemAnimatorState]="itemAnimator"
     [src]="item.src"
     [xs-src]="item.xsSrc"
     [sm-src]="item.smSrc"

@@ -60,22 +60,22 @@ export class LightboxImgControlComponent {
         }
     }
 
-    public zoomIn(){
+    public zoomIn() {
 
         this.zoomInEvent.emit();
     }
 
-    public zoomOut(){
+    public zoomOut() {
 
         this.zoomOutEvent.emit();
     }
 
-    public resetZoom(){
-        
+    public resetZoom() {
+
         this.resetZoomEvent.emit();
     }
 
-    public feetToWidth(){
+    public feetToWidth() {
 
         this.feetToWidthEvent.emit();
     }

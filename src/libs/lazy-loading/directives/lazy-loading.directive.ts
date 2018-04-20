@@ -91,7 +91,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private _setSrc(): void {
-        
+
         if (this._isInViewPort() || this.load) {
 
             const width = this._elementRef.nativeElement.clientWidth;

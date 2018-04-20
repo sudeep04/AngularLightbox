@@ -1,6 +1,15 @@
 :host {
+
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    
+    box-sizing: border-box;
     img {
-        position: absolute;
+        position: relative;
         z-index: 1;
     }
 }
