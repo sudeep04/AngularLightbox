@@ -64,7 +64,6 @@ export class LightboxThumbnailsComponent {
 
     public sliceAnimatorDone(event: AnimationEvent): void {
         
-        console.log(event.fromState);
 
         switch(event.toState) {
             case 'slice':
