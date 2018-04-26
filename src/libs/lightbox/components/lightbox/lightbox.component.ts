@@ -8,6 +8,8 @@ import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.comp
 import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
 import { Video } from '../../models/video';
 import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
+import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
+import { Pagination } from '../../models/pagination.interface';
 
 @Component({
     selector: 'lightbox',
@@ -16,12 +18,12 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
     animations: [
         trigger('fadeAnimator', [
             state('hide', style({ backgroundColor: 'rgba(0,0,0,0)' })),
-            state('show', style({ backgroundColor: 'rgba(0,0,0,.86)' })),
+            state('show', style({ backgroundColor: 'rgba(0,0,0,.9)' })),
             transition('show => hide', [
                 animate('.05s'),
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ]),
         trigger('headerShowAnimator', [
@@ -31,7 +33,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s')
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ]),
         trigger('navigationNextAnimator', [
@@ -41,7 +43,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s')
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ]),
         trigger('navigationPreviousAnimator', [
@@ -51,7 +53,7 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
                 animate('.05s')
             ]),
             transition('hide => show', [
-                animate('.2s')
+                animate('.4s')
             ])
         ])
     ],
@@ -60,6 +62,11 @@ import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-im
     }
 })
 export class LightboxComponent {
+
+    public pagination: Pagination = { current: 0, count: 0 };
+
+
+
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
@@ -70,6 +77,8 @@ export class LightboxComponent {
     public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
 
     @ViewChild('header') public header: LightboxHeaderComponent;
+
+    @ViewChild('thumbnails') public thumbnails: LightboxThumbnailsComponent;
 
     @ViewChild('controls') public imgControls: LightboxImgControlComponent;
 
@@ -113,6 +122,11 @@ export class LightboxComponent {
         this.items[item.container].push(item);
     }
 
+    public thumbnailsToggle() {
+
+        this.thumbnails.toggle();
+    }
+
     public removeItem(item: Item): void {
 
         const index = this._itemIndex(item);
@@ -132,7 +146,11 @@ export class LightboxComponent {
 
         setTimeout(() => {
 
-            const itemRef = this._itemRef(this._itemIndex(item));
+            const itemIndex = this._itemIndex(item);
+            this.pagination.current = itemIndex + 1;
+            this.pagination.count = this.items[item.container].length;
+            this.thumbnails.selectItem(this.activeItem);
+            const itemRef = this._itemRef(itemIndex);
 
             if (itemRef) {
 
@@ -155,7 +173,6 @@ export class LightboxComponent {
                 });
 
                 this._checkImgControls();
-                this._checkNavigation();
                 this._checkImageControlVisibility(itemRef);
             }
         }, 0);
@@ -183,16 +200,92 @@ export class LightboxComponent {
         if (this.navigationNextAnimator === 'show') {
 
             this.navigationNextAnimator = 'hide';
+            this.navigationPreviousAnimator = 'hide';
+            this.thumbnails.close();
         } else {
 
             this.navigationNextAnimator = 'show';
+            this.navigationPreviousAnimator = 'show';
+            this.thumbnails.open();
         }
-        if (this.navigationPreviousAnimator === 'show') {
+    }
 
-            this.navigationPreviousAnimator = 'hide';
+    public selectItem(item: Item): void {
+
+        const activeItem = this.activeItem;
+        const activeItemIndex = this._itemIndex(activeItem);
+        const activeItemRef = this._itemRef(activeItemIndex);
+
+        const itemIndex = this._itemIndex(item);
+        const itemRef = this._itemRef(itemIndex);
+
+        this.pagination.current = itemIndex + 1;
+        this.activeItem = item;
+        this.thumbnails.selectItem(item);
+        this._checkImgControls();
+
+        if (activeItemRef.isVideo()) {
+
+            this.displayPlayer = 'hidden';
+            activeItemRef.animateCenter().done(() => {
+
+                if (activeItem != this.activeItem) {
+                    if (itemIndex < activeItemIndex) {
+                        activeItemRef.animateRight();
+                    } else {
+                        activeItemRef.animateLeft();
+                    }
+                }
+            });
         } else {
 
-            this.navigationPreviousAnimator = 'show';
+            if (activeItem != this.activeItem) {
+                if (itemIndex < activeItemIndex) {
+                    activeItemRef.animateRight();
+                } else {
+                    activeItemRef.animateLeft();
+                }
+            }
+        }
+
+        if (itemIndex < activeItemIndex) {
+            itemRef.animateLeft().done(() => {
+
+                if (item == this.activeItem) {
+
+                    itemRef.animateCenter().done(() => {
+
+                        if (itemRef.isVideo()) {
+
+                            itemRef.animateNull();
+                            this.displayPlayer = 'visible';
+                        } else {
+
+                            this._checkImageControlVisibility(itemRef);
+                            this.displayPlayer = 'hidden';
+                        }
+                    });
+                }
+            });
+        } else {
+            itemRef.animateRight().done(() => {
+
+                if (item == this.activeItem) {
+
+                    itemRef.animateCenter().done(() => {
+
+                        if (itemRef.isVideo()) {
+
+                            itemRef.animateNull();
+                            this.displayPlayer = 'visible';
+                        } else {
+
+                            this._checkImageControlVisibility(itemRef);
+                            this.displayPlayer = 'hidden';
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -202,42 +295,20 @@ export class LightboxComponent {
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
 
-            const nextItemRef = this._itemRef(activeItemIndex + 1);
-            const activeItemRef = this._itemRef(activeItemIndex);
-
-            if (activeItemRef.isVideo()) {
-
-                this.displayPlayer = 'hidden';
-                activeItemRef.animateCenter().done(() => {
-
-                    activeItemRef.animateLeft();
-                });
-            } else {
-
-                activeItemRef.animateLeft();
-            }
-
-            this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
-            this._checkImgControls();
-
-            nextItemRef.animateRight().done(() => {
-
-                nextItemRef.animateCenter().done(() => {
-
-                    if (nextItemRef.isVideo()) {
-
-                        nextItemRef.animateNull();
-                        this.displayPlayer = 'visible';
-                    } else {
-
-                        this._checkImageControlVisibility(nextItemRef);
-                        this.displayPlayer = 'hidden';
-                    }
-                });
-            });
+            const item = this.items[this.activeItem.container][activeItemIndex + 1];
+            this.selectItem(item);
         }
+    }
 
-        this._checkNavigation();
+    public onLast() {
+
+        const activeItemIndex = this._itemIndex(this.activeItem);
+
+        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+
+            const item = this.items[this.activeItem.container][this.items[this.activeItem.container].length - 1];
+            this.selectItem(item);
+        }
     }
 
     public zoomIn() {
@@ -266,48 +337,26 @@ export class LightboxComponent {
         this._checkImageControlVisibility(activeItemRef);
     }
 
+    public onFirst() {
+
+        const activeItemIndex = this._itemIndex(this.activeItem);
+
+        if (activeItemIndex > 0) {
+
+            const item = this.items[this.activeItem.container][0];
+            this.selectItem(item);
+        }
+    }
+
     public onPrevious() {
 
         const activeItemIndex = this._itemIndex(this.activeItem);
 
         if (activeItemIndex > 0) {
 
-            const previousItemRef = this._itemRef(activeItemIndex - 1);
-            const activeItemRef = this._itemRef(activeItemIndex);
-
-            if (activeItemRef.isVideo()) {
-
-                this.displayPlayer = 'hidden';
-                activeItemRef.animateCenter().done(() => {
-
-                    activeItemRef.animateRight();
-                });
-            } else {
-
-                activeItemRef.animateRight();
-            }
-
-            this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
-            this._checkImgControls();
-
-            previousItemRef.animateLeft().done(() => {
-
-                previousItemRef.animateCenter().done(() => {
-
-                    if (previousItemRef.isVideo()) {
-
-                        previousItemRef.animateNull();
-                        this.displayPlayer = 'visible';
-                    } else {
-
-                        this._checkImageControlVisibility(previousItemRef);
-                        this.displayPlayer = 'hidden';
-                    }
-                });
-            });
+            const item = this.items[this.activeItem.container][activeItemIndex - 1];
+            this.selectItem(item);
         }
-
-        this._checkNavigation();
     }
 
     public onReady(event: YT.PlayerEvent): void {
@@ -351,6 +400,7 @@ export class LightboxComponent {
             if (!activeItemRef.isVideo()) {
 
                 activeItemRef.resize();
+                this.thumbnails.resize();
                 this._checkImageControlVisibility(activeItemRef);
             }
         }
@@ -368,27 +418,6 @@ export class LightboxComponent {
         this.navigationPreviousAnimator = 'hide';
     }
 
-    private _checkNavigation() {
-
-        const activeItemIndex = this._itemIndex(this.activeItem);
-
-        if (activeItemIndex > 0) {
-
-            this.hasPrevious = true;
-        } else {
-
-            this.hasPrevious = false;
-        }
-
-        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
-
-            this.hasNext = true;
-        } else {
-
-            this.hasNext = false;
-        }
-    }
-
     private _checkImgControls() {
 
         if (this._itemRef(this._itemIndex(this.activeItem)).isVideo()) {
@@ -402,7 +431,7 @@ export class LightboxComponent {
 
     private _checkImageControlVisibility(item: LightboxItemComponent) {
 
-        this.disableZoomIn = item.position === item.zoomMax;
+        this.disableZoomIn = item.position + 1 === item.zoomMax;
         this.disableZoomOut = item.position === 0;
         this.disableResetZoom = item.position === 0;
         this.disableFeetToWidth = item.position === item.feetToWidthPosition;
@@ -413,6 +442,7 @@ export class LightboxComponent {
         this.header.open();
         this.imgControls.open();
         this._navigationShow();
+        this.thumbnails.open();
     }
 
     private _closeControls(): void {
@@ -420,5 +450,6 @@ export class LightboxComponent {
         this.header.close();
         this.imgControls.close();
         this._navigationHide();
+        this.thumbnails.close();
     }
 }

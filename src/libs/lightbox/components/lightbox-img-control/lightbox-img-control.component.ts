@@ -12,7 +12,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
             state('showed',
                 style({ bottom: '0px' })),
             transition('hidden => showed', [
-                animate('.2s')
+                animate('.4s')
             ]),
             transition('showed => hidden', [
                 animate('.05s')
@@ -62,21 +62,33 @@ export class LightboxImgControlComponent {
 
     public zoomIn() {
 
-        this.zoomInEvent.emit();
+        if (!this.disableZoomIn) {
+
+            this.zoomInEvent.emit();
+        }
     }
 
     public zoomOut() {
 
-        this.zoomOutEvent.emit();
+        if (!this.disableZoomOut) {
+
+            this.zoomOutEvent.emit();
+        }
     }
 
     public resetZoom() {
 
-        this.resetZoomEvent.emit();
+        if (!this.disableResetZoom) {
+
+            this.resetZoomEvent.emit();
+        }
     }
 
     public feetToWidth() {
 
-        this.feetToWidthEvent.emit();
+        if (!this.disableFeetToWidth) {
+
+            this.feetToWidthEvent.emit();
+        }
     }
 }

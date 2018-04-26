@@ -1,34 +1,29 @@
-<lightbox-header #header (closeEvent)="onClose()" [title]="activeItem? activeItem.title : ''"></lightbox-header>
-
-<div class="lightbox-navigation">
-    <button #previous lightbox-icon-button [@navigationPreviousAnimator]="navigationPreviousAnimator" (click)="onPrevious()"
-        title="Previous"
-        [disable]="!hasPrevious">
-        <span class="material-icons">navigate_before</span>
-    </button>
-    <button #next lightbox-icon-button [@navigationNextAnimator]="navigationNextAnimator" (click)="onNext()" 
-        title="Next"
-        [disable]="!hasNext">
-        <span class="material-icons">navigate_next</span>
-    </button>
-</div>
-<lightbox-img-control #controls
-    [style.visibility]="displayImgControls"
-    [disableZoomIn]="disableZoomIn"
-    [disableZoomOut]="disableZoomOut"
-    [disableResetZoom]="disableResetZoom"
-    [disableFeetToWidth]="disableFeetToWidth"
-    (zoomInEvent)="zoomIn()"
-    (zoomOutEvent)="zoomOut()"
-    (resetZoomEvent)="resetZoom()"
-    (feetToWidthEvent)="feetToWidth()">
-</lightbox-img-control>
-<div [@fadeAnimator]="fadeAnimator" (click)="onClose()" class="lightbox-background">
-    <div *ngIf="activeItem" class="item-list">
-        <lightbox-item (toggleEvent)="onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item">
-        </lightbox-item>
+<div [@fadeAnimator]="fadeAnimator" class="lightbox-background"></div>
+<lightbox-header #header
+    [pagination]="pagination"
+    [title]="activeItem?.title"
+    (closeEvent)="onClose()"
+    (firstEvent)="onFirst()"
+    (previousEvent)="onPrevious()"
+    (nextEvent)="onNext()"
+    (lastEvent)="onLast()"
+    (thumbnailsToggleEvent)="thumbnailsToggle()">
+</lightbox-header>
+<div class="lightbox-container">
+    <div class="lightbox-items-container">
+        <div (click)="onClose()" class="lightbox-items-background">
+            <div *ngIf="activeItem" class="item-list">
+                <lightbox-item (toggleEvent)="onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item">
+                </lightbox-item>
+            </div>
+        </div>
+        <lightbox-img-control #controls [style.visibility]="displayImgControls" [disableZoomIn]="disableZoomIn" [disableZoomOut]="disableZoomOut"
+            [disableResetZoom]="disableResetZoom" [disableFeetToWidth]="disableFeetToWidth" (zoomInEvent)="zoomIn()" (zoomOutEvent)="zoomOut()"
+            (resetZoomEvent)="resetZoom()" (feetToWidthEvent)="feetToWidth()">
+        </lightbox-img-control>
+        <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
+            (change)="onChange($event)" (error)="onError($event)"></youtube>
     </div>
+    <lightbox-thumbnails #thumbnails [items]="activeItem? items[activeItem.container]:[]" (selectEvent)="selectItem($event)">
+    </lightbox-thumbnails>
 </div>
-
-<youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
-    (change)="onChange($event)" (error)="onError($event)"></youtube>

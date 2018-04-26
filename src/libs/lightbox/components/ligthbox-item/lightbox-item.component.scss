@@ -2,14 +2,15 @@
 
     overflow: auto;
     position: absolute;
-    top: 0;
     height: 100%;
     width: 100%;
     z-index: 1;
-    
+    display: flex;
+
     box-sizing: border-box;
     img {
         position: relative;
+        margin: auto;
         z-index: 1;
     }
 }
