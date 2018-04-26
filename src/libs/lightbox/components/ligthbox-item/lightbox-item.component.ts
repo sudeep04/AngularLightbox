@@ -1,5 +1,5 @@
 
-import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, Optional } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, Optional, NgZone } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent, query } from '@angular/animations';
 import { Item } from '../../models/item';
 import { ILightboxItemComponent } from '../../models/iLightboxItemComponent';
@@ -103,7 +103,8 @@ import { Video } from '../../models/video';
         '[@transitions]': 'itemAnimator',
         '(@transitions.start)': 'itemAnimatorStart($event)',
         '(@transitions.done)': 'itemAnimatorDone($event)',
-        '[style.overflow]': 'overflow'
+        '[style.overflow]': 'overflow',
+        '(dragover)':'onDrag($event)'
     }
 })
 export class LightboxItemComponent implements OnInit {
@@ -159,27 +160,6 @@ export class LightboxItemComponent implements OnInit {
     private _scrollInterval: any;
 
     public itemAnimatorStart(event: AnimationEvent): void {
-
-        // if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
-
-        //     this._scrollInterval = setInterval(()=>{
-
-                
-        //         const top = (this._img.nativeElement.clientHeight - window.innerHeight) / 2;
-        //         const left = (this._img.nativeElement.clientWidth - window.innerWidth) / 2;
-            
-        //         if(event.fromState < event.toState) {
-
-        //             this._elementRef.nativeElement.scrollTop += Math.round(window.innerHeight/16);
-        //             this._elementRef.nativeElement.scrollLeft += Math.round(window.innerWidth/24);
-        //         }else{
-                    
-        //             this._elementRef.nativeElement.scrollTop -= Math.round(window.innerHeight/16);
-        //             this._elementRef.nativeElement.scrollLeft -= Math.round(window.innerWidth/24);
-        //         }
-        //         //this._elementRef.nativeElement.scrollLeft = this._elementRef.nativeElement.offset().top + (this._elementRef.nativeElement.height() / 2);
-        //     },0)
-        // }
         if(event.toState == 'right' || event.fromState == 'right') {
 
             this.overflow = 'hidden';
@@ -189,16 +169,31 @@ export class LightboxItemComponent implements OnInit {
 
     private _dragPositionX: number;
     private _dragPositionY: number;
+    private _originScrollTop: number;
+    private _originScrollLeft: number;
 
-    public ondragstart(event){
-        // this._dragPositionX = event.layerX;
-        // this._dragPositionY = event.layerY;
+    public onDragStart(event){
+        this._img.nativeElement.style.cursor = 'move';
+        this._dragPositionX = event.screenX;
+        this._dragPositionY = event.screenY;
+        this._originScrollTop = this._elementRef.nativeElement.scrollTop;
+        this._originScrollLeft = this._elementRef.nativeElement.scrollLeft;
     }
 
-    public drag(event){
-        // console.log(event);
-        // this._elementRef.nativeElement.scrollTop += this._dragPositionY - event.layerY;
-        // this._elementRef.nativeElement.scrollLeft += this._dragPositionX - event.layerX;
+    public onDrag(event){
+        if(event.screenY){
+
+            this._elementRef.nativeElement.scrollTop =  this._originScrollTop + this._dragPositionY - event.screenY;
+        }
+        if(event.screenX){
+
+            this._elementRef.nativeElement.scrollLeft =  this._originScrollLeft + this._dragPositionX - event.screenX;
+        }
+
+    }
+
+    public onDragEnd(event){
+        this._img.nativeElement.style.cursor = 'default';
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
