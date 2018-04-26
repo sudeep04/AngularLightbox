@@ -1,5 +1,7 @@
 
 <div class="thumbnail-container">
-    <img *ngFor="let item of items" [src]="getItemSrc(item)"/>
+    <div [@sliceAnimator]="sliceAnimator">
+        <img [ngClass]="{'active': item === activeItem}" *ngFor="let item of items" [src]="getItemSrc(item)" (click)="onSelect(item)"/>
+    </div>
 </div>
 

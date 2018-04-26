@@ -148,7 +148,8 @@ export class LightboxComponent {
 
             const itemIndex = this._itemIndex(item);
             this.pagination.current = itemIndex + 1;
-            this.pagination.count =  this.items[item.container].length;
+            this.pagination.count = this.items[item.container].length;
+            this.thumbnails.selectItem(this.activeItem);
             const itemRef = this._itemRef(itemIndex);
 
             if (itemRef) {
@@ -172,7 +173,6 @@ export class LightboxComponent {
                 });
 
                 this._checkImgControls();
-                this._checkNavigation();
                 this._checkImageControlVisibility(itemRef);
             }
         }, 0);
@@ -210,49 +210,94 @@ export class LightboxComponent {
         }
     }
 
+    public selectItem(item: Item): void {
+
+        const activeItem = this.activeItem;
+        const activeItemIndex = this._itemIndex(activeItem);
+        const activeItemRef = this._itemRef(activeItemIndex);
+
+        const itemIndex = this._itemIndex(item);
+        const itemRef = this._itemRef(itemIndex);
+
+        this.pagination.current = itemIndex + 1;
+        this.activeItem = item;
+        this.thumbnails.selectItem(item);
+        this._checkImgControls();
+
+        if (activeItemRef.isVideo()) {
+
+            this.displayPlayer = 'hidden';
+            activeItemRef.animateCenter().done(() => {
+
+                if (activeItem != this.activeItem) {
+                    if (itemIndex < activeItemIndex) {
+                        activeItemRef.animateRight();
+                    } else {
+                        activeItemRef.animateLeft();
+                    }
+                }
+            });
+        } else {
+
+            if (activeItem != this.activeItem) {
+                if (itemIndex < activeItemIndex) {
+                    activeItemRef.animateRight();
+                } else {
+                    activeItemRef.animateLeft();
+                }
+            }
+        }
+
+        if (itemIndex < activeItemIndex) {
+            itemRef.animateLeft().done(() => {
+
+                if (item == this.activeItem) {
+
+                    itemRef.animateCenter().done(() => {
+
+                        if (itemRef.isVideo()) {
+
+                            itemRef.animateNull();
+                            this.displayPlayer = 'visible';
+                        } else {
+
+                            this._checkImageControlVisibility(itemRef);
+                            this.displayPlayer = 'hidden';
+                        }
+                    });
+                }
+            });
+        } else {
+            itemRef.animateRight().done(() => {
+
+                if (item == this.activeItem) {
+
+                    itemRef.animateCenter().done(() => {
+
+                        if (itemRef.isVideo()) {
+
+                            itemRef.animateNull();
+                            this.displayPlayer = 'visible';
+                        } else {
+
+                            this._checkImageControlVisibility(itemRef);
+                            this.displayPlayer = 'hidden';
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     public onNext() {
 
         const activeItemIndex = this._itemIndex(this.activeItem);
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
 
-            this.pagination.current = activeItemIndex + 2;
-            const nextItemRef = this._itemRef(activeItemIndex + 1);
-            const activeItemRef = this._itemRef(activeItemIndex);
-
-            if (activeItemRef.isVideo()) {
-
-                this.displayPlayer = 'hidden';
-                activeItemRef.animateCenter().done(() => {
-
-                    activeItemRef.animateLeft();
-                });
-            } else {
-
-                activeItemRef.animateLeft();
-            }
-
-            this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
-            this._checkImgControls();
-
-            nextItemRef.animateRight().done(() => {
-
-                nextItemRef.animateCenter().done(() => {
-
-                    if (nextItemRef.isVideo()) {
-
-                        nextItemRef.animateNull();
-                        this.displayPlayer = 'visible';
-                    } else {
-
-                        this._checkImageControlVisibility(nextItemRef);
-                        this.displayPlayer = 'hidden';
-                    }
-                });
-            });
+            const item = this.items[this.activeItem.container][activeItemIndex + 1];
+            this.selectItem(item);
         }
-
-        this._checkNavigation();
     }
 
     public onLast() {
@@ -261,43 +306,9 @@ export class LightboxComponent {
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
 
-            this.pagination.current = this.items[this.activeItem.container].length;
-            const nextItemRef = this._itemRef(this.items[this.activeItem.container].length - 1);
-            const activeItemRef = this._itemRef(activeItemIndex);
-
-            if (activeItemRef.isVideo()) {
-
-                this.displayPlayer = 'hidden';
-                activeItemRef.animateCenter().done(() => {
-
-                    activeItemRef.animateLeft();
-                });
-            } else {
-
-                activeItemRef.animateLeft();
-            }
-
-            this.activeItem = this.items[this.activeItem.container][this.items[this.activeItem.container].length - 1];
-            this._checkImgControls();
-
-            nextItemRef.animateRight().done(() => {
-
-                nextItemRef.animateCenter().done(() => {
-
-                    if (nextItemRef.isVideo()) {
-
-                        nextItemRef.animateNull();
-                        this.displayPlayer = 'visible';
-                    } else {
-
-                        this._checkImageControlVisibility(nextItemRef);
-                        this.displayPlayer = 'hidden';
-                    }
-                });
-            });
+            const item = this.items[this.activeItem.container][this.items[this.activeItem.container].length - 1];
+            this.selectItem(item);
         }
-
-        this._checkNavigation();
     }
 
     public zoomIn() {
@@ -332,43 +343,9 @@ export class LightboxComponent {
 
         if (activeItemIndex > 0) {
 
-            this.pagination.current = 1;
-            const previousItemRef = this._itemRef(0);
-            const activeItemRef = this._itemRef(activeItemIndex);
-
-            if (activeItemRef.isVideo()) {
-
-                this.displayPlayer = 'hidden';
-                activeItemRef.animateCenter().done(() => {
-
-                    activeItemRef.animateRight();
-                });
-            } else {
-
-                activeItemRef.animateRight();
-            }
-
-            this.activeItem = this.items[this.activeItem.container][0];
-            this._checkImgControls();
-
-            previousItemRef.animateLeft().done(() => {
-
-                previousItemRef.animateCenter().done(() => {
-
-                    if (previousItemRef.isVideo()) {
-
-                        previousItemRef.animateNull();
-                        this.displayPlayer = 'visible';
-                    } else {
-
-                        this._checkImageControlVisibility(previousItemRef);
-                        this.displayPlayer = 'hidden';
-                    }
-                });
-            });
+            const item = this.items[this.activeItem.container][0];
+            this.selectItem(item);
         }
-
-        this._checkNavigation();
     }
 
     public onPrevious() {
@@ -377,43 +354,9 @@ export class LightboxComponent {
 
         if (activeItemIndex > 0) {
 
-            this.pagination.current = activeItemIndex;
-            const previousItemRef = this._itemRef(activeItemIndex - 1);
-            const activeItemRef = this._itemRef(activeItemIndex);
-
-            if (activeItemRef.isVideo()) {
-
-                this.displayPlayer = 'hidden';
-                activeItemRef.animateCenter().done(() => {
-
-                    activeItemRef.animateRight();
-                });
-            } else {
-
-                activeItemRef.animateRight();
-            }
-
-            this.activeItem = this.items[this.activeItem.container][activeItemIndex - 1];
-            this._checkImgControls();
-
-            previousItemRef.animateLeft().done(() => {
-
-                previousItemRef.animateCenter().done(() => {
-
-                    if (previousItemRef.isVideo()) {
-
-                        previousItemRef.animateNull();
-                        this.displayPlayer = 'visible';
-                    } else {
-
-                        this._checkImageControlVisibility(previousItemRef);
-                        this.displayPlayer = 'hidden';
-                    }
-                });
-            });
+            const item = this.items[this.activeItem.container][activeItemIndex - 1];
+            this.selectItem(item);
         }
-
-        this._checkNavigation();
     }
 
     public onReady(event: YT.PlayerEvent): void {
@@ -473,27 +416,6 @@ export class LightboxComponent {
 
         this.navigationNextAnimator = 'hide';
         this.navigationPreviousAnimator = 'hide';
-    }
-
-    private _checkNavigation() {
-
-        const activeItemIndex = this._itemIndex(this.activeItem);
-
-        if (activeItemIndex > 0) {
-
-            this.hasPrevious = true;
-        } else {
-
-            this.hasPrevious = false;
-        }
-
-        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
-
-            this.hasNext = true;
-        } else {
-
-            this.hasNext = false;
-        }
     }
 
     private _checkImgControls() {

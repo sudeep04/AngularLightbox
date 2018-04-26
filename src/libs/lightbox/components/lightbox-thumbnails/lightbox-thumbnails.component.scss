@@ -4,36 +4,32 @@
     color:white;
     flex: 1 1 0%;
     box-sizing: border-box;
-    background-color: rgba(50,50,50,.9); 
+    background-color: rgb(30, 30, 30); 
     z-index: 2;
     position: relative;
-    box-shadow: 0 8px 10px 5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12);
-
-    .thumbnail-previous-controller{
-        display: flex;
-        justify-content: center;
-        top: 12px;
-        position: relative;
-    }
-
-    .thumbnail-next-controller{
-        display: flex;
-        justify-content: center;
-        position: absolute;
-        width: 100%;
-        bottom: 12px;
-    }
 
     .thumbnail-container{
         
-        padding: 0 12px;
-        height: calc(100% - 64px);
+        margin: 12px;
+        height: calc(100% - 24px);
         overflow: hidden;
 
         img{
-            width: 146px;
+            width: 142px;
             margin-bottom: 12px;
             display: block;
+            border: 2px solid transparent;
+            opacity: .8;
+            cursor: pointer;
         }
+
+        img.active{
+            border: 2px solid #666;
+            opacity: 1;
+            cursor: default;
+        }
+    }
+    @media (max-width: 767px) {
+        display: none;
     }
 }

@@ -1,63 +1,95 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { ThumbnailAnimatorState } from '../../models/thumbnail-animator-state.interface';
+import { ThumbnailVisibilityAnimatorState } from '../../models/thumbnail-visibility-animator-state.interface';
 import { Item } from '../../models/item';
+import { ThumbnailSliceAnimatorState } from '../../models/thumbnail-slice-animator-state.interface';
 
 @Component({
     selector: 'lightbox-thumbnails',
     templateUrl: './lightbox-thumbnails.component.html',
     styleUrls: ['./lightbox-thumbnails.component.scss'],
     animations: [
-        trigger('animator', [
+        trigger('visibilityAnimator', [
             state('hidden',
                 style({ maxWidth: '0px' })),
-            state('showed',
+            state('visible',
                 style({ maxWidth: '{{maxWidth}}px' }),
                 { params: { maxWidth: 0 } }),
-            transition('hidden => showed', [
+            transition('hidden => visible', [
                 animate('.4s')
             ]),
-            transition('showed => hidden', [
+            transition('visible => hidden', [
                 animate('.05s')
+            ]),
+        ]),
+        trigger('sliceAnimator', [
+            state('up',
+                style({ top: '{{top}}px' }),
+                { params: { top: 0 } }),
+            state('down',
+                style({ top: '{{top}}px' }),
+                { params: { top: 0 } }),
+            transition('up => down', [
+                animate('.4s')
+            ]),
+            transition('down => up', [
+                animate('.4s')
             ]),
         ])
     ],
     host: {
-        '[@animator]': 'animator'
+        '[@visibilityAnimator]': 'visibilityAnimator'
     }
 })
 export class LightboxThumbnailsComponent {
 
-    public animator: ThumbnailAnimatorState = { value: 'hidden' };
+    public visibilityAnimator: ThumbnailVisibilityAnimatorState = { value: 'hidden' };
+
+    public sliceAnimator: ThumbnailSliceAnimatorState = { value: 'up' };
 
     @Input('items') public items: Item[] = [];
+    
+    @Output() public selectEvent = new EventEmitter();
+    
+    public activeItem: Item;
+
+    public selectItem(item: Item): void {
+
+        this.activeItem = item;
+    }
+
+    public onSelect(item:Item): void {
+
+        if(item!= this.activeItem) {
+            this.selectEvent.emit(item);
+        }
+    }
 
     public close(): void {
 
-        this.animator = { value: 'hidden' };
+        this.visibilityAnimator = { value: 'hidden' };
     }
 
     public open(): void {
 
-
-        this.animator = { value: 'showed', params: { maxWidth: this._getMaxWidth } };
+        this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
     }
 
     public toggle(): void {
 
-        if (this.animator.value === 'hidden') {
+        if (this.visibilityAnimator.value === 'hidden') {
 
-            this.animator = { value: 'showed', params: { maxWidth: this._getMaxWidth } };
+            this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
         } else {
 
-            this.animator = { value: 'hidden' };
+            this.visibilityAnimator = { value: 'hidden' };
         }
     }
 
     public resize(): void {
-        if (this.animator.value === 'showed') {
+        if (this.visibilityAnimator.value === 'visible') {
 
-            this.animator = { value: 'showed', params: { maxWidth: this._getMaxWidth } };
+            this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
         }
     }
 
@@ -72,7 +104,7 @@ export class LightboxThumbnailsComponent {
 
     private get _getMaxWidth(): number {
         let maxWidth = 0;
-        if (window.innerWidth > 599) {
+        if (window.innerWidth > 767) {
             maxWidth = 170;
         }
         return maxWidth;

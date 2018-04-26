@@ -102,7 +102,8 @@ import { Video } from '../../models/video';
         '[@hostAnimatorState]': 'itemAnimator',
         '[@transitions]': 'itemAnimator',
         '(@transitions.start)': 'itemAnimatorStart($event)',
-        '(@transitions.done)': 'itemAnimatorDone($event)'
+        '(@transitions.done)': 'itemAnimatorDone($event)',
+        '[style.overflow]': 'overflow'
     }
 })
 export class LightboxItemComponent implements OnInit {
@@ -114,6 +115,8 @@ export class LightboxItemComponent implements OnInit {
     public itemAnimator: ImgAnimatorState = { value: 'null' };
 
     @ViewChild('img') private _img: ElementRef;
+
+    public overflow: 'hidden' | 'auto';
 
     private _isVideo: boolean;
 
@@ -177,6 +180,10 @@ export class LightboxItemComponent implements OnInit {
         //         //this._elementRef.nativeElement.scrollLeft = this._elementRef.nativeElement.offset().top + (this._elementRef.nativeElement.height() / 2);
         //     },0)
         // }
+        if(event.toState == 'right' || event.fromState == 'right') {
+
+            this.overflow = 'hidden';
+        }
         this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
@@ -200,6 +207,7 @@ export class LightboxItemComponent implements OnInit {
 
         //     clearInterval(this._scrollInterval);
         // }
+        this.overflow = 'auto';
         this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
