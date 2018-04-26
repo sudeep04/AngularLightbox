@@ -12,7 +12,7 @@ export class DoomSensorService {
 
     constructor() {
 
-        this._trackInterval = setInterval(this._testList, 20);
+        this._trackInterval = setInterval(this._testList, 100);
     }
 
     public track(nativeElement: any, trackedProperties: TrackedProperties, callBack: () => void ): void {

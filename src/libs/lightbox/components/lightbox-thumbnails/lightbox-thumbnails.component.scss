@@ -1,0 +1,39 @@
+:host{
+    
+    height: 100%;
+    color:white;
+    flex: 1 1 0%;
+    box-sizing: border-box;
+    background-color: rgb(30, 30, 30); 
+    z-index: 2;
+    position: relative;
+
+    .thumbnail-container{
+        
+        margin: 12px;
+        height: calc(100% - 24px);
+        overflow: hidden;
+        >div{
+
+            position: relative;
+        }
+
+        img{
+            width: 142px;
+            margin-bottom: 12px;
+            display: block;
+            border: 2px solid transparent;
+            opacity: .6;
+            cursor: pointer;
+        }
+
+        img.active{
+            border: 2px solid #666;
+            opacity: 1;
+            cursor: default;
+        }
+    }
+    @media (max-width: 767px) {
+        display: none;
+    }
+}

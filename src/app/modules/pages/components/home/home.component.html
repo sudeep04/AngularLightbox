@@ -2,13 +2,16 @@
 <h2>Simple Example</h2>
 <br>
 <div fxLayout="row wrap" fxLayoutAlign="center none" fxLayoutGap="10px">
+    
     <mat-card class="example-card">
-        <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'The Godfather'" mat-card-image 
-            [xs-src]="'assets/images/the-godfather-xs.gif'"
-            [sm-src]="'assets/images/the-godfather-sm.gif'"
-            [md-src]="'assets/images/the-godfather-md.gif'"
-            [lg-src]="'assets/images/the-godfather-lg.gif'"
-            [xl-src]="'assets/images/the-godfather-xl.gif'"/>
+        <img lightbox-video lazy-loading [container]="'lightbox1'" [title]="'Video 1'" [youtube-id]="'Z0FETzb32Hs'" mat-card-image 
+            [xs-src]="'http://img.youtube.com/vi/Z0FETzb32Hs/mqdefault.jpg?7'"
+            [lg-src]="'http://img.youtube.com/vi/Z0FETzb32Hs/maxresdefault.jpg?7'"/>
+    </mat-card>
+    <mat-card class="example-card">
+        <img lightbox-video lazy-loading [container]="'lightbox1'" [title]="'Video 2'" [youtube-id]="'gbrkMDkHRqc'" mat-card-image 
+            [xs-src]="'http://img.youtube.com/vi/gbrkMDkHRqc/mqdefault.jpg?7'"
+            [lg-src]="'http://img.youtube.com/vi/gbrkMDkHRqc/maxresdefault.jpg?7'"/>
     </mat-card>
     <mat-card class="example-card">
         <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'The Shawshank Redemption'" mat-card-image 
@@ -18,6 +21,14 @@
             [lg-src]="'assets/images/the-shawshank-redemption-lg.gif'"
             [xl-src]="'assets/images/the-shawshank-redemption-xl.gif'"/>
     </mat-card>
+    <mat-card class="example-card">
+            <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'The Godfather'" mat-card-image 
+                [xs-src]="'assets/images/the-godfather-xs.gif'"
+                [sm-src]="'assets/images/the-godfather-sm.gif'"
+                [md-src]="'assets/images/the-godfather-md.gif'"
+                [lg-src]="'assets/images/the-godfather-lg.gif'"
+                [xl-src]="'assets/images/the-godfather-xl.gif'"/>
+        </mat-card>
     <mat-card class="example-card">
         <img lightbox-img lazy-loading [container]="'lightbox1'" [title]="'Schindler\'s List'" mat-card-image 
             [xs-src]="'assets/images/schindlers-list-xs.gif'"
@@ -33,15 +44,5 @@
             [md-src]="'assets/images/forrest-gump-md.gif'"
             [lg-src]="'assets/images/forrest-gump-lg.gif'"
             [xl-src]="'assets/images/forrest-gump-xl.gif'"/>
-    </mat-card>
-    <mat-card class="example-card">
-        <img lightbox-video lazy-loading [container]="'lightbox1'" [title]="'Video 1'" [youtube-id]="'Z0FETzb32Hs'" mat-card-image 
-            [xs-src]="'http://img.youtube.com/vi/Z0FETzb32Hs/mqdefault.jpg?7'"
-            [lg-src]="'http://img.youtube.com/vi/Z0FETzb32Hs/maxresdefault.jpg?7'"/>
-    </mat-card>
-    <mat-card class="example-card">
-        <img lightbox-video lazy-loading [container]="'lightbox1'" [title]="'Video 2'" [youtube-id]="'gbrkMDkHRqc'" mat-card-image 
-            [xs-src]="'http://img.youtube.com/vi/gbrkMDkHRqc/mqdefault.jpg?7'"
-            [lg-src]="'http://img.youtube.com/vi/gbrkMDkHRqc/maxresdefault.jpg?7'"/>
     </mat-card>
 </div>
