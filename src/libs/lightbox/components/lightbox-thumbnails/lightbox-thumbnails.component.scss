@@ -13,13 +13,17 @@
         margin: 12px;
         height: calc(100% - 24px);
         overflow: hidden;
+        >div{
+
+            position: relative;
+        }
 
         img{
             width: 142px;
             margin-bottom: 12px;
             display: block;
             border: 2px solid transparent;
-            opacity: .8;
+            opacity: .6;
             cursor: pointer;
         }
 

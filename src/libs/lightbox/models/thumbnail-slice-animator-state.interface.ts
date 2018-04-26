@@ -1,5 +1,5 @@
 export interface ThumbnailSliceAnimatorState {
-    value: 'up' | 'down';
+    value: 'slice' | 'slicing' | 'sliced';
     params?: {
         top: number;
     };
