@@ -24,12 +24,14 @@ import { ThumbnailSliceAnimatorState } from '../../models/thumbnail-slice-animat
         ]),
         trigger('sliceAnimatorState', [
             state('slice',
-                style({})),
+            style({ top: '{{top}}px' }),
+                { params: { top: 0 } }),
             state('slicing',
                 style({ top: '{{top}}px' }),
                 { params: { top: 0 } }),
             state('sliced',
-                style({})),
+            style({ top: '{{top}}px' }),
+                { params: { top: 0 } }),
             transition('* => slicing', [
                 animate('.4s')
             ])
@@ -83,7 +85,7 @@ export class LightboxThumbnailsComponent {
                 this.sliceAnimator = {value:'slicing',params:{top}}
                 break;
             case 'slicing':
-                this.sliceAnimator = {value:'sliced'}
+                this.sliceAnimator = {value:'sliced',params:{top:this._listRef.nativeElement.offsetTop - 12}}
                 break;
         }
     }
@@ -91,7 +93,7 @@ export class LightboxThumbnailsComponent {
     public selectItem(item: Item): void {
 
         this.activeItem = item;
-        this.sliceAnimator = {value:'slice'}
+        this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}}
     }
 
     public onSelect(item:Item): void {
@@ -111,7 +113,7 @@ export class LightboxThumbnailsComponent {
         this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
         
         if(this.activeItem){
-            this.sliceAnimator = {value:'slice'};
+            this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}};
         }
     }
 
@@ -122,7 +124,7 @@ export class LightboxThumbnailsComponent {
             this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
             
             if(this.activeItem){
-                this.sliceAnimator = {value:'slice'};
+                this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}};
             }
         } else {
 
@@ -135,7 +137,7 @@ export class LightboxThumbnailsComponent {
 
             this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
             if(this.activeItem){
-                this.sliceAnimator = {value:'slice'};
+                this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}};
             }
         }
     }

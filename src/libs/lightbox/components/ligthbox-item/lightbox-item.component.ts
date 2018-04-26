@@ -191,14 +191,14 @@ export class LightboxItemComponent implements OnInit {
     private _dragPositionY: number;
 
     public ondragstart(event){
-        this._dragPositionX = event.layerX;
-        this._dragPositionY = event.layerY;
+        // this._dragPositionX = event.layerX;
+        // this._dragPositionY = event.layerY;
     }
 
     public drag(event){
-        console.log(event);
-        this._elementRef.nativeElement.scrollTop += this._dragPositionY - event.layerY;
-        this._elementRef.nativeElement.scrollLeft += this._dragPositionX - event.layerX;
+        // console.log(event);
+        // this._elementRef.nativeElement.scrollTop += this._dragPositionY - event.layerY;
+        // this._elementRef.nativeElement.scrollLeft += this._dragPositionX - event.layerX;
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
