@@ -67,32 +67,45 @@ export class LightboxThumbnailsComponent {
 
         switch(event.toState) {
             case 'slice':
-
-                const activeItemRef = this._itemsRef.toArray()[this.items.indexOf(this.activeItem)];
-                let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
-                
-                if(top>0) {
-
-                    top = 0;
-                }
-                
-                if(top<(this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight )){
-
-                    top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
-                }
-
-                this.sliceAnimator = {value:'slicing',params:{top}}
+                this._animateSlicing();
                 break;
             case 'slicing':
-                this.sliceAnimator = {value:'sliced',params:{top:this._listRef.nativeElement.offsetTop - 12}}
+                this._animateSliced();
                 break;
         }
+    }
+
+    private _animateSlice(): void {
+
+        this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}}
+    }
+
+    private _animateSliced(): void {
+        this.sliceAnimator = {value:'sliced',params:{top:this._listRef.nativeElement.offsetTop - 12}}
+    }
+
+    private _animateSlicing(): void {
+
+        const activeItemRef = this._itemsRef.toArray()[this.items.indexOf(this.activeItem)];
+        let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
+        
+        if(top>0) {
+
+            top = 0;
+        }
+        
+        if(top<(this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight )){
+
+            top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+        }
+
+        this.sliceAnimator = {value:'slicing',params:{top}}
     }
 
     public selectItem(item: Item): void {
 
         this.activeItem = item;
-        this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}}
+        this._animateSlice();
     }
 
     public onSelect(item:Item): void {
@@ -112,7 +125,7 @@ export class LightboxThumbnailsComponent {
         this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
         
         if(this.activeItem){
-            this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}};
+            this._animateSlice();
         }
     }
 
@@ -123,7 +136,7 @@ export class LightboxThumbnailsComponent {
             this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
             
             if(this.activeItem){
-                this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}};
+                this._animateSlice();
             }
         } else {
 
@@ -136,7 +149,7 @@ export class LightboxThumbnailsComponent {
 
             this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
             if(this.activeItem){
-                this.sliceAnimator = {value:'slice',params:{top:this._listRef.nativeElement.offsetTop - 12}};
+                this._animateSlice();
             }
         }
     }

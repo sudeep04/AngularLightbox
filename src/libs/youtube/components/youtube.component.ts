@@ -50,7 +50,7 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
             width:  this.width ? this.width : 390,
             videoId: '',
             playerVars: this.playerVars ? this.playerVars : {
-                rel: 1,
+                rel: 0,
                 showinfo: 0
             },
             events: {

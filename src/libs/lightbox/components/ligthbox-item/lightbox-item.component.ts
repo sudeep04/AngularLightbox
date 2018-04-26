@@ -178,6 +178,7 @@ export class LightboxItemComponent implements OnInit {
         this._dragPositionY = event.screenY;
         this._originScrollTop = this._elementRef.nativeElement.scrollTop;
         this._originScrollLeft = this._elementRef.nativeElement.scrollLeft;
+
     }
 
     public onDrag(event){
@@ -189,7 +190,6 @@ export class LightboxItemComponent implements OnInit {
 
             this._elementRef.nativeElement.scrollLeft =  this._originScrollLeft + this._dragPositionX - event.screenX;
         }
-
     }
 
     public onDragEnd(event){
