@@ -9,6 +9,7 @@ import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component'
 import { Video } from '../../models/video';
 import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
 import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
+import { Pagination } from '../../models/pagination.interface';
 
 @Component({
     selector: 'lightbox',
@@ -61,6 +62,11 @@ import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thu
     }
 })
 export class LightboxComponent {
+
+    public pagination: Pagination = { current: 0, count: 0 };
+
+
+
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
@@ -140,7 +146,10 @@ export class LightboxComponent {
 
         setTimeout(() => {
 
-            const itemRef = this._itemRef(this._itemIndex(item));
+            const itemIndex = this._itemIndex(item);
+            this.pagination.current = itemIndex + 1;
+            this.pagination.count =  this.items[item.container].length;
+            const itemRef = this._itemRef(itemIndex);
 
             if (itemRef) {
 
@@ -207,6 +216,7 @@ export class LightboxComponent {
 
         if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
 
+            this.pagination.current = activeItemIndex + 2;
             const nextItemRef = this._itemRef(activeItemIndex + 1);
             const activeItemRef = this._itemRef(activeItemIndex);
 
@@ -223,6 +233,51 @@ export class LightboxComponent {
             }
 
             this.activeItem = this.items[this.activeItem.container][activeItemIndex + 1];
+            this._checkImgControls();
+
+            nextItemRef.animateRight().done(() => {
+
+                nextItemRef.animateCenter().done(() => {
+
+                    if (nextItemRef.isVideo()) {
+
+                        nextItemRef.animateNull();
+                        this.displayPlayer = 'visible';
+                    } else {
+
+                        this._checkImageControlVisibility(nextItemRef);
+                        this.displayPlayer = 'hidden';
+                    }
+                });
+            });
+        }
+
+        this._checkNavigation();
+    }
+
+    public onLast() {
+
+        const activeItemIndex = this._itemIndex(this.activeItem);
+
+        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+
+            this.pagination.current = this.items[this.activeItem.container].length;
+            const nextItemRef = this._itemRef(this.items[this.activeItem.container].length - 1);
+            const activeItemRef = this._itemRef(activeItemIndex);
+
+            if (activeItemRef.isVideo()) {
+
+                this.displayPlayer = 'hidden';
+                activeItemRef.animateCenter().done(() => {
+
+                    activeItemRef.animateLeft();
+                });
+            } else {
+
+                activeItemRef.animateLeft();
+            }
+
+            this.activeItem = this.items[this.activeItem.container][this.items[this.activeItem.container].length - 1];
             this._checkImgControls();
 
             nextItemRef.animateRight().done(() => {
@@ -271,12 +326,58 @@ export class LightboxComponent {
         this._checkImageControlVisibility(activeItemRef);
     }
 
+    public onFirst() {
+
+        const activeItemIndex = this._itemIndex(this.activeItem);
+
+        if (activeItemIndex > 0) {
+
+            this.pagination.current = 1;
+            const previousItemRef = this._itemRef(0);
+            const activeItemRef = this._itemRef(activeItemIndex);
+
+            if (activeItemRef.isVideo()) {
+
+                this.displayPlayer = 'hidden';
+                activeItemRef.animateCenter().done(() => {
+
+                    activeItemRef.animateRight();
+                });
+            } else {
+
+                activeItemRef.animateRight();
+            }
+
+            this.activeItem = this.items[this.activeItem.container][0];
+            this._checkImgControls();
+
+            previousItemRef.animateLeft().done(() => {
+
+                previousItemRef.animateCenter().done(() => {
+
+                    if (previousItemRef.isVideo()) {
+
+                        previousItemRef.animateNull();
+                        this.displayPlayer = 'visible';
+                    } else {
+
+                        this._checkImageControlVisibility(previousItemRef);
+                        this.displayPlayer = 'hidden';
+                    }
+                });
+            });
+        }
+
+        this._checkNavigation();
+    }
+
     public onPrevious() {
 
         const activeItemIndex = this._itemIndex(this.activeItem);
 
         if (activeItemIndex > 0) {
 
+            this.pagination.current = activeItemIndex;
             const previousItemRef = this._itemRef(activeItemIndex - 1);
             const activeItemRef = this._itemRef(activeItemIndex);
 

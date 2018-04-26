@@ -1,7 +1,28 @@
-<button lightbox-icon-button (click)="onClose()" title="Close">
-    <span class="material-icons">arrow_back</span>
-</button>
-<span class="header-title">{{title}}</span>
-<button class="thumbnail-toggle"  lightbox-icon-button (click)="onToggleThumbnails()" title="List">
-    <span class="material-icons">list</span>
-</button>
+<div class="header-container">
+    <div>
+        <button lightbox-icon-button (click)="onClose()" title="Close">
+            <span class="material-icons">arrow_back</span>
+        </button>
+        <span class="header-title">{{title}}</span>
+    </div>
+    <div class="nav-menu">
+        <button lightbox-icon-button [disable]="pagination.current===1" (click)="onFirst()" title="First">
+            <span class="material-icons">first_page</span>
+        </button>
+        <button lightbox-icon-button [disable]="pagination.current===1" (click)="onPrevious()" title="Previous">
+            <span class="material-icons">navigate_before</span>
+        </button>
+        <span class="nav-pagination">{{pagination?.current}} / {{pagination?.count}}</span>
+        <button lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onNext()" title="Next">
+            <span class="material-icons">navigate_next</span>
+        </button>
+        <button lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onLast()" title="Last">
+            <span class="material-icons">last_page</span>
+        </button>
+    </div>
+    <div>
+        <button lightbox-icon-button (click)="onThumbnailsToggle()" title="List">
+            <span class="material-icons">list</span>
+        </button>
+    </div>
+</div>

@@ -1,4 +1,7 @@
 <img #img lazy-loading
+    (dragstart)="ondragstart($event)"
+    (drag)="drag($event)"
+    draggable="true"
     (click)="onClick($event)"
     [@itemAnimatorState]="itemAnimator"
     [src]="item.src"

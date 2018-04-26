@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Pagination } from '../../models/pagination.interface';
 
 @Component({
     selector: 'lightbox-header',
@@ -8,13 +9,13 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     animations: [
         trigger('animator', [
             state('hidden',
-                style({ top: '-64px' })),
-            state('showed',
-                style({ top: '0px' })),
-            transition('hidden => showed', [
+                style({ height: '0px' })),
+            state('visible',
+                style({ height: '64px' })),
+            transition('hidden => visible', [
                 animate('.4s')
             ]),
-            transition('showed => hidden', [
+            transition('visible => hidden', [
                 animate('.05s')
             ]),
         ])
@@ -25,17 +26,42 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class LightboxHeaderComponent {
 
+    @Output() public nextEvent = new EventEmitter();
+
+    @Output() public previousEvent = new EventEmitter();
+
+    @Output() public firstEvent = new EventEmitter();
+
+    @Output() public lastEvent = new EventEmitter();
+
     @Output() public closeEvent = new EventEmitter();
-    
+
     @Output() public thumbnailsToggleEvent = new EventEmitter();
 
     @Input() public title: string;
 
-    public animator: 'hidden' | 'showed' = 'hidden';
+    @Input() public pagination: Pagination;
 
-    public close(): void {
+    public animator: 'hidden' | 'visible' = 'hidden';
 
-        this.animator = 'hidden';
+    public onNext(): void {
+
+        this.nextEvent.emit();
+    }
+
+    public onPrevious(): void {
+
+        this.previousEvent.emit();
+    }
+
+    public onFirst(): void {
+
+        this.firstEvent.emit();
+    }
+
+    public onLast(): void {
+
+        this.lastEvent.emit();
     }
 
     public onClose(): void {
@@ -43,20 +69,26 @@ export class LightboxHeaderComponent {
         this.closeEvent.emit();
     }
 
-    public onToggleThumbnails(){
+    public onThumbnailsToggle() {
+
         this.thumbnailsToggleEvent.emit();
     }
 
     public open(): void {
 
-        this.animator = 'showed';
+        this.animator = 'visible';
+    }
+
+    public close(): void {
+
+        this.animator = 'hidden';
     }
 
     public toggle(): void {
 
         if (this.animator === 'hidden') {
 
-            this.animator = 'showed';
+            this.animator = 'visible';
         } else {
 
             this.animator = 'hidden';

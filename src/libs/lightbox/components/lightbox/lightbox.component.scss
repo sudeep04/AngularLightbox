@@ -4,7 +4,8 @@
     left: 0;
     height: 100%;
     width: 100%;
-    display: block;
+    display: flex;
+    flex-direction: column;
     color: white;
     .lightbox-background,
     .lightbox-items-background {
@@ -14,26 +15,11 @@
         top: 0;
         z-index: 1;
     }
-    .lightbox-navigation {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 36px;
-        button {
-            z-index: 2;
-        }
-    }
     .lightbox-container {
         display: flex;
-        height: 100%;
-        top: -64px;
+        flex: 1 1 0%;
         position: relative;
+        overflow: hidden;
     }
     .lightbox-items-container {
         flex: 1 1 0%;

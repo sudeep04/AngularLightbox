@@ -180,6 +180,20 @@ export class LightboxItemComponent implements OnInit {
         this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
+    private _dragPositionX: number;
+    private _dragPositionY: number;
+
+    public ondragstart(event){
+        this._dragPositionX = event.layerX;
+        this._dragPositionY = event.layerY;
+    }
+
+    public drag(event){
+        console.log(event);
+        this._elementRef.nativeElement.scrollTop += this._dragPositionY - event.layerY;
+        this._elementRef.nativeElement.scrollLeft += this._dragPositionX - event.layerX;
+    }
+
     public itemAnimatorDone(event: AnimationEvent): void {
 
         // if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {

@@ -1,14 +1,5 @@
-<div class="thumbnail-previous-controller">
-    <button #previous lightbox-icon-button>
-        <span class="material-icons">keyboard_arrow_up</span>
-    </button>
-</div>
+
 <div class="thumbnail-container">
     <img *ngFor="let item of items" [src]="getItemSrc(item)"/>
-</div>
-<div class="thumbnail-next-controller">
-    <button #next lightbox-icon-button>
-        <span class="material-icons">keyboard_arrow_down</span>
-    </button>
 </div>
 
