@@ -1,15 +1,21 @@
+@mixin lightbox-header($theme) {
+
+    lightbox .header-container{
+        background-color: map-get(map-get($theme, header), background-color);
+        color: map-get(map-get($theme, header), color);
+    }
+}
+
 :host {
     display: block;
     position: relative;
     .header-container{
         height: 64px;
-        background-color: rgb(0,0,0);
         display: flex;
         align-content: center;
         justify-content: space-between;
         position: absolute;
         z-index: 3;
-        color: white;
         bottom: 0px;
         width: 100%;
         >div {
@@ -56,3 +62,4 @@
         }
     }
 }
+

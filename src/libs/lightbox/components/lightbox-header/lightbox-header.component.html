@@ -6,22 +6,22 @@
         <span class="header-title">{{title}}</span>
     </div>
     <div class="nav-menu">
-        <button lightbox-icon-button [disable]="pagination.current===1" (click)="onFirst()" title="First">
+        <button *ngIf="!config.navigationControl.disable && !config.jumpToStartControl.disable" lightbox-icon-button [disable]="pagination.current===1" (click)="onFirst()" title="First">
             <span class="material-icons">first_page</span>
         </button>
-        <button lightbox-icon-button [disable]="pagination.current===1" (click)="onPrevious()" title="Previous">
+        <button *ngIf="!config.navigationControl.disable && !config.backwardControl.disable" lightbox-icon-button [disable]="pagination.current===1" (click)="onPrevious()" title="Previous">
             <span class="material-icons">navigate_before</span>
         </button>
-        <span class="nav-pagination">{{pagination?.current}} / {{pagination?.count}}</span>
-        <button lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onNext()" title="Next">
+        <span *ngIf="!config.navigationControl.disable && !config.itemIndexControl.disable" class="nav-pagination">{{pagination?.current}} / {{pagination?.count}}</span>
+        <button *ngIf="!config.navigationControl.disable && !config.forwardControl.disable" lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onNext()" title="Next">
             <span class="material-icons">navigate_next</span>
         </button>
-        <button lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onLast()" title="Last">
+        <button *ngIf="!config.navigationControl.disable && !config.jumpToEndControl.disable" lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onLast()" title="Last">
             <span class="material-icons">last_page</span>
         </button>
     </div>
     <div>
-        <button lightbox-icon-button (click)="onThumbnailsToggle()" title="List">
+        <button *ngIf="!config.thumbnailsControl.disable" lightbox-icon-button (click)="onThumbnailsToggle()" title="List">
             <span class="material-icons">list</span>
         </button>
     </div>

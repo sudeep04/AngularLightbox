@@ -1,14 +1,14 @@
-<div>
-    <button [disable]="disableZoomOut" lightbox-icon-button (click)="zoomOut()" title="Zoom out">
+<div *ngIf="!config.zoomControl.disable">
+    <button *ngIf="!config.zoomOutControl.disable" [disable]="disableZoomOut" lightbox-icon-button (click)="onZoomOut()" title="Zoom out">
         <span class="material-icons">remove</span>
     </button>
-    <button [disable]="disableResetZoom" lightbox-icon-button (click)="resetZoom()" title="Reset zoom">
+    <button *ngIf="!config.resetZoomControl.disable" [disable]="disableResetZoom" lightbox-icon-button (click)="onResetZoom()" title="Reset zoom">
         <span class="material-icons">zoom_out</span>
     </button>
-    <button [disable]="disableFeetToWidth" lightbox-icon-button (click)="feetToWidth()" title="Feet to width">
+    <button *ngIf="!config.feetToWidthControl.disable" [disable]="disableFeetToWidth" lightbox-icon-button (click)="onFeetToWidth()" title="Feet to width">
         <span class="material-icons">zoom_in</span>
     </button>
-    <button [disable]="disableZoomIn" lightbox-icon-button (click)="zoomIn()" title="Zoom in">
+    <button *ngIf="!config.zoomInControl.disable" [disable]="disableZoomIn" lightbox-icon-button (click)="onZoomIn()" title="Zoom in">
         <span class="material-icons">add</span>
     </button>
 </div>

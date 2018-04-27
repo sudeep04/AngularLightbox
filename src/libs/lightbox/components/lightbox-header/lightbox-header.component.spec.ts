@@ -2,14 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { LightboxHeaderComponent } from './lightbox-header.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
 describe('Create LightboxHeaderComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [LightboxHeaderComponent],
+            declarations: [
+                LightboxHeaderComponent,
+                LightboxButtonComponent
+            ],
             imports: [
                 CommonModule,
                 BrowserAnimationsModule
+            ],
+            providers: [
+                LightboxConfigurationService
             ]
         });
     });

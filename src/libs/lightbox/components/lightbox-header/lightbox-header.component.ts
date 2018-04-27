@@ -1,30 +1,32 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Pagination } from '../../models/pagination.interface';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { HeaderAnimation } from '../../models/header-animation.interface';
 
 @Component({
     selector: 'lightbox-header',
     templateUrl: './lightbox-header.component.html',
     styleUrls: ['./lightbox-header.component.scss'],
     animations: [
-        trigger('animator', [
+        trigger('headerAnimation', [
             state('hidden',
                 style({ height: '0px' })),
             state('visible',
                 style({ height: '64px' })),
             transition('hidden => visible', [
-                animate('.4s')
-            ]),
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } }),
             transition('visible => hidden', [
-                animate('.05s')
-            ]),
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } })
         ])
     ],
     host: {
-        '[@animator]': 'animator'
+        '[@headerAnimation]': 'headerAnimation'
     }
 })
-export class LightboxHeaderComponent {
+export class LightboxHeaderComponent implements OnInit {
 
     @Output() public nextEvent = new EventEmitter();
 
@@ -42,7 +44,21 @@ export class LightboxHeaderComponent {
 
     @Input() public pagination: Pagination;
 
-    public animator: 'hidden' | 'visible' = 'hidden';
+    public headerAnimation: HeaderAnimation;
+
+    public get config(): LightboxConfigurationService {
+
+        return this._lightboxConfigurationService;
+    }
+
+    constructor(
+        private readonly _lightboxConfigurationService: LightboxConfigurationService
+    ) { }
+
+    public ngOnInit(): void {
+
+        this.headerAnimation = { value: 'hidden', params: { duration: this.config.headerHideAnimation.duration } };
+    }
 
     public onNext(): void {
 
@@ -76,22 +92,22 @@ export class LightboxHeaderComponent {
 
     public open(): void {
 
-        this.animator = 'visible';
+        this.headerAnimation = { value: 'visible', params: { duration: this.config.headerShowAnimation.duration } };
     }
 
     public close(): void {
 
-        this.animator = 'hidden';
+        this.headerAnimation = { value: 'hidden', params: { duration: this.config.headerHideAnimation.duration } };
     }
 
     public toggle(): void {
 
-        if (this.animator === 'hidden') {
+        if (this.headerAnimation.value === 'hidden') {
 
-            this.animator = 'visible';
+            this.headerAnimation = { value: 'visible', params: { duration: this.config.headerShowAnimation.duration } };
         } else {
 
-            this.animator = 'hidden';
+            this.headerAnimation = { value: 'hidden', params: { duration: this.config.headerHideAnimation.duration } };
         }
     }
 }
