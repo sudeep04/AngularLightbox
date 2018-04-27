@@ -1,6 +1,5 @@
 :host {
 
-    overflow: auto;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -8,9 +7,12 @@
     display: flex;
 
     box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
     img {
         position: relative;
         margin: auto;
         z-index: 1;
+        flex: 0 0 auto;
     }
 }
