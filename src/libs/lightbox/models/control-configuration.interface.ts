@@ -1,4 +1,4 @@
 
 export interface ControlConfiguration {
-    disable: boolean
+    disable: boolean;
 }

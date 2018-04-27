@@ -1,4 +1,4 @@
-import { Component, ViewChild, QueryList, ViewChildren, HostListener } from '@angular/core';
+import { Component, ViewChild, QueryList, ViewChildren, HostListener, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
@@ -10,58 +10,30 @@ import { Video } from '../../models/video';
 import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
 import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
 import { Pagination } from '../../models/pagination.interface';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { BackgroundFadeAnimation } from '../../models/background-fade-animation.interface';
 
 @Component({
     selector: 'lightbox',
     templateUrl: './lightbox.component.html',
     styleUrls: ['./lightbox.component.scss'],
     animations: [
-        trigger('fadeAnimator', [
-            state('hide', style({ backgroundColor: 'rgba(0,0,0,0)' })),
-            state('show', style({ backgroundColor: 'rgba(0,0,0,.9)' })),
-            transition('show => hide', [
-                animate('.05s'),
-            ]),
-            transition('hide => show', [
-                animate('.4s')
-            ])
-        ]),
-        trigger('headerShowAnimator', [
-            state('hide', style({ top: '-64px' })),
-            state('show', style({ top: '0px' })),
-            transition('show => hide', [
-                animate('.05s')
-            ]),
-            transition('hide => show', [
-                animate('.4s')
-            ])
-        ]),
-        trigger('navigationNextAnimator', [
-            state('hide', style({ left: '144px', right: '0px' })),
-            state('show', style({ left: '0px', right: '0px' })),
-            transition('show => hide', [
-                animate('.05s')
-            ]),
-            transition('hide => show', [
-                animate('.4s')
-            ])
-        ]),
-        trigger('navigationPreviousAnimator', [
-            state('hide', style({ left: '-104px', right: '0px' })),
-            state('show', style({ left: '0px', right: '0px' })),
-            transition('show => hide', [
-                animate('.05s')
-            ]),
-            transition('hide => show', [
-                animate('.4s')
-            ])
+        trigger('backgroundFadeAnimation', [
+            state('hidden', style({ opacity: '0' }), { params: { duration: 0, opacity: 0 } }),
+            state('visible', style({ opacity: '{{opacity}}' }), { params: { duration: 0, opacity: 0 } }),
+            transition('visible => hidden', [
+                animate('{{duration}}s'),
+            ], { params: { duration: 0, opacity: 0 } }),
+            transition('hidden => visible', [
+                animate('{{duration}}s')
+            ], { params: { duration: 0, opacity: 0 } })
         ])
     ],
     host: {
         '[style.pointer-events]': '_pointerEvents',
     }
 })
-export class LightboxComponent {
+export class LightboxComponent implements OnInit {
 
     public pagination: Pagination = { current: 0, count: 0 };
 
@@ -91,7 +63,7 @@ export class LightboxComponent {
 
     public activeItem: Item;
 
-    public fadeAnimator: 'show' | 'hide' = 'hide';
+    public backgroundFadeAnimation: BackgroundFadeAnimation;
 
     public readonly state: BehaviorSubject<'closed' | 'opened'> = new BehaviorSubject<'closed' | 'opened'>('closed');
 
@@ -108,6 +80,25 @@ export class LightboxComponent {
     @ViewChildren('lightboxItem') private _itemsRef: QueryList<LightboxItemComponent>;
 
     private _pointerEvents: string = 'none';
+
+    public get config(): LightboxConfigurationService {
+
+        return this._lightboxConfigurationService;
+    }
+
+    constructor(
+        private readonly _lightboxConfigurationService: LightboxConfigurationService
+    ) { }
+
+    public ngOnInit(): void {
+
+        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeHideAnimation.duration, opacity: 0 } };
+    }
+
+    public getYoutubeVideoId(): string {
+        
+        return (this.activeItem as Video).youtubeVieoId;
+    }
 
     public addItem(item: Item): void {
 
@@ -138,7 +129,12 @@ export class LightboxComponent {
         this.activeItem = item;
         this.state.next('opened');
         this._pointerEvents = 'auto';
-        this.fadeAnimator = 'show';
+        this.backgroundFadeAnimation = {
+            value: 'visible', params: {
+                duration: this.config.backgroundFadeShowAnimation.duration,
+                opacity: this.config.backgroundFadeShowAnimation.opacity
+            }
+        };
         this._openControls();
 
         setTimeout(() => {
@@ -151,21 +147,13 @@ export class LightboxComponent {
 
             if (itemRef) {
 
-                itemRef.animateOrigin(position).done(() => {
+                itemRef.open(position, () => {
+                    if (itemRef.isVideo()) {
 
-                    if (itemRef) {
+                        this.displayPlayer = 'visible';
+                    } else {
 
-                        itemRef.animateCenter().done(() => {
-
-                            if (itemRef.isVideo()) {
-
-                                itemRef.animateNull();
-                                this.displayPlayer = 'visible';
-                            } else {
-
-                                this.displayPlayer = 'hidden';
-                            }
-                        });
+                        this.displayPlayer = 'hidden';
                     }
                 });
 
@@ -180,7 +168,7 @@ export class LightboxComponent {
         this._pointerEvents = 'none';
         this.activeItem = undefined;
         this.state.next('closed');
-        this.fadeAnimator = 'hide';
+        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeHideAnimation.duration, opacity: 0 } };
         this.displayPlayer = 'hidden';
         this._closeControls();
         if (this._ytPlayer) {
@@ -224,37 +212,21 @@ export class LightboxComponent {
         if (activeItemRef.isVideo()) {
 
             this.displayPlayer = 'hidden';
-            activeItemRef.animateCenter().done(() => {
-
-                if (activeItem !== this.activeItem) {
-                    if (itemIndex < activeItemIndex) {
-                        activeItemRef.animateRight();
-                    } else {
-                        activeItemRef.animateLeft();
-                    }
-                }
-            });
-        } else {
-
-            if (activeItem !== this.activeItem) {
-                if (itemIndex < activeItemIndex) {
-                    activeItemRef.animateRight();
-                } else {
-                    activeItemRef.animateLeft();
-                }
-            }
         }
 
+        if (activeItem !== this.activeItem) {
+            if (itemIndex < activeItemIndex) {
+                activeItemRef.slice('right');
+            } else {
+                activeItemRef.slice('left');
+            }
+        }
         if (itemIndex < activeItemIndex) {
-            itemRef.animateLeft().done(() => {
-
+            itemRef.slice('left', () => {
                 if (item === this.activeItem) {
-
-                    itemRef.animateCenter().done(() => {
-
+                    itemRef.slice('center', () => {
                         if (itemRef.isVideo()) {
 
-                            itemRef.animateNull();
                             this.displayPlayer = 'visible';
                         } else {
 
@@ -265,15 +237,11 @@ export class LightboxComponent {
                 }
             });
         } else {
-            itemRef.animateRight().done(() => {
-
+            itemRef.slice('right', () => {
                 if (item === this.activeItem) {
-
-                    itemRef.animateCenter().done(() => {
-
+                    itemRef.slice('center', () => {
                         if (itemRef.isVideo()) {
 
-                            itemRef.animateNull();
                             this.displayPlayer = 'visible';
                         } else {
 
@@ -310,28 +278,36 @@ export class LightboxComponent {
 
     public zoomIn() {
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
-        activeItemRef.zoomIn();
-        this._checkImageControlVisibility(activeItemRef);
+        activeItemRef.zoomIn(() => {
+
+            this._checkImageControlVisibility(activeItemRef);
+        });
     }
 
     public zoomOut() {
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
-        activeItemRef.zoomOut();
-        this._checkImageControlVisibility(activeItemRef);
+        activeItemRef.zoomOut(() => {
+
+            this._checkImageControlVisibility(activeItemRef);
+        });
     }
 
     public resetZoom() {
 
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
-        activeItemRef.resetZoom();
-        this._checkImageControlVisibility(activeItemRef);
+        activeItemRef.resetZoom(() => {
+
+            this._checkImageControlVisibility(activeItemRef);
+        });
     }
 
     public feetToWidth() {
 
         const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
-        activeItemRef.feetToWidth();
-        this._checkImageControlVisibility(activeItemRef);
+        activeItemRef.feetToWidth(() => {
+
+            this._checkImageControlVisibility(activeItemRef);
+        });
     }
 
     public onFirst() {

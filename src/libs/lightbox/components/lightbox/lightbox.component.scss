@@ -7,6 +7,9 @@
     display: flex;
     flex-direction: column;
     color: white;
+    .lightbox-background{
+        background-color: #000;
+    }
     .lightbox-background,
     .lightbox-items-background {
         height: 100%;

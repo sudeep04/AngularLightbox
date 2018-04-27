@@ -1,11 +1,12 @@
 import { ControlConfiguration } from './control-configuration.interface';
 import { AnimationConfiguration } from './animation-configuration.interface';
+import { FadeAnimationConfiguration } from './fade-animation-configuration.interface';
 
 export interface LightboxConfiguration {
-    controls?:{
+    controls?: {
         forward?: ControlConfiguration;
-        backward?: ControlConfiguration; 
-        thumbnails?: ControlConfiguration; 
+        backward?: ControlConfiguration;
+        thumbnails?: ControlConfiguration;
         jumpToStart?: ControlConfiguration;
         jumpToEnd?: ControlConfiguration;
         itemIndex?: ControlConfiguration;
@@ -16,10 +17,10 @@ export interface LightboxConfiguration {
         feetToWidth?: ControlConfiguration;
         resetZoom?: ControlConfiguration;
     };
-    animations?:{
+    animations?: {
         headerShow?: AnimationConfiguration;
         headerHide?: AnimationConfiguration;
-        backgroundFadeShow?: AnimationConfiguration;
+        backgroundFadeShow?: FadeAnimationConfiguration;
         backgroundFadeHide?: AnimationConfiguration;
         thumbnailsShow?: AnimationConfiguration;
         thumbnailsHide?: AnimationConfiguration;
@@ -32,5 +33,5 @@ export interface LightboxConfiguration {
         resetZoom?: AnimationConfiguration;
         itemSlice?: AnimationConfiguration;
         itemOpen?: AnimationConfiguration;
-    }
+    };
 }

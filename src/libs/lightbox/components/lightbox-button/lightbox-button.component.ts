@@ -12,7 +12,7 @@ const BUTTON_HOST_ATTRIBUTES = [
     templateUrl: './lightbox-button.component.html',
     styleUrls: ['./lightbox-button.component.scss'],
     animations: [
-        trigger('hoverAnimator', [
+        trigger('hoverAnimation', [
             state('enter',
                 style({ backgroundColor: 'rgba(255, 255, 255, 0.3)' })),
             state('leave',
@@ -34,7 +34,7 @@ export class LightboxButtonComponent implements OnChanges {
 
     @Input() public disable: boolean = false;
 
-    public hoverAnimator: 'leave' | 'enter' = 'leave';
+    public hoverAnimation: 'leave' | 'enter' = 'leave';
 
     private _isIconButton: boolean = this._hasHostAttributes('lightbox-icon-button');
 
@@ -52,8 +52,8 @@ export class LightboxButtonComponent implements OnChanges {
 
         if (this.disable) {
             (this._elementRef.nativeElement as HTMLElement).classList.add('disable');
-            if (this.hoverAnimator === 'enter') {
-                this.hoverAnimator = 'leave';
+            if (this.hoverAnimation === 'enter') {
+                this.hoverAnimation = 'leave';
             }
         } else {
             if ((this._elementRef.nativeElement as HTMLElement).classList.contains('disable')) {
@@ -65,13 +65,13 @@ export class LightboxButtonComponent implements OnChanges {
     private _onMouseEnter() {
 
         if (!this.disable) {
-            this.hoverAnimator = 'enter';
+            this.hoverAnimation = 'enter';
         }
     }
 
     private _onMouseLeave() {
 
-        this.hoverAnimator = 'leave';
+        this.hoverAnimation = 'leave';
     }
 
     private _getHostElement() {

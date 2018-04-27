@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LightboxConfiguration } from '../models/lightbox-configuration.interface';
 import { ControlConfiguration } from '../models/control-configuration.interface';
 import { AnimationConfiguration } from '../models/animation-configuration.interface';
+import { FadeAnimationConfiguration } from '../models/fade-animation-configuration.interface';
 
 @Injectable()
 export class LightboxConfigurationService {
@@ -26,23 +27,23 @@ export class LightboxConfigurationService {
                 resetZoom: { disable: false },
             },
             animations: {
-                headerShow: { disable: false, duration: .4 },
-                headerHide: { disable: false, duration: .05 },
-                backgroundFadeShow: { disable: false, duration: .4 },
-                backgroundFadeHide: { disable: false, duration: .05 },
-                thumbnailsShow: { disable: false, duration: .4 },
-                thumbnailsHide: { disable: false, duration: .05 },
-                thumbnailsSlice: { disable: false, duration: .4 },
-                zoomShow: { disable: false, duration: .4 },
-                zoomHide: { disable: false, duration: .05 },
-                zoomIn: { disable: false, duration: .4 },
-                zoomOut: { disable: false, duration: .4 },
-                feetToWidth: { disable: false, duration: .4 },
-                resetZoom: { disable: false, duration: .4 },
-                itemSlice: { disable: false, duration: .4 },
-                itemOpen: { disable: false, duration: .4 },
+                headerShow: { duration: .4 },
+                headerHide: { duration: .05 },
+                backgroundFadeShow: { duration: .4, opacity: .9 },
+                backgroundFadeHide: { duration: .05 },
+                thumbnailsShow: { duration: .4 },
+                thumbnailsHide: { duration: .05 },
+                thumbnailsSlice: { duration: .4 },
+                zoomShow: { duration: .4 },
+                zoomHide: { duration: .05 },
+                zoomIn: { duration: .4 },
+                zoomOut: { duration: .4 },
+                feetToWidth: { duration: .4 },
+                resetZoom: { duration: .4 },
+                itemSlice: { duration: .4 },
+                itemOpen: { duration: .4 },
             }
-        }
+        };
     }
 
     public get forwardControl(): ControlConfiguration {
@@ -185,12 +186,12 @@ export class LightboxConfigurationService {
         this._configuration.animations.headerHide = config;
     }
 
-    public get backgroundFadeShowAnimation(): AnimationConfiguration {
+    public get backgroundFadeShowAnimation(): FadeAnimationConfiguration {
 
         return this._configuration.animations.backgroundFadeShow;
     }
 
-    public set backgroundFadeShowAnimation(config: AnimationConfiguration) {
+    public set backgroundFadeShowAnimation(config: FadeAnimationConfiguration) {
 
         this._configuration.animations.backgroundFadeShow = config;
     }

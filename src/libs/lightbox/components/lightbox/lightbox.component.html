@@ -1,4 +1,4 @@
-<div [@fadeAnimator]="fadeAnimator" class="lightbox-background"></div>
+<div [@backgroundFadeAnimation]="backgroundFadeAnimation" class="lightbox-background"></div>
 <lightbox-header #header
     [pagination]="pagination"
     [title]="activeItem?.title"
@@ -21,7 +21,7 @@
             [disableResetZoom]="disableResetZoom" [disableFeetToWidth]="disableFeetToWidth" (zoomInEvent)="zoomIn()" (zoomOutEvent)="zoomOut()"
             (resetZoomEvent)="resetZoom()" (feetToWidthEvent)="feetToWidth()">
         </lightbox-img-control>
-        <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? activeItem.youtubeVieoId : undefined" (ready)="onReady($event)"
+        <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? getYoutubeVideoId() : undefined" (ready)="onReady($event)"
             (change)="onChange($event)" (error)="onError($event)"></youtube>
     </div>
     <lightbox-thumbnails #thumbnails [items]="activeItem? items[activeItem.container]:[]" (selectEvent)="selectItem($event)">

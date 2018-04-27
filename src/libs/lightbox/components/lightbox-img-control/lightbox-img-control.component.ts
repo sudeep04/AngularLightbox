@@ -1,30 +1,31 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { ZoomAnimation } from '../../models/zoom-animation.interface';
 
 @Component({
     selector: 'lightbox-img-control',
     templateUrl: './lightbox-img-control.component.html',
     styleUrls: ['./lightbox-img-control.component.scss'],
     animations: [
-        trigger('animator', [
+        trigger('zoomAnimation', [
             state('hidden',
                 style({ bottom: '-64px' })),
-            state('showed',
+            state('visible',
                 style({ bottom: '0px' })),
-            transition('hidden => showed', [
-                animate('.4s')
-            ]),
-            transition('showed => hidden', [
-                animate('.05s')
-            ]),
+            transition('hidden => visible', [
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } }),
+            transition('visible => hidden', [
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } })
         ])
     ],
     host: {
-        '[@animator]': 'animator'
+        '[@zoomAnimation]': 'zoomAnimation'
     }
 })
-export class LightboxImgControlComponent {
+export class LightboxImgControlComponent implements OnInit {
 
     @Output() public zoomInEvent = new EventEmitter();
 
@@ -39,13 +40,13 @@ export class LightboxImgControlComponent {
     @Input() public disableZoomOut: boolean;
 
     @Input() public disableResetZoom: boolean;
-    
+
     @Input() public disableFeetToWidth: boolean;
 
-    public animator: 'hidden' | 'showed' = 'hidden';
+    public zoomAnimation: ZoomAnimation;
 
     public get config(): LightboxConfigurationService {
-        
+
         return this._lightboxConfigurationService;
     }
 
@@ -53,11 +54,16 @@ export class LightboxImgControlComponent {
         private readonly _lightboxConfigurationService: LightboxConfigurationService
     ) { }
 
+    public ngOnInit(): void {
+
+        this.zoomAnimation = { value: 'hidden', params: { duration: this.config.zoomHideAnimation.duration } };
+    }
+
     public close(): void {
 
         if (!this.config.zoomControl.disable) {
 
-            this.animator = 'hidden';
+            this.zoomAnimation = { value: 'hidden', params: { duration: this.config.zoomHideAnimation.duration } };
         }
     }
 
@@ -65,7 +71,7 @@ export class LightboxImgControlComponent {
 
         if (!this.config.zoomControl.disable) {
 
-            this.animator = 'showed';
+            this.zoomAnimation = { value: 'visible', params: { duration: this.config.zoomShowAnimation.duration } };
         }
     }
 
@@ -73,12 +79,12 @@ export class LightboxImgControlComponent {
 
         if (!this.config.zoomControl.disable) {
 
-            if (this.animator === 'hidden') {
+            if (this.zoomAnimation.value === 'hidden') {
 
-                this.animator = 'showed';
+                this.zoomAnimation = { value: 'visible', params: { duration: this.config.zoomShowAnimation.duration } };
             } else {
-    
-                this.animator = 'hidden';
+
+                this.zoomAnimation = { value: 'hidden', params: { duration: this.config.zoomHideAnimation.duration } };
             }
         }
     }

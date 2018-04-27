@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { MatIconModule, MatToolbarModule, MatListModule, MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LightboxConfigurationService } from 'libs/lightbox/services/lightbox-configuration.service';
+import { LightboxModule } from 'libs/lightbox/lightbox.module';
 
 describe('Create AppComponent', () => {
     beforeEach(() => {
@@ -15,7 +17,8 @@ describe('Create AppComponent', () => {
                 MatIconModule,
                 MatToolbarModule,
                 MatListModule,
-                MatSidenavModule
+                MatSidenavModule,
+                LightboxModule
             ]
         });
     });
