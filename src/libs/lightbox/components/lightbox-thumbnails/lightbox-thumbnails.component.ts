@@ -1,28 +1,28 @@
-import { Component, Output, EventEmitter, Input, ViewChildren, QueryList, ElementRef, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ViewChildren, QueryList, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
-import { ThumbnailVisibilityAnimatorState } from '../../models/thumbnail-visibility-animator-state.interface';
 import { Item } from '../../models/item';
-import { ThumbnailSliceAnimatorState } from '../../models/thumbnail-slice-animator-state.interface';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { ThumbnailsAnimation } from '../../models/thumbnails-animation.interface';
+import { ThumbnailsSliceAnimation } from '../../models/thumbnails-slice-animation.interface';
 
 @Component({
     selector: 'lightbox-thumbnails',
     templateUrl: './lightbox-thumbnails.component.html',
     styleUrls: ['./lightbox-thumbnails.component.scss'],
     animations: [
-        trigger('visibilityAnimator', [
+        trigger('thumbnailsAnimation', [
             state('hidden',
                 style({ maxWidth: '0px' })),
             state('visible',
-                style({ maxWidth: '{{maxWidth}}px' }),
-                { params: { maxWidth: 0 } }),
+                style({ maxWidth: '170px' })),
             transition('hidden => visible', [
-                animate('.4s')
-            ]),
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } }),
             transition('visible => hidden', [
-                animate('.05s')
-            ]),
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } })
         ]),
-        trigger('sliceAnimatorState', [
+        trigger('thumbnailsSliceAnimation', [
             state('slice',
                 style({ top: '{{top}}px' }),
                 { params: { top: 0 } }),
@@ -33,20 +33,20 @@ import { ThumbnailSliceAnimatorState } from '../../models/thumbnail-slice-animat
                 style({ top: '{{top}}px' }),
                 { params: { top: 0 } }),
             transition('* => slicing', [
-                animate('.4s')
-            ])
+                animate('{{duration}}s')
+            ], { params: { duration: 0 } })
         ])
     ],
     host: {
-        '[@visibilityAnimator]': 'visibilityAnimator',
-        '(@visibilityAnimator.done)': 'visibilityAnimatorDone($event)'
+        '[@thumbnailsAnimation]': 'thumbnailsAnimation',
+        '(@thumbnailsAnimation.done)': 'thumbnailsAnimationDone($event)'
     }
 })
-export class LightboxThumbnailsComponent {
+export class LightboxThumbnailsComponent implements OnInit {
 
-    public visibilityAnimator: ThumbnailVisibilityAnimatorState = { value: 'hidden' };
+    public thumbnailsAnimation: ThumbnailsAnimation;
 
-    public sliceAnimator: ThumbnailSliceAnimatorState = { value: 'sliced' };
+    public thumbnailsSliceAnimation: ThumbnailsSliceAnimation;
 
     public activeItem: Item;
 
@@ -60,7 +60,22 @@ export class LightboxThumbnailsComponent {
 
     @ViewChild('thumnailsContainer') private _containerRef: ElementRef;
 
-    public sliceAnimatorDone(event: AnimationEvent): void {
+    public get config(): LightboxConfigurationService {
+
+        return this._lightboxConfigurationService;
+    }
+
+    constructor(
+        private readonly _lightboxConfigurationService: LightboxConfigurationService
+    ) { }
+
+    public ngOnInit(): void {
+
+        this.thumbnailsSliceAnimation = { value: 'sliced' };
+        this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.thumbnailsHideAnimation.duration } };
+    }
+
+    public thumbnailsSliceAnimationDone(event: AnimationEvent): void {
 
         switch (event.toState) {
             case 'slice':
@@ -72,18 +87,21 @@ export class LightboxThumbnailsComponent {
         }
     }
 
-    public visibilityAnimatorDone(event: AnimationEvent): void {
+    public thumbnailsAnimationDone(event: AnimationEvent): void {
 
-        if (event.toState == 'visible' && this.activeItem) {
-            
+        if (event.toState === 'visible' && this.activeItem) {
+
             this._animateSlice();
         }
     }
 
     public selectItem(item: Item): void {
 
-        this.activeItem = item;
-        this._animateSlice();
+        if (!this.config.thumbnailsControl.disable) {
+
+            this.activeItem = item;
+            this._animateSlice();
+        }
     }
 
     public onSelect(item: Item): void {
@@ -95,28 +113,37 @@ export class LightboxThumbnailsComponent {
 
     public close(): void {
 
-        this.visibilityAnimator = { value: 'hidden' };
+        if (!this.config.thumbnailsControl.disable) {
+
+            this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.thumbnailsHideAnimation.duration } };
+        }
     }
 
     public open(): void {
 
-        this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
+        if (!this.config.thumbnailsControl.disable) {
+
+            this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.thumbnailsShowAnimation.duration } };
+        }
     }
 
     public toggle(): void {
 
-        if (this.visibilityAnimator.value === 'hidden') {
+        if (!this.config.thumbnailsControl.disable) {
 
-            this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
-        } else {
+            if (this.thumbnailsAnimation.value === 'hidden') {
 
-            this.visibilityAnimator = { value: 'hidden' };
+                this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.thumbnailsShowAnimation.duration } };
+            } else {
+
+                this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.thumbnailsHideAnimation.duration } };
+            }
         }
     }
 
     public resize(): void {
 
-        if (this.visibilityAnimator.value === 'visible') {
+        if (this.thumbnailsAnimation.value === 'visible') {
 
             this._animateSlice();
         }
@@ -132,40 +159,50 @@ export class LightboxThumbnailsComponent {
         if (item.xlSrc) { return item.xlSrc; }
     }
 
-    private get _getMaxWidth(): number {
-
-        let maxWidth = 0;
-        if (window.innerWidth > 767) {
-            maxWidth = 170;
-        }
-        return maxWidth;
-    }
-
     private _animateSlice(): void {
 
-        this.sliceAnimator = { value: 'slice', params: { top: this._listRef.nativeElement.offsetTop - 12 } };
+        this.thumbnailsSliceAnimation = {
+            value: 'slice', params: {
+                top: this._listRef.nativeElement.offsetTop - 12,
+                duration: this.config.thumbnailsSliceAnimation.duration
+            }
+        };
     }
 
     private _animateSliced(): void {
 
-        this.sliceAnimator = { value: 'sliced', params: { top: this._listRef.nativeElement.offsetTop - 12 } };
+        this.thumbnailsSliceAnimation = {
+            value: 'sliced', params: {
+                top: this._listRef.nativeElement.offsetTop - 12,
+                duration: this.config.thumbnailsSliceAnimation.duration
+            }
+        };
     }
 
     private _animateSlicing(): void {
 
         const activeItemRef = this._itemsRef.toArray()[this.items.indexOf(this.activeItem)];
-        let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
 
-        if (top > 0) {
+        if (activeItemRef) {
 
-            top = 0;
+            let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
+
+            if (top > 0) {
+
+                top = 0;
+            }
+
+            if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
+
+                top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+            }
+
+            this.thumbnailsSliceAnimation = {
+                value: 'slicing', params: {
+                    top,
+                    duration: this.config.thumbnailsSliceAnimation.duration
+                }
+            };
         }
-
-        if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
-
-            top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
-        }
-
-        this.sliceAnimator = { value: 'slicing', params: { top } };
     }
 }

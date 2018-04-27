@@ -10,6 +10,9 @@ import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
 import { LightboxImgDirective } from '../../directives/lightbox-img.directive';
 import { LightboxVideoDirective } from '../../directives/lightbox-video.directive';
 import { YoutubeModule } from '../../../youtube/youtube.module';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
+import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
 
 describe('Create LightboxComponent', () => {
     beforeEach(() => {
@@ -20,13 +23,18 @@ describe('Create LightboxComponent', () => {
                 LightboxItemComponent,
                 LightboxButtonComponent,
                 LightboxImgDirective,
-                LightboxVideoDirective
+                LightboxVideoDirective,
+                LightboxImgControlComponent,
+                LightboxThumbnailsComponent
             ],
             imports: [
                 CommonModule,
                 BrowserAnimationsModule,
                 LazyLoadingModule,
                 YoutubeModule
+            ],
+            providers: [
+                LightboxConfigurationService
             ]
         });
     });

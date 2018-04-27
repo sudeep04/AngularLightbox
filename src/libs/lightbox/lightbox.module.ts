@@ -13,6 +13,7 @@ import { YoutubeModule } from 'libs/youtube/youtube.module';
 import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
 import { LightboxImgControlComponent } from './components/lightbox-img-control/lightbox-img-control.component';
 import { LightboxThumbnailsComponent } from './components/lightbox-thumbnails/lightbox-thumbnails.component';
+import { LightboxConfigurationService } from './services/lightbox-configuration.service';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { LightboxThumbnailsComponent } from './components/lightbox-thumbnails/li
     ],
     providers: [
         LightboxService,
-        DoomService
+        DoomService,
+        LightboxConfigurationService
     ],
     entryComponents: [LightboxComponent]
 })
