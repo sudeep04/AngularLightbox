@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Pagination } from '../../models/pagination.interface';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
 @Component({
     selector: 'lightbox-header',
@@ -43,6 +44,15 @@ export class LightboxHeaderComponent {
     @Input() public pagination: Pagination;
 
     public animator: 'hidden' | 'visible' = 'hidden';
+
+    public get config(): LightboxConfigurationService {
+        
+        return this._lightboxConfigurationService;
+    }
+
+    constructor(
+        private readonly _lightboxConfigurationService: LightboxConfigurationService
+    ) { }
 
     public onNext(): void {
 

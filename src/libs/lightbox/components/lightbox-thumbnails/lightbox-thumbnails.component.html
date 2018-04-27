@@ -1,4 +1,4 @@
-<div #thumnailsContainer class="thumbnail-container">
+<div *ngIf="!config.thumbnailsControl.disable" #thumnailsContainer class="thumbnail-container">
     <div #thumnailsList [@sliceAnimatorState]="sliceAnimator" (@sliceAnimatorState.done)="sliceAnimatorDone($event)">
         <div class="thumbnail" *ngFor="let item of items" [ngClass]="{'active': item === activeItem}">
             <img #thumnail [src]="getItemSrc(item)" (click)="onSelect(item)" title="{{item.title}}" />

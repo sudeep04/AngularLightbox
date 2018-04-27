@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate, AnimationEvent } from '@ang
 import { ThumbnailVisibilityAnimatorState } from '../../models/thumbnail-visibility-animator-state.interface';
 import { Item } from '../../models/item';
 import { ThumbnailSliceAnimatorState } from '../../models/thumbnail-slice-animator-state.interface';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
 @Component({
     selector: 'lightbox-thumbnails',
@@ -60,6 +61,15 @@ export class LightboxThumbnailsComponent {
 
     @ViewChild('thumnailsContainer') private _containerRef: ElementRef;
 
+    public get config(): LightboxConfigurationService {
+
+        return this._lightboxConfigurationService;
+    }
+
+    constructor(
+        private readonly _lightboxConfigurationService: LightboxConfigurationService
+    ) { }
+
     public sliceAnimatorDone(event: AnimationEvent): void {
 
         switch (event.toState) {
@@ -75,15 +85,18 @@ export class LightboxThumbnailsComponent {
     public visibilityAnimatorDone(event: AnimationEvent): void {
 
         if (event.toState == 'visible' && this.activeItem) {
-            
+
             this._animateSlice();
         }
     }
 
     public selectItem(item: Item): void {
 
-        this.activeItem = item;
-        this._animateSlice();
+        if (!this.config.thumbnailsControl.disable) {
+
+            this.activeItem = item;
+            this._animateSlice();
+        }
     }
 
     public onSelect(item: Item): void {
@@ -95,22 +108,31 @@ export class LightboxThumbnailsComponent {
 
     public close(): void {
 
-        this.visibilityAnimator = { value: 'hidden' };
+        if (!this.config.thumbnailsControl.disable) {
+
+            this.visibilityAnimator = { value: 'hidden' };
+        }
     }
 
     public open(): void {
 
-        this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
+        if (!this.config.thumbnailsControl.disable) {
+
+            this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
+        }
     }
 
     public toggle(): void {
 
-        if (this.visibilityAnimator.value === 'hidden') {
+        if (!this.config.thumbnailsControl.disable) {
 
-            this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
-        } else {
+            if (this.visibilityAnimator.value === 'hidden') {
 
-            this.visibilityAnimator = { value: 'hidden' };
+                this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
+            } else {
+
+                this.visibilityAnimator = { value: 'hidden' };
+            }
         }
     }
 

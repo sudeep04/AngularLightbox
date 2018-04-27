@@ -26,7 +26,19 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
 
-        this._lightboxConfigurationService.forwardControl = { disable:true };
+        // this._lightboxConfigurationService.forwardControl = { disable: true };
+        // this._lightboxConfigurationService.backwardControl = { disable: true };
+        // this._lightboxConfigurationService.thumbnailsControl = { disable: true };
+        // this._lightboxConfigurationService.jumpToStartControl = { disable: true };
+        // this._lightboxConfigurationService.jumpToEndControl = { disable: true };
+        // this._lightboxConfigurationService.itemIndexControl = { disable: true };
+        // this._lightboxConfigurationService.navigationControl = { disable: true };
+
+        // this._lightboxConfigurationService.zoomControl = { disable: true };
+        // this._lightboxConfigurationService.zoomInControl = { disable: true };
+        // this._lightboxConfigurationService.zoomOutControl = { disable: true };
+        // this._lightboxConfigurationService.feetToWidthControl = { disable: true };
+        // this._lightboxConfigurationService.resetZoomControl = { disable: true };
 
         this._router.events.subscribe((event) => {
 
