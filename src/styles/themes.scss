@@ -1,5 +1,5 @@
 @import 'variables';
-@import 'lightbox';
+@import 'src/libs/lightbox/theming/theming';
 @import '~@angular/material/theming';
 
 /* Plus imports for other components in your app. 
@@ -8,7 +8,31 @@ have to load a single css file for Angular Material in your app.
 **Be sure that you only ever include this mixin once!** */
 
 @include mat-core();
-@include lightbox();
+
+
+/* lightbox theme. */
+
+$lightbox-theme: (
+    thumbnails:(
+        background-color: #1c1c1c,
+    ),
+    header:(
+        background-color: #000,
+        color: #fff
+    ),
+    zoom:(
+        background-color: #000,
+        color: #fff
+    ),
+    container:(
+        background-color: #000
+    )
+);
+
+@include lightbox-theme($lightbox-theme);
+
+
+
 
 /* Define the default theme (same as the example above). */
 

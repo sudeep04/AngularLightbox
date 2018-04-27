@@ -1,3 +1,18 @@
+@mixin lightbox-zoom($theme) {
+
+    lightbox lightbox-img-control{
+        color: map-get(map-get($theme, zoom), color);
+    }
+
+    lightbox lightbox-img-control>div{
+        background-color: map-get(map-get($theme, zoom), background-color);
+    }
+
+    lightbox lightbox-img-control>button{
+        background-color: map-get(map-get($theme, zoom), background-color);
+    }
+}
+
 :host{
     
     height: 64px;
@@ -8,12 +23,10 @@
     position: absolute;
     width:100%;
     z-index: 2;
-    color:white;
     pointer-events: none;
 
     >div{
         pointer-events: auto;
-        background-color: black;
         padding: 3px;
         height: 40px;
         width: auto;

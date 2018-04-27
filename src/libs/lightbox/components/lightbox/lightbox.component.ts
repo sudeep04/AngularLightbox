@@ -96,7 +96,7 @@ export class LightboxComponent implements OnInit {
     }
 
     public getYoutubeVideoId(): string {
-        
+
         return (this.activeItem as Video).youtubeVieoId;
     }
 
@@ -139,26 +139,28 @@ export class LightboxComponent implements OnInit {
 
         setTimeout(() => {
 
-            const itemIndex = this._itemIndex(item);
-            this.pagination.current = itemIndex + 1;
-            this.pagination.count = this.items[item.container].length;
-            this.thumbnails.selectItem(this.activeItem);
-            const itemRef = this._itemRef(itemIndex);
+            if (this.activeItem) {
+                const itemIndex = this._itemIndex(item);
+                this.pagination.current = itemIndex + 1;
+                this.pagination.count = this.items[item.container].length;
+                this.thumbnails.selectItem(this.activeItem);
+                const itemRef = this._itemRef(itemIndex);
 
-            if (itemRef) {
+                if (itemRef) {
 
-                itemRef.open(position, () => {
-                    if (itemRef.isVideo()) {
+                    itemRef.open(position, () => {
+                        if (itemRef.isVideo()) {
 
-                        this.displayPlayer = 'visible';
-                    } else {
+                            this.displayPlayer = 'visible';
+                        } else {
 
-                        this.displayPlayer = 'hidden';
-                    }
-                });
+                            this.displayPlayer = 'hidden';
+                        }
+                    });
 
-                this._checkImgControls();
-                this._checkImageControlVisibility(itemRef);
+                    this._checkImgControls();
+                    this._checkImageControlVisibility(itemRef);
+                }
             }
         }, 0);
     }
@@ -197,60 +199,63 @@ export class LightboxComponent implements OnInit {
 
     public selectItem(item: Item): void {
 
-        const activeItem = this.activeItem;
-        const activeItemIndex = this._itemIndex(activeItem);
-        const activeItemRef = this._itemRef(activeItemIndex);
+        if (this.activeItem) {
 
-        const itemIndex = this._itemIndex(item);
-        const itemRef = this._itemRef(itemIndex);
+            const activeItem = this.activeItem;
+            const activeItemIndex = this._itemIndex(activeItem);
+            const activeItemRef = this._itemRef(activeItemIndex);
 
-        this.pagination.current = itemIndex + 1;
-        this.activeItem = item;
-        this.thumbnails.selectItem(item);
-        this._checkImgControls();
+            const itemIndex = this._itemIndex(item);
+            const itemRef = this._itemRef(itemIndex);
 
-        if (activeItemRef.isVideo()) {
+            this.pagination.current = itemIndex + 1;
+            this.activeItem = item;
+            this.thumbnails.selectItem(item);
+            this._checkImgControls();
 
-            this.displayPlayer = 'hidden';
-        }
+            if (activeItemRef.isVideo()) {
 
-        if (activeItem !== this.activeItem) {
-            if (itemIndex < activeItemIndex) {
-                activeItemRef.slice('right');
-            } else {
-                activeItemRef.slice('left');
+                this.displayPlayer = 'hidden';
             }
-        }
-        if (itemIndex < activeItemIndex) {
-            itemRef.slice('left', () => {
-                if (item === this.activeItem) {
-                    itemRef.slice('center', () => {
-                        if (itemRef.isVideo()) {
 
-                            this.displayPlayer = 'visible';
-                        } else {
-
-                            this._checkImageControlVisibility(itemRef);
-                            this.displayPlayer = 'hidden';
-                        }
-                    });
+            if (activeItem !== this.activeItem) {
+                if (itemIndex < activeItemIndex) {
+                    activeItemRef.slice('right');
+                } else {
+                    activeItemRef.slice('left');
                 }
-            });
-        } else {
-            itemRef.slice('right', () => {
-                if (item === this.activeItem) {
-                    itemRef.slice('center', () => {
-                        if (itemRef.isVideo()) {
+            }
+            if (itemIndex < activeItemIndex) {
+                itemRef.slice('left', () => {
+                    if (item === this.activeItem) {
+                        itemRef.slice('center', () => {
+                            if (itemRef.isVideo()) {
 
-                            this.displayPlayer = 'visible';
-                        } else {
+                                this.displayPlayer = 'visible';
+                            } else {
 
-                            this._checkImageControlVisibility(itemRef);
-                            this.displayPlayer = 'hidden';
-                        }
-                    });
-                }
-            });
+                                this._checkImageControlVisibility(itemRef);
+                                this.displayPlayer = 'hidden';
+                            }
+                        });
+                    }
+                });
+            } else {
+                itemRef.slice('right', () => {
+                    if (item === this.activeItem) {
+                        itemRef.slice('center', () => {
+                            if (itemRef.isVideo()) {
+
+                                this.displayPlayer = 'visible';
+                            } else {
+
+                                this._checkImageControlVisibility(itemRef);
+                                this.displayPlayer = 'hidden';
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
 

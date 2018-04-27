@@ -182,23 +182,27 @@ export class LightboxThumbnailsComponent implements OnInit {
     private _animateSlicing(): void {
 
         const activeItemRef = this._itemsRef.toArray()[this.items.indexOf(this.activeItem)];
-        let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
 
-        if (top > 0) {
+        if (activeItemRef) {
 
-            top = 0;
-        }
+            let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
 
-        if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
+            if (top > 0) {
 
-            top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
-        }
-
-        this.thumbnailsSliceAnimation = {
-            value: 'slicing', params: {
-                top,
-                duration: this.config.thumbnailsSliceAnimation.duration
+                top = 0;
             }
-        };
+
+            if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
+
+                top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+            }
+
+            this.thumbnailsSliceAnimation = {
+                value: 'slicing', params: {
+                    top,
+                    duration: this.config.thumbnailsSliceAnimation.duration
+                }
+            };
+        }
     }
 }
