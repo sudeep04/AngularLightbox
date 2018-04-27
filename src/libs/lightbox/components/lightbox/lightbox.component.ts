@@ -65,9 +65,6 @@ export class LightboxComponent {
 
     public pagination: Pagination = { current: 0, count: 0 };
 
-
-
-
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
     public displayImgControls: 'hidden' | 'visible' = 'hidden';
@@ -229,7 +226,7 @@ export class LightboxComponent {
             this.displayPlayer = 'hidden';
             activeItemRef.animateCenter().done(() => {
 
-                if (activeItem != this.activeItem) {
+                if (activeItem !== this.activeItem) {
                     if (itemIndex < activeItemIndex) {
                         activeItemRef.animateRight();
                     } else {
@@ -239,7 +236,7 @@ export class LightboxComponent {
             });
         } else {
 
-            if (activeItem != this.activeItem) {
+            if (activeItem !== this.activeItem) {
                 if (itemIndex < activeItemIndex) {
                     activeItemRef.animateRight();
                 } else {
@@ -251,7 +248,7 @@ export class LightboxComponent {
         if (itemIndex < activeItemIndex) {
             itemRef.animateLeft().done(() => {
 
-                if (item == this.activeItem) {
+                if (item === this.activeItem) {
 
                     itemRef.animateCenter().done(() => {
 
@@ -270,7 +267,7 @@ export class LightboxComponent {
         } else {
             itemRef.animateRight().done(() => {
 
-                if (item == this.activeItem) {
+                if (item === this.activeItem) {
 
                     itemRef.animateCenter().done(() => {
 

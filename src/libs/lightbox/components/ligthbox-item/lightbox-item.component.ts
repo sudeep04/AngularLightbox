@@ -78,7 +78,7 @@ import { Video } from '../../models/video';
             ]),
             transition('* => null', [
                 query(':self, img', [
-                    animate(0, style({ visibility: 'hidden'}))
+                    animate(0, style({ visibility: 'hidden' }))
                 ])
             ]),
             transition('* => left', [
@@ -104,7 +104,7 @@ import { Video } from '../../models/video';
         '(@transitions.start)': 'itemAnimatorStart($event)',
         '(@transitions.done)': 'itemAnimatorDone($event)',
         '[style.overflow]': 'overflow',
-        '(dragover)':'onDrag($event)'
+        '(dragover)': 'onDrag($event)'
     }
 })
 export class LightboxItemComponent implements OnInit {
@@ -115,9 +115,9 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimator: ImgAnimatorState = { value: 'null' };
 
-    @ViewChild('img') private _img: ElementRef;
+    public overflow: 'hidden' | 'auto' = 'auto';
 
-    public overflow: 'hidden' | 'auto';
+    @ViewChild('img') private _img: ElementRef;
 
     private _isVideo: boolean;
 
@@ -133,9 +133,17 @@ export class LightboxItemComponent implements OnInit {
 
     private _feetToWidthPosition;
 
-    constructor(private readonly _elementRef: ElementRef){
-        
-    }
+    private _dragPositionX: number;
+
+    private _dragPositionY: number;
+
+    private _originScrollTop: number;
+
+    private _originScrollLeft: number;
+
+    private _scrollInterval: any;
+
+    constructor(private readonly _elementRef: ElementRef) { }
 
     public ngOnInit(): void {
 
@@ -148,6 +156,7 @@ export class LightboxItemComponent implements OnInit {
     }
 
     public onClick(event: Event): void {
+
         if (event.stopPropagation) {
             event.stopPropagation();
         }
@@ -157,51 +166,43 @@ export class LightboxItemComponent implements OnInit {
         }
     }
 
-    private _scrollInterval: any;
-
     public itemAnimatorStart(event: AnimationEvent): void {
-        if(event.toState == 'right' || event.fromState == 'right') {
+
+        if (event.toState === 'right' || event.fromState === 'right') {
 
             this.overflow = 'hidden';
         }
         this._itemAnimatorStart.next(event.fromState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
 
-    private _dragPositionX: number;
-    private _dragPositionY: number;
-    private _originScrollTop: number;
-    private _originScrollLeft: number;
+    public onDragStart(event) {
 
-    public onDragStart(event){
         this._img.nativeElement.style.cursor = 'move';
         this._dragPositionX = event.screenX;
         this._dragPositionY = event.screenY;
         this._originScrollTop = this._elementRef.nativeElement.scrollTop;
         this._originScrollLeft = this._elementRef.nativeElement.scrollLeft;
-
     }
 
-    public onDrag(event){
-        if(event.screenY){
+    public onDrag(event) {
 
-            this._elementRef.nativeElement.scrollTop =  this._originScrollTop + this._dragPositionY - event.screenY;
+        if (event.screenY) {
+
+            this._elementRef.nativeElement.scrollTop = this._originScrollTop + this._dragPositionY - event.screenY;
         }
-        if(event.screenX){
+        if (event.screenX) {
 
-            this._elementRef.nativeElement.scrollLeft =  this._originScrollLeft + this._dragPositionX - event.screenX;
+            this._elementRef.nativeElement.scrollLeft = this._originScrollLeft + this._dragPositionX - event.screenX;
         }
     }
 
-    public onDragEnd(event){
+    public onDragEnd(event) {
+
         this._img.nativeElement.style.cursor = 'default';
     }
 
     public itemAnimatorDone(event: AnimationEvent): void {
 
-        // if(event.fromState.substring(0,4) == 'zoom' && event.toState.substring(0,4) == 'zoom') {
-
-        //     clearInterval(this._scrollInterval);
-        // }
         this.overflow = 'auto';
         this._itemAnimatorDone.next(event.toState as 'null' | 'origin' | 'right' | 'left' | 'zoom0' | 'zoom1' | 'zoom2' | 'zoom3' | 'zoom4' | 'zoom5' | 'zoom6' | 'zoom7');
     }
@@ -214,8 +215,8 @@ export class LightboxItemComponent implements OnInit {
 
     public animateOrigin(position: Position): AnimatorCallback {
 
-        position.offsetTop = position.offsetTop - (this._elementRef.nativeElement.clientHeight - position.height) /2;
-        position.offsetLeft = position.offsetLeft - (this._elementRef.nativeElement.clientWidth - position.width) /2;
+        position.offsetTop = position.offsetTop - (this._elementRef.nativeElement.clientHeight - position.height) / 2;
+        position.offsetLeft = position.offsetLeft - (this._elementRef.nativeElement.clientWidth - position.width) / 2;
 
         this.itemAnimator = {
             value: 'origin', params: position
@@ -304,7 +305,7 @@ export class LightboxItemComponent implements OnInit {
     }
 
     private _animatePosition(position: number) {
-        
+
         this.itemAnimator = {
             value: 'zoom' + position, params: this._zoomList[position]
         } as ImgAnimatorState;
@@ -348,8 +349,6 @@ export class LightboxItemComponent implements OnInit {
 
         let height: number;
         let width: number;
-        let offsetTop: number;
-        let offsetLeft: number;
 
         height = Math.round((this._elementRef.nativeElement.clientWidth - 17) / this._img.nativeElement.width * this._img.nativeElement.height);
         width = Math.round(this._elementRef.nativeElement.clientWidth - 17);
@@ -378,7 +377,7 @@ export class LightboxItemComponent implements OnInit {
 
         let offsetLeft: number;
 
-        if (centerPosition.width >this._elementRef.nativeElement.clientWidth) {
+        if (centerPosition.width > this._elementRef.nativeElement.clientWidth) {
             offsetLeft = centerPosition.width;
         } else {
             offsetLeft = this._elementRef.nativeElement.clientWidth;
