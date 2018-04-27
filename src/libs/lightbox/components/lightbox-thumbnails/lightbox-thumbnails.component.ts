@@ -38,7 +38,8 @@ import { ThumbnailSliceAnimatorState } from '../../models/thumbnail-slice-animat
         ])
     ],
     host: {
-        '[@visibilityAnimator]': 'visibilityAnimator'
+        '[@visibilityAnimator]': 'visibilityAnimator',
+        '(@visibilityAnimator.done)': 'visibilityAnimatorDone($event)'
     }
 })
 export class LightboxThumbnailsComponent {
@@ -71,6 +72,14 @@ export class LightboxThumbnailsComponent {
         }
     }
 
+    public visibilityAnimatorDone(event: AnimationEvent): void {
+
+        if (event.toState == 'visible' && this.activeItem) {
+            
+            this._animateSlice();
+        }
+    }
+
     public selectItem(item: Item): void {
 
         this.activeItem = item;
@@ -92,10 +101,6 @@ export class LightboxThumbnailsComponent {
     public open(): void {
 
         this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
-
-        if (this.activeItem) {
-            this._animateSlice();
-        }
     }
 
     public toggle(): void {
@@ -103,10 +108,6 @@ export class LightboxThumbnailsComponent {
         if (this.visibilityAnimator.value === 'hidden') {
 
             this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
-
-            if (this.activeItem) {
-                this._animateSlice();
-            }
         } else {
 
             this.visibilityAnimator = { value: 'hidden' };
@@ -114,16 +115,15 @@ export class LightboxThumbnailsComponent {
     }
 
     public resize(): void {
+
         if (this.visibilityAnimator.value === 'visible') {
 
-            this.visibilityAnimator = { value: 'visible', params: { maxWidth: this._getMaxWidth } };
-            if (this.activeItem) {
-                this._animateSlice();
-            }
+            this._animateSlice();
         }
     }
 
     public getItemSrc(item: Item): string {
+
         if (item.src) { return item.src; }
         if (item.xsSrc) { return item.xsSrc; }
         if (item.smSrc) { return item.smSrc; }
