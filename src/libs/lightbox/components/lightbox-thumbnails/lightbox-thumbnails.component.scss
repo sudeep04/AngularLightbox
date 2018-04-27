@@ -11,26 +11,32 @@
     .thumbnail-container{
         
         margin: 12px;
+        margin-bottom: 0px;
         height: calc(100% - 24px);
         overflow: hidden;
         >div{
 
             position: relative;
         }
-
-        img{
-            width: 142px;
+        .thumbnail{
+        
+            background-color: black;
             margin-bottom: 12px;
-            display: block;
-            border: 2px solid transparent;
-            opacity: .6;
-            cursor: pointer;
+            img{
+                width: 146px;
+                display: block;
+                cursor: pointer;
+                opacity: .8;
+            }
         }
 
-        img.active{
-            border: 2px solid #666;
-            opacity: 1;
-            cursor: default;
+        .thumbnail.active{
+    
+            background-color: white;
+            img{
+                cursor: default;
+                opacity: 1;
+            }
         }
     }
     @media (max-width: 767px) {
