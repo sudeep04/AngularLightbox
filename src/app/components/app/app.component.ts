@@ -3,6 +3,7 @@ import { MenuComponent } from '../menu/menu.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSidenav } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
+import { LightboxConfigurationService } from 'libs/lightbox/services/lightbox-configuration.service';
 
 @Component({
     selector: 'app',
@@ -19,10 +20,13 @@ export class AppComponent implements OnInit {
     constructor(
         private _element: ElementRef,
         private _overlayContainer: OverlayContainer,
-        private _router: Router
+        private _router: Router,
+        private _lightboxConfigurationService: LightboxConfigurationService
     ) { }
 
     public ngOnInit(): void {
+
+        this._lightboxConfigurationService.forwardControl = { disable:true };
 
         this._router.events.subscribe((event) => {
 
