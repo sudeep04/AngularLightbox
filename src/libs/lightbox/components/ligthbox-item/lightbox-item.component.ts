@@ -140,7 +140,7 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimationStart(event: AnimationEvent): void {
 
-        if (event.toState === 'right' || event.fromState === 'right') {
+        if (event.toState === 'right' || event.fromState === 'right'|| event.fromState === 'origin') {
 
             this.overflow = 'hidden';
         }
