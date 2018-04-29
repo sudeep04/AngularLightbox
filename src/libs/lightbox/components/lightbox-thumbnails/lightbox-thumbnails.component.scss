@@ -15,7 +15,7 @@
 
     .thumbnail-container{
         
-        margin: 12px;
+        margin: 12px 0;
         margin-bottom: 0px;
         height: calc(100% - 24px);
         overflow: hidden;
@@ -25,22 +25,23 @@
         }
         .thumbnail{
         
-            background-color: black;
             margin-bottom: 12px;
             img{
                 width: 146px;
+                margin-left: 12px;
+                margin-right: 12px; 
                 display: block;
                 cursor: pointer;
-                opacity: .8;
             }
         }
 
         .thumbnail.active{
     
-            background-color: white;
             img{
                 cursor: default;
-                opacity: 1;
+                width: 158px;
+                margin-left: 6px;
+                margin-right: 6px; 
             }
         }
     }
