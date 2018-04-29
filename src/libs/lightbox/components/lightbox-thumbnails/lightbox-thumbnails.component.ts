@@ -60,6 +60,8 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     @ViewChild('thumnailsContainer') private _containerRef: ElementRef;
 
+    private _scrolling = false;
+
     public get config(): LightboxConfigurationService {
 
         return this._lightboxConfigurationService;
@@ -68,6 +70,32 @@ export class LightboxThumbnailsComponent implements OnInit {
     constructor(
         private readonly _lightboxConfigurationService: LightboxConfigurationService
     ) { }
+
+    public onwheel(event): void{
+
+        this._scrolling = true;
+        let top = this._listRef.nativeElement.offsetTop - 12;
+
+        if(event.deltaY<0) {
+
+            top += 50;
+        } else {
+
+            top -= 50;
+        }
+
+        if (top > 0) {
+
+            top = 0;
+        }
+
+        if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
+
+            top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+        }
+
+        this._listRef.nativeElement.style.top = top + 'px';
+    }
 
     public ngOnInit(): void {
 
@@ -99,6 +127,7 @@ export class LightboxThumbnailsComponent implements OnInit {
 
         if (!this.config.thumbnailsControl.disable) {
 
+            this._scrolling = false;
             this.activeItem = item;
             this._animateSlice();
         }
@@ -143,7 +172,7 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     public resize(): void {
 
-        if (this.thumbnailsAnimation.value === 'visible') {
+        if (this.thumbnailsAnimation.value === 'visible' && !this._scrolling) {
 
             this._animateSlice();
         }

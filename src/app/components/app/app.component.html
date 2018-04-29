@@ -6,9 +6,6 @@
         <h1>Ligthbox</h1>
         <div>
             <button mat-flat-button color="primary" (click)="toggleTheme()">{{dark ? 'Light' : 'Dark'}} theme</button>
-            <button mat-flat-button color="primary" (click)="root.dir = (root.dir == 'rtl' ? 'ltr' : 'rtl')" title="Toggle between RTL and LTR">
-                {{root.dir.toUpperCase()}}
-            </button>
         </div>
     </div>
 </mat-toolbar>
