@@ -16,7 +16,12 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@angular/*": ["node_modules/@angular/*"]
+      "@angular/*": ["node_modules/@angular/*"],
+      "@sveguru/lightbox": ["packages/lightbox/src/index.ts"],
+      
+      "@sveguru/youtube": ["packages/youtube/src/index.ts"],
+      
+      "@sveguru/lazy-loading": ["packages/lazy-loading/src/index.ts"]
     },
     "typeRoots": [
       "node_modules/@types"

@@ -3,7 +3,7 @@ import { MenuComponent } from '../menu/menu.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSidenav } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
-import { LightboxConfigurationService } from 'libs/lightbox/services/lightbox-configuration.service';
+import { LightboxConfigurationService } from '@sveguru/lightbox';
 
 @Component({
     selector: 'app',

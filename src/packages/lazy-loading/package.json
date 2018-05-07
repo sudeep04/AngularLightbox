@@ -1,0 +1,13 @@
+{
+  "name": "@sveguru/lazy-loading",
+  "version": "0.0.0",
+  "description": "Angular Lazy Loading",
+  "keywords": [
+    "angular",
+    "lazy loading"
+  ],
+  "peerDependencies": {
+    "@angular/core": "0.0.0-NG",
+    "@angular/common": "0.0.0-NG"
+  }
+}

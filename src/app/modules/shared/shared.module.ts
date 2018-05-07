@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LightboxModule } from 'libs/lightbox/lightbox.module';
-import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
+import { LazyLoadingModule } from '@sveguru/lazy-loading';
+import { LightboxModule } from '@sveguru/lightbox';
 
 const routes: Routes = [
 ];
