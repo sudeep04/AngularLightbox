@@ -31,6 +31,8 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
 
     @Input('xl-src') public xlSrc: string;
 
+    @Input('src') public src: string;
+
     @Input('load') public load: boolean;
 
     private _currentResolution: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -42,9 +44,9 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
 
     public ngOnInit(): void {
 
-        if (!this.xsSrc && !this.smSrc && !this.mdSrc && !this.lgSrc && !this.xlSrc) {
+        if (!this.xsSrc && !this.smSrc && !this.mdSrc && !this.lgSrc && !this.xlSrc && !this.src) {
 
-            throw new Error("One of this attributes are required 'xs-src | sm-src | md-src | lg-src | xl-src'");
+            throw new Error("At least one of this attributes must be defined 'xs-src | sm-src | md-src | lg-src | xl-src | src'");
         }
 
         if (!this.xsBreakpoint) {
@@ -65,6 +67,12 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
         if (!this.lgBreakpoint) {
 
             this.lgBreakpoint = LG_BREAKPOINT;
+        }
+
+        if (this.src) {
+
+            this._elementRef.nativeElement.src = this.src;
+            this._elementRef.nativeElement.style.background = 'url(' + this.src + ')';
         }
     }
 
@@ -141,7 +149,15 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
                 return;
             }
 
-            this._elementRef.nativeElement.src = '';
+            if (this.src) {
+
+                this._elementRef.nativeElement.src = this.src;
+                this._elementRef.nativeElement.style.background = 'url(' + this.src + ')';
+            } else {
+                
+                this._elementRef.nativeElement.src = '';
+                this._elementRef.nativeElement.style.background = 'none';
+            }
         }
     }
 
