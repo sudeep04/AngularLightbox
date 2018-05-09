@@ -1,10 +1,3 @@
-@mixin lightbox-container($theme) {
-
-    lightbox .lightbox-background{
-        background-color: map-get(map-get($theme, container), background-color);
-    }
-}
-
 :host {
     pointer-events: none;
     top: 0;

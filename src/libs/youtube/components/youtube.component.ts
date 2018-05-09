@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { YoutubeApiService } from '../services/youtube-api.service';
 import { YoutubePlayerService } from '../services/youtube-player.service';
 import {  } from '@types/youtube';
@@ -9,11 +9,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'youtube',
-    templateUrl: './youtube.component.html',
-    styleUrls: ['./youtube.component.scss'],
+    templateUrl: 'youtube.component.html',
+    styleUrls: ['youtube.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
+export class YoutubeComponent implements OnDestroy, OnChanges {
 
     @Input() public videoId: string;
 
@@ -41,10 +41,6 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
         private _domSanitizer: DomSanitizer
     ) {
         this.youtubeApi.loadApi();
-    }
-
-    public ngOnInit(): void {
-
         this._config = {
             height: this.height ? this.height : 390,
             width:  this.width ? this.width : 390,
@@ -80,7 +76,7 @@ export class YoutubeComponent implements OnInit, OnDestroy, OnChanges {
 
         this.ytPlayer = event.target;
         this._ready.next(true);
-        this.ytPlayer.addEventListener('onStateChange', (e) => {
+        this.ytPlayer.addEventListener('onStateChange', (e: YT.PlayerEvent) => {
             this.onChange(e);
         });
 

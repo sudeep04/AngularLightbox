@@ -1,18 +1,3 @@
-@mixin lightbox-zoom($theme) {
-
-    lightbox lightbox-img-control{
-        color: map-get(map-get($theme, zoom), color);
-    }
-
-    lightbox lightbox-img-control>div{
-        background-color: map-get(map-get($theme, zoom), background-color);
-    }
-
-    lightbox lightbox-img-control>button{
-        background-color: map-get(map-get($theme, zoom), background-color);
-    }
-}
-
 :host{
     
     height: 64px;
@@ -31,5 +16,6 @@
         height: 40px;
         width: auto;
         border-radius: 3px;
+        display: flex;
     }
 }

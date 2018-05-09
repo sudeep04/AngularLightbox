@@ -2,10 +2,8 @@
 import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, Optional, NgZone } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent, query } from '@angular/animations';
 import { Item } from '../../models/item';
-import { ILightboxItemComponent } from '../../models/iLightboxItemComponent';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AnimatorCallback } from '../../models/animator-callBack.interface';
-import { ImgAnimatorState } from '../../models/img-animator-state.interface';
 import { Position } from '../../models/position.interface';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
@@ -15,8 +13,8 @@ import { LightboxConfigurationService } from '../../services/lightbox-configurat
 
 @Component({
     selector: 'lightbox-item',
-    templateUrl: './lightbox-item.component.html',
-    styleUrls: ['./lightbox-item.component.scss'],
+    templateUrl: 'lightbox-item.component.html',
+    styleUrls: ['lightbox-item.component.scss'],
     animations: [
         trigger('itemAnimation', [
             state('hidden',
@@ -94,7 +92,7 @@ export class LightboxItemComponent implements OnInit {
 
     private _position = 0;
 
-    private _feetToWidthPosition;
+    private _feetToWidthPosition: number;
 
     private _dragPositionX: number;
 
@@ -161,7 +159,7 @@ export class LightboxItemComponent implements OnInit {
         this._itemAnimationDone.next(event.toState as 'hidden' | 'origin' | 'center' | 'right' | 'left' | 'zoom' | 'zooming' | 'zoomed');
     }
 
-    public onDragStart(event) {
+    public onDragStart(event: any) {
 
         this._img.nativeElement.style.cursor = 'move';
         this._dragPositionX = event.screenX;
@@ -170,7 +168,7 @@ export class LightboxItemComponent implements OnInit {
         this._originScrollLeft = this._elementRef.nativeElement.scrollLeft;
     }
 
-    public onDrag(event) {
+    public onDrag(event: any) {
 
         if (event.screenY) {
 
@@ -182,7 +180,7 @@ export class LightboxItemComponent implements OnInit {
         }
     }
 
-    public onDragEnd(event) {
+    public onDragEnd(event: any) {
 
         this._img.nativeElement.style.cursor = 'default';
     }
@@ -206,7 +204,7 @@ export class LightboxItemComponent implements OnInit {
 
     public slice(to: 'center' | 'left' | 'right', cb?: () => void): void {
 
-        let toItemAnimation: ItemAnimation;
+        let toItemAnimation: ItemAnimation | undefined = undefined;
 
         switch (to) {
             case 'center':
@@ -220,7 +218,7 @@ export class LightboxItemComponent implements OnInit {
                 break;
         }
 
-        this._animate(toItemAnimation).done(() => {
+        this._animate(toItemAnimation as ItemAnimation).done(() => {
             if (to === 'center') {
                 this._initZoom();
                 this._position = 0;

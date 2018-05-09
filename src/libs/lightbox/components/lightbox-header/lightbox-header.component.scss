@@ -1,11 +1,3 @@
-@mixin lightbox-header($theme) {
-
-    lightbox .header-container{
-        background-color: map-get(map-get($theme, header), background-color);
-        color: map-get(map-get($theme, header), color);
-    }
-}
-
 :host {
     display: block;
     position: relative;
