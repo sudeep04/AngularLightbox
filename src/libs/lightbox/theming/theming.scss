@@ -1,0 +1,58 @@
+@mixin lightbox-header($theme) {
+
+    lightbox .header-container{
+        background-color: map-get(map-get($theme, header), background-color);
+        color: map-get(map-get($theme, header), color);
+    }
+}
+
+@mixin lightbox-thumbnails($theme) {
+
+    lightbox lightbox-thumbnails{
+        background-color: map-get(map-get($theme, thumbnails), background-color);
+    }
+}
+
+@mixin lightbox-zoom($theme) {
+
+    lightbox lightbox-img-control{
+        color: map-get(map-get($theme, zoom), color);
+    }
+
+    lightbox lightbox-img-control>div{
+        background-color: map-get(map-get($theme, zoom), background-color);
+    }
+
+    lightbox lightbox-img-control>button{
+        background-color: map-get(map-get($theme, zoom), background-color);
+    }
+}
+
+@mixin lightbox-container($theme) {
+
+    lightbox .lightbox-background{
+        background-color: map-get(map-get($theme, container), background-color);
+    }
+}
+
+@mixin lightbox-theme($theme) {
+
+    @include lightbox-overlay();
+    @include lightbox-header($theme);
+    @include lightbox-thumbnails($theme);
+    @include lightbox-zoom($theme);
+    @include lightbox-container($theme);
+}
+
+@mixin lightbox-overlay() {
+  
+    .lightbox-overlay-container {
+
+        // Disable events from being captured on the overlay container.
+        pointer-events: none;
+        position: fixed;
+        z-index: 10000;
+        height: 100%;
+        width: 100%;
+    }
+}

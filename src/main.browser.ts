@@ -8,7 +8,7 @@ import { environment } from 'environments/environment';
  * App Module
  * our top level module that holds all of our components
  */
-import { AppModule } from './app';
+import { AppModule } from './demo';
 
 /**
  * Bootstrap our Angular app with a top level NgModule
