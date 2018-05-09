@@ -15,8 +15,8 @@ import { BackgroundFadeAnimation } from '../../models/background-fade-animation.
 
 @Component({
     selector: 'lightbox',
-    templateUrl: './lightbox.component.html',
-    styleUrls: ['./lightbox.component.scss'],
+    templateUrl: 'lightbox.component.html',
+    styleUrls: ['lightbox.component.scss'],
     animations: [
         trigger('backgroundFadeAnimation', [
             state('hidden', style({ opacity: '0' }), { params: { duration: 0, opacity: 0 } }),
@@ -61,7 +61,7 @@ export class LightboxComponent implements OnInit {
 
     public items: { [container: string]: Item[] } = {};
 
-    public activeItem: Item;
+    public activeItem: Item | undefined;
 
     public backgroundFadeAnimation: BackgroundFadeAnimation;
 
@@ -143,7 +143,7 @@ export class LightboxComponent implements OnInit {
                 const itemIndex = this._itemIndex(item);
                 this.pagination.current = itemIndex + 1;
                 this.pagination.count = this.items[item.container].length;
-                this.thumbnails.selectItem(this.activeItem);
+                this.thumbnails.selectItem(this.activeItem!);
                 const itemRef = this._itemRef(itemIndex);
 
                 if (itemRef) {
@@ -261,28 +261,28 @@ export class LightboxComponent implements OnInit {
 
     public onNext() {
 
-        const activeItemIndex = this._itemIndex(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem!);
 
-        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem!.container].length - 1) {
 
-            const item = this.items[this.activeItem.container][activeItemIndex + 1];
+            const item = this.items[this.activeItem!.container][activeItemIndex + 1];
             this.selectItem(item);
         }
     }
 
     public onLast() {
 
-        const activeItemIndex = this._itemIndex(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem!);
 
-        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem.container].length - 1) {
+        if (activeItemIndex >= 0 && activeItemIndex < this.items[this.activeItem!.container].length - 1) {
 
-            const item = this.items[this.activeItem.container][this.items[this.activeItem.container].length - 1];
+            const item = this.items[this.activeItem!.container][this.items[this.activeItem!.container].length - 1];
             this.selectItem(item);
         }
     }
 
     public zoomIn() {
-        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem!));
         activeItemRef.zoomIn(() => {
 
             this._checkImageControlVisibility(activeItemRef);
@@ -290,7 +290,7 @@ export class LightboxComponent implements OnInit {
     }
 
     public zoomOut() {
-        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem!));
         activeItemRef.zoomOut(() => {
 
             this._checkImageControlVisibility(activeItemRef);
@@ -299,7 +299,7 @@ export class LightboxComponent implements OnInit {
 
     public resetZoom() {
 
-        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem!));
         activeItemRef.resetZoom(() => {
 
             this._checkImageControlVisibility(activeItemRef);
@@ -308,7 +308,7 @@ export class LightboxComponent implements OnInit {
 
     public feetToWidth() {
 
-        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+        const activeItemRef = this._itemRef(this._itemIndex(this.activeItem!));
         activeItemRef.feetToWidth(() => {
 
             this._checkImageControlVisibility(activeItemRef);
@@ -317,22 +317,22 @@ export class LightboxComponent implements OnInit {
 
     public onFirst() {
 
-        const activeItemIndex = this._itemIndex(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem!);
 
         if (activeItemIndex > 0) {
 
-            const item = this.items[this.activeItem.container][0];
+            const item = this.items[this.activeItem!.container][0];
             this.selectItem(item);
         }
     }
 
     public onPrevious() {
 
-        const activeItemIndex = this._itemIndex(this.activeItem);
+        const activeItemIndex = this._itemIndex(this.activeItem!);
 
         if (activeItemIndex > 0) {
 
-            const item = this.items[this.activeItem.container][activeItemIndex - 1];
+            const item = this.items[this.activeItem!.container][activeItemIndex - 1];
             this.selectItem(item);
         }
     }
@@ -346,7 +346,7 @@ export class LightboxComponent implements OnInit {
         // on error
     }
 
-    public onChange(event): void {
+    public onChange(event: any): void {
 
         switch (event.data) {
             case YT.PlayerState.PLAYING:
@@ -369,11 +369,11 @@ export class LightboxComponent implements OnInit {
     }
 
     @HostListener('window:resize', ['$event'])
-    private _onResize(event) {
+    private _onResize(event: any) {
 
         if (this.activeItem) {
 
-            const activeItemRef = this._itemRef(this._itemIndex(this.activeItem));
+            const activeItemRef = this._itemRef(this._itemIndex(this.activeItem!));
 
             if (!activeItemRef.isVideo()) {
 
@@ -398,7 +398,7 @@ export class LightboxComponent implements OnInit {
 
     private _checkImgControls() {
 
-        if (this._itemRef(this._itemIndex(this.activeItem)).isVideo()) {
+        if (this._itemRef(this._itemIndex(this.activeItem!)).isVideo()) {
 
             this.displayImgControls = 'hidden';
         } else {

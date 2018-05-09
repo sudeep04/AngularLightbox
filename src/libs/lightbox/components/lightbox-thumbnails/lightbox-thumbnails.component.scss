@@ -1,10 +1,3 @@
-@mixin lightbox-thumbnails($theme) {
-
-    lightbox lightbox-thumbnails{
-        background-color: map-get(map-get($theme, thumbnails), background-color);
-    }
-}
-
 :host{
     
     height: 100%;

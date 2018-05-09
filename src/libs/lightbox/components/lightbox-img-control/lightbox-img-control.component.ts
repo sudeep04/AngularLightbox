@@ -5,8 +5,8 @@ import { ZoomAnimation } from '../../models/zoom-animation.interface';
 
 @Component({
     selector: 'lightbox-img-control',
-    templateUrl: './lightbox-img-control.component.html',
-    styleUrls: ['./lightbox-img-control.component.scss'],
+    templateUrl: 'lightbox-img-control.component.html',
+    styleUrls: ['lightbox-img-control.component.scss'],
     animations: [
         trigger('zoomAnimation', [
             state('hidden',

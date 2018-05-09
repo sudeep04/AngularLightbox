@@ -7,8 +7,8 @@ import { ThumbnailsSliceAnimation } from '../../models/thumbnails-slice-animatio
 
 @Component({
     selector: 'lightbox-thumbnails',
-    templateUrl: './lightbox-thumbnails.component.html',
-    styleUrls: ['./lightbox-thumbnails.component.scss'],
+    templateUrl: 'lightbox-thumbnails.component.html',
+    styleUrls: ['lightbox-thumbnails.component.scss'],
     animations: [
         trigger('thumbnailsAnimation', [
             state('hidden',
@@ -71,7 +71,7 @@ export class LightboxThumbnailsComponent implements OnInit {
         private readonly _lightboxConfigurationService: LightboxConfigurationService
     ) { }
 
-    public onwheel(event): void{
+    public onwheel(event: any): void{
 
         this._scrolling = true;
         let top = this._listRef.nativeElement.offsetTop - 12;
@@ -186,6 +186,8 @@ export class LightboxThumbnailsComponent implements OnInit {
         if (item.mdSrc) { return item.mdSrc; }
         if (item.lgSrc) { return item.lgSrc; }
         if (item.xlSrc) { return item.xlSrc; }
+
+        return '';
     }
 
     private _animateSlice(): void {

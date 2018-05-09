@@ -17,7 +17,10 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@angular/*": ["node_modules/@angular/*"]
+      "@angular/*": ["node_modules/@angular/*"],
+      "@sveguru/lightbox": ["libs/lightbox/index.ts"],
+      "@sveguru/youtube": ["libs/youtube/index.ts"],
+      "@sveguru/lazy-loading": ["libs/lazy-loading/index.ts"]
     },
     "typeRoots": [
       "node_modules/@types"
@@ -32,7 +35,9 @@
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "publish",
+    "coverage"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,

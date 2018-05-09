@@ -6,8 +6,8 @@ import { HeaderAnimation } from '../../models/header-animation.interface';
 
 @Component({
     selector: 'lightbox-header',
-    templateUrl: './lightbox-header.component.html',
-    styleUrls: ['./lightbox-header.component.scss'],
+    templateUrl: 'lightbox-header.component.html',
+    styleUrls: ['lightbox-header.component.scss'],
     animations: [
         trigger('headerAnimation', [
             state('hidden',

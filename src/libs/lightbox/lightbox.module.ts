@@ -9,11 +9,11 @@ import { DoomService } from './services/doom.service';
 import { LightboxImgDirective } from './directives/lightbox-img.directive';
 import { LightboxItemComponent } from './components/ligthbox-item/lightbox-item.component';
 import { LightboxVideoDirective } from './directives/lightbox-video.directive';
-import { YoutubeModule } from 'libs/youtube/youtube.module';
-import { LazyLoadingModule } from 'libs/lazy-loading/lazy-loading.module';
 import { LightboxImgControlComponent } from './components/lightbox-img-control/lightbox-img-control.component';
 import { LightboxThumbnailsComponent } from './components/lightbox-thumbnails/lightbox-thumbnails.component';
 import { LightboxConfigurationService } from './services/lightbox-configuration.service';
+import { LazyLoadingModule } from '@sveguru/lazy-loading';
+import { YoutubeModule } from '@sveguru/youtube';
 
 @NgModule({
     declarations: [

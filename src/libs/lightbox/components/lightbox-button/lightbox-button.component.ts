@@ -9,8 +9,8 @@ const BUTTON_HOST_ATTRIBUTES = [
 
 @Component({
     selector: 'button[lightbox-button], button[lightbox-icon-button]',
-    templateUrl: './lightbox-button.component.html',
-    styleUrls: ['./lightbox-button.component.scss'],
+    templateUrl: 'lightbox-button.component.html',
+    styleUrls: ['lightbox-button.component.scss'],
     animations: [
         trigger('hoverAnimation', [
             state('enter',
