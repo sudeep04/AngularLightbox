@@ -29,7 +29,7 @@ $lightbox-theme: (
     )
 );
 
-//@include lightbox-theme($lightbox-theme);
+@include lightbox-theme($lightbox-theme);
 
 
 
