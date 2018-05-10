@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "es2015",
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "declaration": true,
+      "removeComments": false,
+      "noImplicitAny": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "allowUnreachableCode": false,
+      "allowUnusedLabels": false,
+      "pretty": true,
+      "stripInternal": true,
+      "skipLibCheck": true,
+      "outDir": "../../../publish/lightbox",
+      "rootDir": "../../../tmp/lightbox"
+    },
+    "files": [
+      "../../../tmp/lightbox/index.ts"
+    ],
+    "angularCompilerOptions": {
+      "genDir": "../../../publish/lightbox",
+      "debug": false,
+      "skipTemplateCodegen": true,
+      "skipMetadataEmit": false,
+      "strictMetadataEmit": true
+    }
+  }
+  

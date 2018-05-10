@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "target": "es5",
+      "target": "es6",
       "module": "es2015",
       "moduleResolution": "node",
       "sourceMap": true,
@@ -14,14 +14,14 @@
       "pretty": true,
       "stripInternal": true,
       "skipLibCheck": true,
-      "outDir": "publish/youtube",
-      "rootDir": "tmp/youtube"
+      "outDir": "../../../publish/lazy-loading",
+      "rootDir": "../../../tmp/lazy-loading"
     },
     "files": [
-      "tmp/youtube/index.ts"
+      "../../../tmp/lazy-loading/index.ts"
     ],
     "angularCompilerOptions": {
-      "genDir": "publish/youtube",
+      "genDir": "../../../publish/lazy-loading",
       "debug": false,
       "skipTemplateCodegen": true,
       "skipMetadataEmit": false,

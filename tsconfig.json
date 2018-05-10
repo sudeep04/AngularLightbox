@@ -18,9 +18,9 @@
     "baseUrl": "./src",
     "paths": {
       "@angular/*": ["node_modules/@angular/*"],
-      "@sveguru/lightbox": ["libs/lightbox/index.ts"],
-      "@sveguru/youtube": ["libs/youtube/index.ts"],
-      "@sveguru/lazy-loading": ["libs/lazy-loading/index.ts"]
+      "@sveguru/lightbox": ["libs/lightbox/src/index.ts"],
+      "@sveguru/youtube": ["libs/youtube/src/index.ts"],
+      "@sveguru/lazy-loading": ["libs/lazy-loading/src/index.ts"]
     },
     "typeRoots": [
       "node_modules/@types"
@@ -35,9 +35,11 @@
   },
   "exclude": [
     "node_modules",
+    "**/node_modules",
     "dist",
+    "tmp",
     "publish",
-    "coverage"
+    "src/**/*.spec.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,

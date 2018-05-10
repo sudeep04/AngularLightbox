@@ -4,7 +4,6 @@ import { YoutubePlayerService } from '../services/youtube-player.service';
 import {  } from '@types/youtube';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
-import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
@@ -37,8 +36,7 @@ export class YoutubeComponent implements OnDestroy, OnChanges {
 
     constructor(
         public youtubeApi: YoutubeApiService,
-        public youtubePlayer: YoutubePlayerService,
-        private _domSanitizer: DomSanitizer
+        public youtubePlayer: YoutubePlayerService
     ) {
         this.youtubeApi.loadApi();
         this._config = {

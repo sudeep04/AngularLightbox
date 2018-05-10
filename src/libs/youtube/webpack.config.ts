@@ -4,15 +4,15 @@ import * as fs from 'fs';
 import * as angularExternals from 'webpack-angular-externals';
 import * as rxjsExternals from 'webpack-rxjs-externals';
 
-const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
+const pkg = JSON.parse(fs.readFileSync('./config/package.json').toString());
 
 export default {
   entry: {
-    'youtube.umd': './src/libs/youtube/index.ts',
-    'youtube.umd.min': './src/libs/youtube/index.ts',
+    'youtube.umd': './src/index.ts',
+    'youtube.umd.min': './src/index.ts',
   },
   output: {
-    path: path.join(__dirname, '../../publish/youtube'),
+    path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
     library: 'youtube'
@@ -70,7 +70,7 @@ export default {
   plugins: [
     new webpack.ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)@angular/,
-      path.join(__dirname, 'src/youtube')
+      path.join(__dirname, './src')
     ),
 
     new webpack.optimize.UglifyJsPlugin({

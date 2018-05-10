@@ -1,8 +1,16 @@
 {
 	"name": "@sveguru/lightbox",
-	"version": "0.0.35",
+	"version": "0.0.39",
   	"description": "Angular Lightbox",
-	"main": "bundles/lightbox.umd.min.js",
+	"homepage": "https://github.com/sudeep04/AngularLightbox",
+	"repository" : { 
+		"type" : "git", 
+		"url" : "https://github.com/sudeep04/AngularLightbox.git"
+	},
+	"author":{ 
+		"name" : "sveguru"
+	},
+	"main": "lightbox.umd.min.js",
 	"module": "index.js",
 	"typings": "index.d.ts",
 	"keywords": [
@@ -11,8 +19,8 @@
 	],
 	"peerDependencies": {
 		"@angular/animations": "^5.2.7",
-		"@sveguru/lazy-loading": "0.0.34",
-		"@sveguru/youtube": "0.0.34",
+		"@sveguru/lazy-loading": "0.0.39",
+		"@sveguru/youtube": "0.0.39",
 		"@angular/core": "^5.2.7",
 		"@angular/common": "^5.2.7",
 		"rxjs": "^5.5.6",

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@sveguru/lazy-loading": "0.0.39",
+    "@sveguru/youtube": "0.0.39"
+  }
+}
