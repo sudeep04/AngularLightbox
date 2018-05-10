@@ -36,9 +36,16 @@
 }
 
 @mixin lightbox-theme($theme) {
-
-    @include lightbox-header($theme);
-    @include lightbox-thumbnails($theme);
-    @include lightbox-zoom($theme);
-    @include lightbox-container($theme);
+    @if (map-get($theme, header)) {
+        @include lightbox-header($theme);
+    }
+    @if (map-get($theme, thumbnails)) {
+        @include lightbox-thumbnails($theme);
+    }
+    @if (map-get($theme, zoom)) {
+        @include lightbox-zoom($theme);
+    }
+    @if (map-get($theme, container)) {
+        @include lightbox-container($theme);
+    }
 }

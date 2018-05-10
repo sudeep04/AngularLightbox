@@ -29,7 +29,7 @@
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
     "publish:lightbox": "cd src/libs/lightbox && npm run publish",
     "publish:youtube": "cd src/libs/youtube && npm run publish",
-    "publish:lazy-loading": "cd src/libs/lazy-loading npm && run publish"
+    "publish:lazy-loading": "cd src/libs/lazy-loading && npm run publish"
   },
   "dependencies": {
     "@angular/animations": "^5.2.7",

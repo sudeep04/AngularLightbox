@@ -84,14 +84,14 @@ export class LightboxThumbnailsComponent implements OnInit {
             top -= 50;
         }
 
-        if (top > 0) {
-
-            top = 0;
-        }
-
         if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
 
             top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+        }
+
+        if (top > 0) {
+
+            top = 0;
         }
 
         this._listRef.nativeElement.style.top = top + 'px';
@@ -218,14 +218,15 @@ export class LightboxThumbnailsComponent implements OnInit {
 
             let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
 
-            if (top > 0) {
-
-                top = 0;
-            }
 
             if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
 
                 top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+            }
+            
+            if (top > 0) {
+
+                top = 0;
             }
 
             this.thumbnailsSliceAnimation = {

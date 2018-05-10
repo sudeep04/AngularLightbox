@@ -3,14 +3,15 @@
     "clean:temp": "rimraf -- tmp",
     "clean:publish": "rimraf -- dist",
     "copy-package-json": "copyfiles config/package.json -f dist/",
+    "copy-theming": "copyfiles src/theming/theming.scss -f dist/",
     "ngcompile": "ngc -p tsconfig-publish.json",
     "publish:esm": "npm run clean:temp && npm run clean:publish && gulp inline-templates && npm run ngcompile",
     "publish:umd": "webpack --config webpack.config.ts",
-    "publish": "npm install && npm run publish:esm && npm run publish:umd && npm run copy-package-json && (cd dist && npm publish)"
+    "publish": "npm install && npm run publish:esm && npm run publish:umd && npm run copy-package-json && npm run copy-theming && (cd dist && npm publish)"
   },
   "dependencies": {
-    "@sveguru/lazy-loading": "0.0.40",
-    "@sveguru/youtube": "0.0.40"
+    "@sveguru/lazy-loading": "0.0.42",
+    "@sveguru/youtube": "0.0.42"
   },
   "devDependencies": {
     "@angular/compiler": "^5.2.7",
