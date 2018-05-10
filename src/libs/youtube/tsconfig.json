@@ -17,6 +17,18 @@
     ]
   },
   "exclude": [
-    "node_modules"
-  ]
+    "node_modules",
+    "dist",
+    "tmp",
+    "src/**/*.spec.ts"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true,
+    "useWebpackText": true
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }

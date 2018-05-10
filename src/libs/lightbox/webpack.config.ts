@@ -9,14 +9,14 @@ const pkg = JSON.parse(fs.readFileSync('./config/package.json').toString());
 
 export default {
   entry: {
-    'youtube.umd': './src/index.ts',
-    'youtube.umd.min': './src/index.ts',
+    'lightbox.umd': './src/index.ts',
+    'lightbox.umd.min': './src/index.ts',
   },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'youtube'
+    library: 'lightbox'
   },
   resolve: {
     extensions: [ '.ts', '.js', '.json' ]

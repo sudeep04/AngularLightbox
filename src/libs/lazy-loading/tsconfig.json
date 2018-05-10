@@ -1,31 +1,22 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "es2015",
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "declaration": true,
-      "removeComments": false,
-      "noImplicitAny": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "allowUnreachableCode": false,
-      "allowUnusedLabels": false,
-      "pretty": true,
-      "stripInternal": true,
-      "skipLibCheck": true,
-      "outDir": "../../../publish/lazy-loading",
-      "rootDir": "../../../tmp/lazy-loading"
-    },
-    "files": [
-      "../../../tmp/lazy-loading/index.ts"
-    ],
-    "angularCompilerOptions": {
-      "genDir": "../../../publish/lazy-loading",
-      "debug": false,
-      "skipTemplateCodegen": true,
-      "skipMetadataEmit": false,
-      "strictMetadataEmit": true
-    }
-  }
-  
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "noEmit": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "strictNullChecks": false,
+    "lib": [
+      "dom",
+      "es6"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

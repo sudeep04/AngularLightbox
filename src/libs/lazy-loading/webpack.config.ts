@@ -9,14 +9,14 @@ const pkg = JSON.parse(fs.readFileSync('./config/package.json').toString());
 
 export default {
   entry: {
-    'youtube.umd': './src/index.ts',
-    'youtube.umd.min': './src/index.ts',
+    'lazy-loading.umd': './src/index.ts',
+    'lazy-loading.umd.min': './src/index.ts',
   },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'youtube'
+    library: 'lazy-loading'
   },
   resolve: {
     extensions: [ '.ts', '.js', '.json' ]

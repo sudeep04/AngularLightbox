@@ -1,4 +1,4 @@
-:host {
+lightbox {
     pointer-events: none;
     top: 0;
     left: 0;
@@ -26,4 +26,14 @@
         height: 100%;
         position: relative;
     }
+}
+
+.lightbox-overlay-container {
+
+    // Disable events from being captured on the overlay container.
+    pointer-events: none;
+    position: fixed;
+    z-index: 10000;
+    height: 100%;
+    width: 100%;
 }

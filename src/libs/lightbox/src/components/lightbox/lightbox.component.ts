@@ -1,4 +1,4 @@
-import { Component, ViewChild, QueryList, ViewChildren, HostListener, OnInit } from '@angular/core';
+import { Component, ViewChild, QueryList, ViewChildren, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
@@ -12,6 +12,7 @@ import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thu
 import { Pagination } from '../../models/pagination.interface';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 import { BackgroundFadeAnimation } from '../../models/background-fade-animation.interface';
+import {  } from '@types/youtube';
 
 @Component({
     selector: 'lightbox',
@@ -31,7 +32,8 @@ import { BackgroundFadeAnimation } from '../../models/background-fade-animation.
     ],
     host: {
         '[style.pointer-events]': '_pointerEvents',
-    }
+    },
+    encapsulation: ViewEncapsulation.None
 })
 export class LightboxComponent implements OnInit {
 
