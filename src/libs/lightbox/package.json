@@ -10,8 +10,8 @@
     "publish": "npm install && npm run publish:esm && npm run publish:umd && npm run copy-package-json && npm run copy-theming && (cd dist && npm publish)"
   },
   "dependencies": {
-    "@sveguru/lazy-loading": "0.0.42",
-    "@sveguru/youtube": "0.0.42"
+    "@sveguru/lazy-loading": "0.0.43",
+    "@sveguru/youtube": "0.0.43"
   },
   "devDependencies": {
     "@angular/compiler": "^5.2.7",

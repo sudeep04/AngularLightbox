@@ -1,6 +1,6 @@
 {
 	"name": "@sveguru/lightbox",
-	"version": "0.0.42",
+	"version": "0.0.43",
     "description": "Angular Lightbox",
     "homepage": "https://github.com/sudeep04/AngularLightbox",
     "repository" : { 
