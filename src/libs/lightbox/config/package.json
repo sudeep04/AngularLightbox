@@ -1,7 +1,7 @@
 {
 	"name": "@sveguru/lightbox",
-	"version": "0.0.43",
-    "description": "Angular Lightbox",
+	"version": "0.0.57",
+	"description": "An angular 5 component to display images and videos",
     "homepage": "https://github.com/sudeep04/AngularLightbox",
     "repository" : { 
 		"type" : "git", 
@@ -15,7 +15,11 @@
 	"typings": "index.d.ts",
 	"keywords": [
 		"angular",
-    	"lightbox"
+		"angular 5",
+    	"lightbox",
+    	"component",
+    	"youtube",
+    	"video"
 	],
 	"peerDependencies": {
 		"@angular/common": "^5.2.7",
