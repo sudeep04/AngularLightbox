@@ -41,8 +41,8 @@ export class AppComponent implements OnInit {
 
         // this._lightboxConfigurationService.headerShowAnimation = { duration:.4 };
         // this._lightboxConfigurationService.headerHideAnimation = { duration: 2 };
-        // this._lightboxConfigurationService.backgroundFadeShowAnimation = { duration: 5, opacity: 1 };
-        // this._lightboxConfigurationService.backgroundFadeHideAnimation = { duration: 2 };
+        // this._lightboxConfigurationService.backgroundFadeInAnimation = { duration: 5, opacity: 1 };
+        // this._lightboxConfigurationService.backgroundFadeOutAnimation = { duration: 2 };
         // this._lightboxConfigurationService.thumbnailsShowAnimation = { duration: 1 };
         // this._lightboxConfigurationService.thumbnailsHideAnimation = { duration: 1 };
         // this._lightboxConfigurationService.thumbnailsSliceAnimation = { duration: 3 };

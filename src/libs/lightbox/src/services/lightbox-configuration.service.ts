@@ -29,8 +29,8 @@ export class LightboxConfigurationService {
             animations: {
                 headerShow: { duration: .4 },
                 headerHide: { duration: .05 },
-                backgroundFadeShow: { duration: .4, opacity: .9 },
-                backgroundFadeHide: { duration: .05 },
+                backgroundFadeIn: { duration: .4, opacity: .9 },
+                backgroundFadeOut: { duration: .05 },
                 thumbnailsShow: { duration: .4 },
                 thumbnailsHide: { duration: .05 },
                 thumbnailsSlice: { duration: .4 },
@@ -186,24 +186,24 @@ export class LightboxConfigurationService {
         this._configuration.animations.headerHide = config;
     }
 
-    public get backgroundFadeShowAnimation(): FadeAnimationConfiguration {
+    public get backgroundFadeInAnimation(): FadeAnimationConfiguration {
 
-        return this._configuration.animations.backgroundFadeShow;
+        return this._configuration.animations.backgroundFadeIn;
     }
 
-    public set backgroundFadeShowAnimation(config: FadeAnimationConfiguration) {
+    public set backgroundFadenAnimation(config: FadeAnimationConfiguration) {
 
-        this._configuration.animations.backgroundFadeShow = config;
+        this._configuration.animations.backgroundFadeIn = config;
     }
 
-    public get backgroundFadeHideAnimation(): AnimationConfiguration {
+    public get backgroundFadeOutAnimation(): AnimationConfiguration {
 
-        return this._configuration.animations.backgroundFadeHide;
+        return this._configuration.animations.backgroundFadeOut;
     }
 
-    public set backgroundFadeHideAnimation(config: AnimationConfiguration) {
+    public set backgroundFadeOitAnimation(config: AnimationConfiguration) {
 
-        this._configuration.animations.backgroundFadeHide = config;
+        this._configuration.animations.backgroundFadeOut = config;
     }
 
     public get thumbnailsShowAnimation(): AnimationConfiguration {

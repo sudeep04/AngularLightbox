@@ -94,7 +94,7 @@ export class LightboxComponent implements OnInit {
 
     public ngOnInit(): void {
 
-        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeHideAnimation.duration, opacity: 0 } };
+        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeOutAnimation.duration, opacity: 0 } };
     }
 
     public getYoutubeVideoId(): string {
@@ -133,8 +133,8 @@ export class LightboxComponent implements OnInit {
         this._pointerEvents = 'auto';
         this.backgroundFadeAnimation = {
             value: 'visible', params: {
-                duration: this.config.backgroundFadeShowAnimation.duration,
-                opacity: this.config.backgroundFadeShowAnimation.opacity
+                duration: this.config.backgroundFadeInAnimation.duration,
+                opacity: this.config.backgroundFadeInAnimation.opacity
             }
         };
         this._openControls();
@@ -172,7 +172,7 @@ export class LightboxComponent implements OnInit {
         this._pointerEvents = 'none';
         this.activeItem = undefined;
         this.state.next('closed');
-        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeHideAnimation.duration, opacity: 0 } };
+        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeOutAnimation.duration, opacity: 0 } };
         this.displayPlayer = 'hidden';
         this._closeControls();
         if (this._ytPlayer) {

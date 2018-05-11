@@ -1,7 +1,33 @@
 # Angular Lightbox Component 
 
-### Quick start
-**Make sure you have Node version >= 6.0 and NPM >= 3**
+An angular 5 component to display images and videos as well as a demo application
+
+## Features
+
+* Full screen
+* Lazy Loading of large images
+* Control elements
+  * Navigation (Forward, backward, jump to start/end )
+  * Thumbnails
+  * Zoom (in, out, feet to with, reset)
+* Animated transitions
+* Configuration
+  * Animations duration
+  * Controls elements (enabled/disabled) 
+* Theming
+* Aot compatibility
+* Responsive design
+
+## Content
+
+* demo application
+* lightbox component [![npm version](https://badge.fury.io/js/%40sveguru%2Flightbox.svg)](https://badge.fury.io/js/%40sveguru%2Flightbox)
+* youtube component (used by lightbox component) [![npm version](https://badge.fury.io/js/%40sveguru%2Fyoutube.svg)](https://badge.fury.io/js/%40sveguru%2Fyoutube)
+* lazy-loading component (used by lightbox component) [![npm version](https://badge.fury.io/js/%40sveguru%2Flazy-loading.svg)](https://badge.fury.io/js/%40sveguru%2Flazy-loading)
+
+## Quick start
+
+Make sure you have [node](https://www.npmjs.com/get-npm) version >= 6.0 and [npm](https://www.npmjs.com/get-npm) >= 3
 
 ```bash
 # clone the repo
@@ -15,56 +41,77 @@ npm install
 
 # start the server
 npm start
-
-# use Hot Module Replacement
-npm run server:dev:hmr
 ```
 go to [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your browser
 
-# Getting Started
-## Dependencies
-What you need to run this app:
-* `node` and `npm` (`brew install node`)
-* Ensure you're running the latest versions Node `v6.x.x`+ (or `v7.x.x`) and NPM `3.x.x`+
+## Commands
 
-## Running the app
-Run `npm run server` to start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://0.0.0.0:3000` (or if you prefer IPv6, if you're using `express` server, then it's `http://[::1]:3000/`).
-
-### server
 ```bash
-# development
-npm run server
-# production
-npm run build:prod
-npm run server:prod
-```
+# build aot for production
+npm run build:aot:prod
 
-## Other commands
-
-### build files
-```bash
-# development
-npm run build:dev
-# production (jit)
-npm run build:prod
-# AoT
+# build aot for production
 npm run build:aot
-```
 
-### hot module replacement
-```bash
+# build aot for development
+npm run build:aot:dev
+
+# build for production
+npm run build:prod
+
+# build for development
+npm run build:dev
+
+# build for development
+npm run build
+
+# run server for development with hot module replacement
 npm run server:dev:hmr
-```
 
-### run unit tests
-```bash
+# run server with aot for development
+npm run server:aot:dev
+
+# run server for development
+npm run server:dev
+
+# run server for production
+npm run server:prod
+
+# run server for development
+npm run server
+
+# run server for production with hot module replacement
+npm run start:prod:hmr
+
+# run server for development with hot module replacement
+npm run start:hmr
+
+# run server for development
+npm run start
+
+# run server with aot for development
+npm run start:aot
+
+# publish lightbox component to npm
+npm run publish:lightbox
+
+# publish youtube component to npm
+npm run publish:youtube
+
+# publish lazy-loading component to npm
+npm run publish:lazy-loading
+
+# run test
 npm run test
+
+# run tslint
+npm run lint
 ```
 
-# Configuration
+## Configuration
 Configuration files live in `config/` we are currently using webpack and karma for different stages of your application
 
-# AoT Don'ts
+## AoT Don'ts
 The following are some things that will make AoT compile fail.
 
 - Don’t use require statements for your templates or styles, use styleUrls and templateUrls, the angular2-template-loader plugin will change it to require at build time.
@@ -75,15 +122,3 @@ The following are some things that will make AoT compile fail.
 - @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public
 
 For more detailed guide on AoT's Do's and Don'ts refer to https://github.com/rangle/angular-2-aot-sandbox
-
-# External Stylesheets
-Any stylesheets (Sass or CSS) placed in the `src/styles` directory and imported into your project will automatically be compiled into an external `.css` and embedded in your production builds.
-
-For example to use Bootstrap as an external stylesheet:
-1) Create a `styles.scss` file (name doesn't matter) in the `src/styles` directory.
-2) `npm install` the version of Boostrap you want.
-
-___
-
-# License
- [MIT](/LICENSE)
