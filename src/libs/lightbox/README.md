@@ -55,7 +55,7 @@ import 'web-animations-js';
 
 To include Material Icons, check out the [Material Icons Guide](https://google.github.io/material-design-icons/).
 
-## Usages
+## Usage
 
 ### Import lightbox module
 
@@ -121,7 +121,78 @@ export class AppComponent implements OnInit {
 
 ## Api
 
+### LightboxImgDirective
 
+#### Properties
+
+| Name          | Type                                                      | Description  |
+|---------------|-----------------------------------------------------------|--------------|
+| container     |                                                           |              |
+| title         |                                                           |              |
+| src           |                                                           |              |
+| xs-src        |                                                           |              |
+| sm-src        |                                                           |              |
+| md-src        |                                                           |              |
+| lg-src        |                                                           |              |
+| xl-src        |                                                           |              |
+| xs-breakpoint |                                                           |              |
+| sm-breakpoint |                                                           |              |
+| md-breakpoint |                                                           |              |
+| lg-breakpoint |                                                           |              |
+
+### LightboxVideoDirective
+
+#### Properties
+
+| Name          | Type                                                      | Description  |
+|---------------|-----------------------------------------------------------|--------------|
+| container     |                                                           |              |
+| title         |                                                           |              |
+| youtube-id    |                                                           |              |
+| src           |                                                           |              |
+| xs-src        |                                                           |              |
+| sm-src        |                                                           |              |
+| md-src        |                                                           |              |
+| lg-src        |                                                           |              |
+| xl-src        |                                                           |              |
+| xs-breakpoint |                                                           |              |
+| sm-breakpoint |                                                           |              |
+| md-breakpoint |                                                           |              |
+| lg-breakpoint |                                                           |              |
+
+### LightboxConfigurationService
+
+#### Properties
+
+| Name                         | Type                                       | Description  |
+|------------------------------|--------------------------------------------|--------------|
+| controls.forward             |                                            |              |
+| controls.backward            |                                            |              |
+| controls.thumbnails          |                                            |              |
+| controls.jumpToStart         |                                            |              |
+| controls.jumpToEnd           |                                            |              |
+| controls.itemIndex           |                                            |              |
+| controls.navigation          |                                            |              |
+| controls.zoom                |                                            |              |
+| controls.zoomIn              |                                            |              |
+| controls.zoomOut             |                                            |              |
+| controls.feetToWidth         |                                            |              |
+| controls.resetZoom           |                                            |              |
+| animations.headerShow        |                                            |              |
+| animations.headerHide        |                                            |              |
+| animations.backgroundFadeIn  |                                            |              |
+| animations.backgroundFadeOut |                                            |              |
+| animations.thumbnailsShow    |                                            |              |
+| animations.thumbnailsHide    |                                            |              |
+| animations.thumbnailsSlice   |                                            |              |
+| animations.zoomShow          |                                            |              |
+| animations.zoomHide          |                                            |              |
+| animations.zoomIn            |                                            |              |
+| animations.zoomOut           |                                            |              |
+| animations.feetToWidth       |                                            |              |
+| animations.resetZoom         |                                            |              |
+| animations.itemSlice         |                                            |              |
+| animations.itemOpen          |                                            |              |
 
 ## Theming
 
