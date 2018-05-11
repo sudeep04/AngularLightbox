@@ -20,8 +20,8 @@ export interface LightboxConfiguration {
     animations: {
         headerShow: AnimationConfiguration;
         headerHide: AnimationConfiguration;
-        backgroundFadeShow: FadeAnimationConfiguration;
-        backgroundFadeHide: AnimationConfiguration;
+        backgroundFadeIn: FadeAnimationConfiguration;
+        backgroundFadeOut: AnimationConfiguration;
         thumbnailsShow: AnimationConfiguration;
         thumbnailsHide: AnimationConfiguration;
         thumbnailsSlice: AnimationConfiguration;
