@@ -1,6 +1,31 @@
 # Angular Lightbox Component 
 
-### Quick start
+An angular 5 component to display images and videos as well as a demo application
+
+## Features
+
+* Full screen
+* Lazy Loading of large images
+* Control elements
+  * Navigation (Forward, backward, jump to start/end )
+  * Thumbnails
+  * Zoom (in, out, feet to with, reset)
+* Animated transitions
+* Configuration
+  * Animations duration
+  * Controls elements (enabled/disabled) 
+* Theming
+* Aot compatibility
+* Responsive design
+
+## Content
+
+* demo application
+* lightbox component [![npm version](https://badge.fury.io/js/%40sveguru%2Flightbox.svg)](https://badge.fury.io/js/%40sveguru%2Flightbox)
+* youtube component (used by lightbox component) [![npm version](https://badge.fury.io/js/%40sveguru%2Fyoutube.svg)](https://badge.fury.io/js/%40sveguru%2Fyoutube)
+* lazy-loading component (used by lightbox component) [![npm version](https://badge.fury.io/js/%40sveguru%2Flazy-loading.svg)](https://badge.fury.io/js/%40sveguru%2Flazy-loading)
+
+## Quick start
 **Make sure you have Node version >= 6.0 and NPM >= 3**
 
 ```bash
