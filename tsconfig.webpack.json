@@ -14,13 +14,12 @@
       "es2015",
       "dom"
     ],
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
       "@angular/*": ["node_modules/@angular/*"],
-      "@sveguru/lightbox": ["libs/lightbox/index.ts"],
-      "@sveguru/youtube": ["libs/youtube/index.ts"],
-      
-      "@sveguru/lazy-loading": ["libs/lazy-loading/index.ts"]
+      "@sveguru/lightbox": ["./src/libs/lightbox/src/index.ts"],
+      "@sveguru/youtube": ["./src/libs/youtube/src/index.ts"],
+      "@sveguru/lazy-loading": ["./src/libs/lazy-loading/src/index.ts"]
     },
     "typeRoots": [
       "node_modules/@types"
@@ -32,9 +31,14 @@
   },
   "exclude": [
     "node_modules",
-    "**/node_modules",
+    "src/**/node_modules",
     "dist",
-    "src/**/*.spec.ts"
+    "src/**/dist",
+    "tmp",
+    "src/**/tmp",
+    "src/**/*.spec.ts",
+    "src/**/gulpfile.ts",
+    "src/**/webpack.config.ts"
   ],
   "angularCompilerOptions": {
     "skipMetadataEmit": true
