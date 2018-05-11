@@ -14,35 +14,13 @@
     "lib": [
       "dom",
       "es6"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@angular/*": ["node_modules/@angular/*"],
-      "@sveguru/lightbox": ["./src/libs/lightbox/src/index.ts"],
-      "@sveguru/youtube": ["./src/libs/youtube/src/index.ts"],
-      "@sveguru/lazy-loading": ["./src/libs/lazy-loading/src/index.ts"]
-    },
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "hammerjs",
-      "jasmine",
-      "node",
-      "uglify-js",
-      "webpack"
     ]
   },
   "exclude": [
     "node_modules",
-    "src/**/node_modules",
     "dist",
-    "src/**/dist",
     "tmp",
-    "src/**/tmp",
-    "src/**/*.spec.ts",
-    "src/**/gulpfile.ts",
-    "src/**/webpack.config.ts"
+    "src/**/*.spec.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,

@@ -1,0 +1,34 @@
+{
+  "scripts": {
+    "clean:temp": "rimraf -- tmp",
+    "clean:publish": "rimraf -- dist",
+    "copy-package-json": "copyfiles config/package.json -f dist/",
+    "ngcompile": "ngc -p tsconfig-publish.json",
+    "publish:esm": "npm run clean:temp && npm run clean:publish && gulp inline-templates && npm run ngcompile",
+    "publish:umd": "webpack --config webpack.config.ts",
+    "publish": "npm install && npm run publish:esm && npm run publish:umd && npm run copy-package-json && (cd dist && npm publish)"
+  },
+  "devDependencies": {
+    "@angular/compiler": "^5.2.7",
+    "@angular/compiler-cli": "^5.2.7",
+    "angular2-template-loader": "^0.6.2",
+    "awesome-typescript-loader": "^3.5.0",
+    "copyfiles": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-inline-ng2-template": "^4.0.0",
+    "json-loader": "^0.5.4",
+    "raw-loader": "0.5.1",
+    "rimraf": "~2.6.2",
+    "node-sass": "^4.5.2",
+    "to-string-loader": "^1.1.5",
+    "typescript": "~2.6.2",
+    "uglifyjs-webpack-plugin": "^1.2.2",
+    "webpack": "^3.10.0",
+    "webpack-angular-externals": "^1.0.2",
+    "webpack-rxjs-externals": "^1.0.0"
+  },
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5"
+  }
+}

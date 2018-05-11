@@ -1,5 +1,5 @@
 @import 'variables';
-@import 'src/libs/lightbox/theming/theming';
+@import 'src/libs/lightbox/src/theming/theming';
 @import '~@angular/material/theming';
 
 /* Plus imports for other components in your app. 
@@ -17,7 +17,7 @@ $lightbox-theme: (
         background-color: #222,
     ),
     header:(
-        background-color: #000,
+        background-color: blue,
         color: #fff
     ),
     zoom:(

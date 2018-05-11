@@ -1,21 +1,21 @@
 {
-	"name": "@sveguru/lazy-loading",
-	"version": "0.0.39",
-  	"description": "Angular Lazy Loading",
-	"homepage": "https://github.com/sudeep04/AngularLightbox",
-	"repository" : { 
+	"name": "@sveguru/youtube",
+	"version": "0.0.43",
+    "description": "Angular Youtube",
+    "homepage": "https://github.com/sudeep04/AngularLightbox",
+    "repository" : { 
 		"type" : "git", 
 		"url" : "https://github.com/sudeep04/AngularLightbox.git"
 	},
 	"author":{ 
 		"name" : "sveguru"
 	},
-	"main": "lazy-loading.umd.min.js",
+	"main": "youtube.umd.min.js",
 	"module": "index.js",
 	"typings": "index.d.ts",
 	"keywords": [
 		"angular",
-    	"lazy loading"
+    	"youtube"
 	],
 	"peerDependencies": {
 		"@angular/common": "^5.2.7",

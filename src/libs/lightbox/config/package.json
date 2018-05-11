@@ -1,9 +1,9 @@
 {
 	"name": "@sveguru/lightbox",
-	"version": "0.0.39",
-  	"description": "Angular Lightbox",
-	"homepage": "https://github.com/sudeep04/AngularLightbox",
-	"repository" : { 
+	"version": "0.0.43",
+    "description": "Angular Lightbox",
+    "homepage": "https://github.com/sudeep04/AngularLightbox",
+    "repository" : { 
 		"type" : "git", 
 		"url" : "https://github.com/sudeep04/AngularLightbox.git"
 	},
@@ -18,11 +18,8 @@
     	"lightbox"
 	],
 	"peerDependencies": {
-		"@angular/animations": "^5.2.7",
-		"@sveguru/lazy-loading": "0.0.39",
-		"@sveguru/youtube": "0.0.39",
-		"@angular/core": "^5.2.7",
 		"@angular/common": "^5.2.7",
+		"@angular/core": "^5.2.7",
 		"rxjs": "^5.5.6",
 		"zone.js": "^0.8.19"
 	}

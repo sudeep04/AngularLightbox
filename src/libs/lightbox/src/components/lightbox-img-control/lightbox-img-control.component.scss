@@ -1,0 +1,26 @@
+:host{
+    color: #fff;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    width:100%;
+    z-index: 2;
+    pointer-events: none;
+
+    >div{
+        background-color: #000;
+        pointer-events: auto;
+        padding: 3px;
+        height: 40px;
+        width: auto;
+        border-radius: 3px;
+        display: flex;
+    }
+
+    button{
+        background-color: #000;
+    }
+}
