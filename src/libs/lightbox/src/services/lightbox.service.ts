@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 import { DoomService } from './doom.service';
 import { Item } from '../models/item';
 import { Position } from '../models/position.interface';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/first';
 
 @Injectable()
 export class LightboxService {

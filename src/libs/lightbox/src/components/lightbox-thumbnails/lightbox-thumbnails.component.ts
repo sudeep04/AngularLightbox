@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter, Input, ViewChildren, QueryList, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
-import { Item } from '../../models/item';
-import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 import { ThumbnailsAnimation } from '../../models/thumbnails-animation.interface';
 import { ThumbnailsSliceAnimation } from '../../models/thumbnails-slice-animation.interface';
+import { Item } from '../../models/item';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
 @Component({
     selector: 'lightbox-thumbnails',
@@ -71,12 +71,12 @@ export class LightboxThumbnailsComponent implements OnInit {
         private readonly _lightboxConfigurationService: LightboxConfigurationService
     ) { }
 
-    public onwheel(event: any): void{
+    public onwheel(event: any): void {
 
         this._scrolling = true;
         let top = this._listRef.nativeElement.offsetTop - 12;
 
-        if(event.deltaY<0) {
+        if (event.deltaY < 0) {
 
             top += 50;
         } else {
@@ -100,7 +100,7 @@ export class LightboxThumbnailsComponent implements OnInit {
     public ngOnInit(): void {
 
         this.thumbnailsSliceAnimation = { value: 'sliced' };
-        this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.thumbnailsHideAnimation.duration } };
+        this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.animations.thumbnailsHide.duration } };
     }
 
     public thumbnailsSliceAnimationDone(event: AnimationEvent): void {
@@ -125,7 +125,7 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     public selectItem(item: Item): void {
 
-        if (!this.config.thumbnailsControl.disable) {
+        if (!this.config.controls.thumbnails.disable) {
 
             this._scrolling = false;
             this.activeItem = item;
@@ -142,30 +142,30 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     public close(): void {
 
-        if (!this.config.thumbnailsControl.disable) {
+        if (!this.config.controls.thumbnails.disable) {
 
-            this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.thumbnailsHideAnimation.duration } };
+            this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.animations.thumbnailsHide.duration } };
         }
     }
 
     public open(): void {
 
-        if (!this.config.thumbnailsControl.disable) {
+        if (!this.config.controls.thumbnails.disable) {
 
-            this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.thumbnailsShowAnimation.duration } };
+            this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.animations.thumbnailsShow.duration } };
         }
     }
 
     public toggle(): void {
 
-        if (!this.config.thumbnailsControl.disable) {
+        if (!this.config.controls.thumbnails.disable) {
 
             if (this.thumbnailsAnimation.value === 'hidden') {
 
-                this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.thumbnailsShowAnimation.duration } };
+                this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.animations.thumbnailsShow.duration } };
             } else {
 
-                this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.thumbnailsHideAnimation.duration } };
+                this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.animations.thumbnailsHide.duration } };
             }
         }
     }
@@ -195,7 +195,7 @@ export class LightboxThumbnailsComponent implements OnInit {
         this.thumbnailsSliceAnimation = {
             value: 'slice', params: {
                 top: this._listRef.nativeElement.offsetTop - 12,
-                duration: this.config.thumbnailsSliceAnimation.duration
+                duration: this.config.animations.thumbnailsSlice.duration
             }
         };
     }
@@ -205,7 +205,7 @@ export class LightboxThumbnailsComponent implements OnInit {
         this.thumbnailsSliceAnimation = {
             value: 'sliced', params: {
                 top: this._listRef.nativeElement.offsetTop - 12,
-                duration: this.config.thumbnailsSliceAnimation.duration
+                duration: this.config.animations.thumbnailsSlice.duration
             }
         };
     }
@@ -218,12 +218,11 @@ export class LightboxThumbnailsComponent implements OnInit {
 
             let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
 
-
             if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
 
                 top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
             }
-            
+
             if (top > 0) {
 
                 top = 0;
@@ -232,7 +231,7 @@ export class LightboxThumbnailsComponent implements OnInit {
             this.thumbnailsSliceAnimation = {
                 value: 'slicing', params: {
                     top,
-                    duration: this.config.thumbnailsSliceAnimation.duration
+                    duration: this.config.animations.thumbnailsSlice.duration
                 }
             };
         }

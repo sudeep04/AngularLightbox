@@ -1,5 +1,5 @@
 <div [@backgroundFadeAnimation]="backgroundFadeAnimation" class="lightbox-background"></div>
-<lightbox-header #header
+<lightbox-toolbar #toolbar
     [pagination]="pagination"
     [title]="activeItem?.title"
     (closeEvent)="onClose()"
@@ -8,7 +8,7 @@
     (nextEvent)="onNext()"
     (lastEvent)="onLast()"
     (thumbnailsToggleEvent)="thumbnailsToggle()">
-</lightbox-header>
+</lightbox-toolbar>
 <div class="lightbox-container">
     <div class="lightbox-items-container">
         <div (click)="onClose()" class="lightbox-items-background">
@@ -17,10 +17,10 @@
                 </lightbox-item>
             </div>
         </div>
-        <lightbox-img-control #controls [style.visibility]="displayImgControls" [disableZoomIn]="disableZoomIn" [disableZoomOut]="disableZoomOut"
+        <lightbox-zoom #controls [style.visibility]="displayZoom" [disableZoomIn]="disableZoomIn" [disableZoomOut]="disableZoomOut"
             [disableResetZoom]="disableResetZoom" [disableFeetToWidth]="disableFeetToWidth" (zoomInEvent)="zoomIn()" (zoomOutEvent)="zoomOut()"
             (resetZoomEvent)="resetZoom()" (feetToWidthEvent)="feetToWidth()">
-        </lightbox-img-control>
+        </lightbox-zoom>
         <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? getYoutubeVideoId() : undefined" (ready)="onReady($event)"
             (change)="onChange($event)" (error)="onError($event)"></youtube>
     </div>

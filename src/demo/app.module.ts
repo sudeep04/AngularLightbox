@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { environment } from 'environments/environment';
+import { environment } from '../environments/environment';
 // App is our top level component
 import { AppComponent } from './components/app/app.component';
 

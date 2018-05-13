@@ -1,7 +1,7 @@
-import { Position } from './position.interface';
 import { LightboxService } from '../services/lightbox.service';
 import { ElementRef, Input, OnDestroy } from '@angular/core';
 import { Item } from './item';
+import { Position } from './position.interface';
 
 export class ItemDirectiveBase implements OnDestroy {
 

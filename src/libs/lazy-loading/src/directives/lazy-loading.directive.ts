@@ -39,7 +39,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private readonly _doomSensorService: DoomSensorService,
         private readonly _elementRef: ElementRef
-    ) {}
+    ) { }
 
     public ngOnInit(): void {
 
@@ -153,7 +153,7 @@ export class LazyLoadingDirective implements OnInit, AfterViewInit, OnDestroy {
                 this._elementRef.nativeElement.src = this.src;
                 this._elementRef.nativeElement.style.background = 'url(' + this.src + ')';
             } else {
-                
+
                 this._elementRef.nativeElement.src = '';
                 this._elementRef.nativeElement.style.background = 'none';
             }

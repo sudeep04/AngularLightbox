@@ -1,15 +1,15 @@
 
 import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, Optional, NgZone } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent, query } from '@angular/animations';
-import { Item } from '../../models/item';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AnimatorCallback } from '../../models/animator-callBack.interface';
-import { Position } from '../../models/position.interface';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
-import { Video } from '../../models/video';
+import { Item } from '../../models/item';
 import { ItemAnimation } from '../../models/item-animation.interface';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { Video } from '../../models/video';
+import { AnimatorCallback } from '../../models/animator-callback.interface';
+import { Position } from '../../models/position.interface';
 
 @Component({
     selector: 'lightbox-item',
@@ -138,7 +138,7 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimationStart(event: AnimationEvent): void {
 
-        if (event.toState === 'right' || event.fromState === 'right'|| event.fromState === 'origin') {
+        if (event.toState === 'right' || event.fromState === 'right' || event.fromState === 'origin') {
 
             this.overflow = 'hidden';
         }
@@ -189,7 +189,7 @@ export class LightboxItemComponent implements OnInit {
 
         this._animate(this._getItemAnimation('origin', this._getOriginPosition(position), 0)).done(() => {
 
-            this._animate(this._getItemAnimation('center', this._getCenterPosition(), this.config.itemOpenAnimation.duration)).done(() => {
+            this._animate(this._getItemAnimation('center', this._getCenterPosition(), this.config.animations.itemOpen.duration)).done(() => {
 
                 this._initZoom();
                 this._position = 0;
@@ -204,17 +204,17 @@ export class LightboxItemComponent implements OnInit {
 
     public slice(to: 'center' | 'left' | 'right', cb?: () => void): void {
 
-        let toItemAnimation: ItemAnimation | undefined = undefined;
+        let toItemAnimation: ItemAnimation | undefined;
 
         switch (to) {
             case 'center':
-                toItemAnimation = this._getItemAnimation(to, this._getCenterPosition(), this.config.itemSliceAnimation.duration);
+                toItemAnimation = this._getItemAnimation(to, this._getCenterPosition(), this.config.animations.itemSlice.duration);
                 break;
             case 'left':
-                toItemAnimation = this._getItemAnimation(to, this._getLeftPosition(), this.config.itemSliceAnimation.duration);
+                toItemAnimation = this._getItemAnimation(to, this._getLeftPosition(), this.config.animations.itemSlice.duration);
                 break;
             case 'right':
-                toItemAnimation = this._getItemAnimation(to, this._getRightPosition(), this.config.itemSliceAnimation.duration);
+                toItemAnimation = this._getItemAnimation(to, this._getRightPosition(), this.config.animations.itemSlice.duration);
                 break;
         }
 
@@ -232,7 +232,7 @@ export class LightboxItemComponent implements OnInit {
         if (this._position + 1 < this._zoomList.length && this.itemAnimation.value !== 'zooming') {
 
             this._animate(this._getItemAnimation('zoom', this._getCurrentPosition(), 0)).done(() => {
-                this._animate(this._getItemAnimation('zooming', this._zoomList[this._position + 1], this.config.zoomInAnimation.duration)).done(() => {
+                this._animate(this._getItemAnimation('zooming', this._zoomList[this._position + 1], this.config.animations.zoomIn.duration)).done(() => {
                     this._animate(this._getItemAnimation('zoomed', this._getCurrentPosition(), 0)).done(() => {
 
                         this._position++;
@@ -248,7 +248,7 @@ export class LightboxItemComponent implements OnInit {
         if (this._position > 0 && this.itemAnimation.value !== 'zooming') {
 
             this._animate(this._getItemAnimation('zoom', this._getCurrentPosition(), 0)).done(() => {
-                this._animate(this._getItemAnimation('zooming', this._zoomList[this._position - 1], this.config.zoomOutAnimation.duration)).done(() => {
+                this._animate(this._getItemAnimation('zooming', this._zoomList[this._position - 1], this.config.animations.zoomOut.duration)).done(() => {
                     this._animate(this._getItemAnimation('zoomed', this._getCurrentPosition(), 0)).done(() => {
 
                         this._position--;
@@ -264,7 +264,7 @@ export class LightboxItemComponent implements OnInit {
         if (this.itemAnimation.value !== 'zooming') {
 
             this._animate(this._getItemAnimation('zoom', this._getCurrentPosition(), 0)).done(() => {
-                this._animate(this._getItemAnimation('zooming', this._zoomList[0], this.config.resetZoomAnimation.duration)).done(() => {
+                this._animate(this._getItemAnimation('zooming', this._zoomList[0], this.config.animations.resetZoom.duration)).done(() => {
                     this._animate(this._getItemAnimation('zoomed', this._getCurrentPosition(), 0)).done(() => {
 
                         this._position = 0;
@@ -279,7 +279,7 @@ export class LightboxItemComponent implements OnInit {
         if (this.itemAnimation.value !== 'zooming') {
 
             this._animate(this._getItemAnimation('zoom', this._getCurrentPosition(), 0)).done(() => {
-                this._animate(this._getItemAnimation('zooming', this._zoomList[this._feetToWidthPosition], this.config.feetToWidthAnimation.duration)).done(() => {
+                this._animate(this._getItemAnimation('zooming', this._zoomList[this._feetToWidthPosition], this.config.animations.feetToWidth.duration)).done(() => {
                     this._animate(this._getItemAnimation('zoomed', this._getCurrentPosition(), 0)).done(() => {
 
                         this._position = this._feetToWidthPosition;

@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { LightboxHeaderComponent } from './lightbox-header.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LightboxZoomComponent } from './lightbox-zoom.component';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
-describe('Create LightboxHeaderComponent', () => {
+describe('Create LightboxZoomComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
-                LightboxHeaderComponent,
+                LightboxZoomComponent,
                 LightboxButtonComponent
             ],
             imports: [
@@ -23,10 +23,10 @@ describe('Create LightboxHeaderComponent', () => {
     });
 
     it('should work', () => {
-        const fixture = TestBed.createComponent(LightboxHeaderComponent);
-        expect(fixture.componentInstance instanceof LightboxHeaderComponent).toBe(
+        const fixture = TestBed.createComponent(LightboxZoomComponent);
+        expect(fixture.componentInstance instanceof LightboxZoomComponent).toBe(
             true,
-            'should create LightboxHeaderComponent'
+            'should create LightboxZoomComponent'
         );
     });
 });

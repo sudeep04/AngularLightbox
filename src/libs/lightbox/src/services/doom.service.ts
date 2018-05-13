@@ -1,6 +1,6 @@
 import { Injectable, ComponentFactoryResolver, Injector, ApplicationRef, Inject, EmbeddedViewRef, ComponentRef } from '@angular/core';
-import { LightboxComponent } from '../components/lightbox/lightbox.component';
 import { DOCUMENT } from '@angular/common';
+import { LightboxComponent } from '../components/lightbox/lightbox.component';
 
 @Injectable()
 export class DoomService {

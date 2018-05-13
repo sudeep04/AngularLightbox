@@ -1,15 +1,15 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Pagination } from '../../models/pagination.interface';
+import { ToolbarAnimation } from '../../models/toolbar-animation.interface';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
-import { HeaderAnimation } from '../../models/header-animation.interface';
 
 @Component({
-    selector: 'lightbox-header',
-    templateUrl: 'lightbox-header.component.html',
-    styleUrls: ['lightbox-header.component.scss'],
+    selector: 'lightbox-toolbar',
+    templateUrl: 'lightbox-toolbar.component.html',
+    styleUrls: ['lightbox-toolbar.component.scss'],
     animations: [
-        trigger('headerAnimation', [
+        trigger('toolbarAnimation', [
             state('hidden',
                 style({ height: '0px' })),
             state('visible',
@@ -23,10 +23,10 @@ import { HeaderAnimation } from '../../models/header-animation.interface';
         ])
     ],
     host: {
-        '[@headerAnimation]': 'headerAnimation'
+        '[@toolbarAnimation]': 'toolbarAnimation'
     }
 })
-export class LightboxHeaderComponent implements OnInit {
+export class LightboxToolbarComponent implements OnInit {
 
     @Output() public nextEvent = new EventEmitter();
 
@@ -44,7 +44,7 @@ export class LightboxHeaderComponent implements OnInit {
 
     @Input() public pagination: Pagination;
 
-    public headerAnimation: HeaderAnimation;
+    public toolbarAnimation: ToolbarAnimation;
 
     public get config(): LightboxConfigurationService {
 
@@ -57,7 +57,7 @@ export class LightboxHeaderComponent implements OnInit {
 
     public ngOnInit(): void {
 
-        this.headerAnimation = { value: 'hidden', params: { duration: this.config.headerHideAnimation.duration } };
+        this.toolbarAnimation = { value: 'hidden', params: { duration: this.config.animations.toolbarHide.duration } };
     }
 
     public onNext(): void {
@@ -92,22 +92,22 @@ export class LightboxHeaderComponent implements OnInit {
 
     public open(): void {
 
-        this.headerAnimation = { value: 'visible', params: { duration: this.config.headerShowAnimation.duration } };
+        this.toolbarAnimation = { value: 'visible', params: { duration: this.config.animations.toolbarShow.duration } };
     }
 
     public close(): void {
 
-        this.headerAnimation = { value: 'hidden', params: { duration: this.config.headerHideAnimation.duration } };
+        this.toolbarAnimation = { value: 'hidden', params: { duration: this.config.animations.toolbarHide.duration } };
     }
 
     public toggle(): void {
 
-        if (this.headerAnimation.value === 'hidden') {
+        if (this.toolbarAnimation.value === 'hidden') {
 
-            this.headerAnimation = { value: 'visible', params: { duration: this.config.headerShowAnimation.duration } };
+            this.toolbarAnimation = { value: 'visible', params: { duration: this.config.animations.toolbarShow.duration } };
         } else {
 
-            this.headerAnimation = { value: 'hidden', params: { duration: this.config.headerHideAnimation.duration } };
+            this.toolbarAnimation = { value: 'hidden', params: { duration: this.config.animations.toolbarHide.duration } };
         }
     }
 }
