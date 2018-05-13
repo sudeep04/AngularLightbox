@@ -12,9 +12,9 @@ export class YoutubeApiService {
     private _window: any;
 
     constructor() {
-        
-		this._window = getWindow();
-	}
+
+        this._window = getWindow();
+    }
 
     public loadApi(): void {
 

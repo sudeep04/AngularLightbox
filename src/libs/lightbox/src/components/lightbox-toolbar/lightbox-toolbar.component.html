@@ -1,0 +1,28 @@
+<div class="toolbar-container">
+    <div>
+        <button lightbox-icon-button (click)="onClose()" title="Close">
+            <span class="material-icons">{{config.controls.back.icon}}</span>
+        </button>
+        <span class="toolbar-title">{{title}}</span>
+    </div>
+    <div class="nav-menu">
+        <button *ngIf="!config.controls.navigation.disable && !config.controls.jumpToStart.disable" lightbox-icon-button [disable]="pagination.current===1" (click)="onFirst()" title="First">
+            <span class="material-icons">{{config.controls.jumpToStart.icon}}</span>
+        </button>
+        <button *ngIf="!config.controls.navigation.disable && !config.controls.backward.disable" lightbox-icon-button [disable]="pagination.current===1" (click)="onPrevious()" title="Previous">
+            <span class="material-icons">{{config.controls.backward.icon}}</span>
+        </button>
+        <span *ngIf="!config.controls.navigation.disable && !config.controls.itemIndex.disable" class="nav-pagination">{{pagination?.current}} / {{pagination?.count}}</span>
+        <button *ngIf="!config.controls.navigation.disable && !config.controls.forward.disable" lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onNext()" title="Next">
+            <span class="material-icons">{{config.controls.forward.icon}}</span>
+        </button>
+        <button *ngIf="!config.controls.navigation.disable && !config.controls.jumpToEnd.disable" lightbox-icon-button [disable]="pagination.current===pagination.count" (click)="onLast()" title="Last">
+            <span class="material-icons">{{config.controls.jumpToEnd.icon}}</span>
+        </button>
+    </div>
+    <div>
+        <button *ngIf="!config.controls.thumbnails.disable" lightbox-icon-button (click)="onThumbnailsToggle()" title="List">
+            <span class="material-icons">{{config.controls.thumbnails.icon}}</span>
+        </button>
+    </div>
+</div>

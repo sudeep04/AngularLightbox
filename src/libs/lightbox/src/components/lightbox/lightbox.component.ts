@@ -1,18 +1,18 @@
 import { Component, ViewChild, QueryList, ViewChildren, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {  } from '@types/youtube';
+import { Pagination } from '../../models/pagination.interface';
+import { LightboxToolbarComponent } from '../lightbox-toolbar/lightbox-toolbar.component';
+import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
+import { LightboxZoomComponent } from '../lightbox-zoom/lightbox-zoom.component';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 import { Item } from '../../models/item';
-import { Position } from '../../models/position.interface';
-import { LightboxHeaderComponent } from '../lightbox-header/lightbox-header.component';
-import { LightboxItemComponent } from '../ligthbox-item/lightbox-item.component';
-import { Video } from '../../models/video';
-import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
-import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
-import { Pagination } from '../../models/pagination.interface';
-import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 import { BackgroundFadeAnimation } from '../../models/background-fade-animation.interface';
-import {  } from '@types/youtube';
+import { LightboxItemComponent } from '../lightbox-item/lightbox-item.component';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+import { Video } from '../../models/video';
+import { Position } from '../../models/position.interface';
 
 @Component({
     selector: 'lightbox',
@@ -41,17 +41,17 @@ export class LightboxComponent implements OnInit {
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
-    public displayImgControls: 'hidden' | 'visible' = 'hidden';
+    public displayZoom: 'hidden' | 'visible' = 'hidden';
 
     public navigationNextAnimator: 'hide' | 'show' = 'hide';
 
     public navigationPreviousAnimator: 'hide' | 'show' = 'hide';
 
-    @ViewChild('header') public header: LightboxHeaderComponent;
+    @ViewChild('toolbar') public toolbar: LightboxToolbarComponent;
 
     @ViewChild('thumbnails') public thumbnails: LightboxThumbnailsComponent;
 
-    @ViewChild('controls') public imgControls: LightboxImgControlComponent;
+    @ViewChild('controls') public imgControls: LightboxZoomComponent;
 
     @ViewChild('next') public next: LightboxButtonComponent;
 
@@ -93,8 +93,7 @@ export class LightboxComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-
-        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeOutAnimation.duration, opacity: 0 } };
+        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.animations.backgroundFadeOut.duration, opacity: 0 } };
     }
 
     public getYoutubeVideoId(): string {
@@ -133,8 +132,8 @@ export class LightboxComponent implements OnInit {
         this._pointerEvents = 'auto';
         this.backgroundFadeAnimation = {
             value: 'visible', params: {
-                duration: this.config.backgroundFadeInAnimation.duration,
-                opacity: this.config.backgroundFadeInAnimation.opacity
+                duration: this.config.animations.backgroundFadeIn.duration,
+                opacity: this.config.animations.backgroundFadeIn.opacity
             }
         };
         this._openControls();
@@ -160,7 +159,7 @@ export class LightboxComponent implements OnInit {
                         }
                     });
 
-                    this._checkImgControls();
+                    this._checkZoom();
                     this._checkImageControlVisibility(itemRef);
                 }
             }
@@ -172,7 +171,7 @@ export class LightboxComponent implements OnInit {
         this._pointerEvents = 'none';
         this.activeItem = undefined;
         this.state.next('closed');
-        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.backgroundFadeOutAnimation.duration, opacity: 0 } };
+        this.backgroundFadeAnimation = { value: 'hidden', params: { duration: this.config.animations.backgroundFadeOut.duration, opacity: 0 } };
         this.displayPlayer = 'hidden';
         this._closeControls();
         if (this._ytPlayer) {
@@ -183,7 +182,7 @@ export class LightboxComponent implements OnInit {
 
     public onToggle(): void {
 
-        this.header.toggle();
+        this.toolbar.toggle();
         this.imgControls.toggle();
 
         if (this.navigationNextAnimator === 'show') {
@@ -213,7 +212,7 @@ export class LightboxComponent implements OnInit {
             this.pagination.current = itemIndex + 1;
             this.activeItem = item;
             this.thumbnails.selectItem(item);
-            this._checkImgControls();
+            this._checkZoom();
 
             if (activeItemRef.isVideo()) {
 
@@ -398,14 +397,14 @@ export class LightboxComponent implements OnInit {
         this.navigationPreviousAnimator = 'hide';
     }
 
-    private _checkImgControls() {
+    private _checkZoom() {
 
         if (this._itemRef(this._itemIndex(this.activeItem!)).isVideo()) {
 
-            this.displayImgControls = 'hidden';
+            this.displayZoom = 'hidden';
         } else {
 
-            this.displayImgControls = 'visible';
+            this.displayZoom = 'visible';
         }
     }
 
@@ -419,7 +418,7 @@ export class LightboxComponent implements OnInit {
 
     private _openControls(): void {
 
-        this.header.open();
+        this.toolbar.open();
         this.imgControls.open();
         this._navigationShow();
         this.thumbnails.open();
@@ -427,7 +426,7 @@ export class LightboxComponent implements OnInit {
 
     private _closeControls(): void {
 
-        this.header.close();
+        this.toolbar.close();
         this.imgControls.close();
         this._navigationHide();
         this.thumbnails.close();

@@ -1,37 +1,8 @@
-import { ControlConfiguration } from './control-configuration.interface';
-import { AnimationConfiguration } from './animation-configuration.interface';
-import { FadeAnimationConfiguration } from './fade-animation-configuration.interface';
+import { ControlsConfiguration } from './controls-configuration.interface';
+import { AnimationsConfiguration } from './animations-configuration.interface';
+
 
 export interface LightboxConfiguration {
-    controls: {
-        forward: ControlConfiguration;
-        backward: ControlConfiguration;
-        thumbnails: ControlConfiguration;
-        jumpToStart: ControlConfiguration;
-        jumpToEnd: ControlConfiguration;
-        itemIndex: ControlConfiguration;
-        navigation: ControlConfiguration;
-        zoom: ControlConfiguration;
-        zoomIn: ControlConfiguration;
-        zoomOut: ControlConfiguration;
-        feetToWidth: ControlConfiguration;
-        resetZoom: ControlConfiguration;
-    };
-    animations: {
-        headerShow: AnimationConfiguration;
-        headerHide: AnimationConfiguration;
-        backgroundFadeIn: FadeAnimationConfiguration;
-        backgroundFadeOut: AnimationConfiguration;
-        thumbnailsShow: AnimationConfiguration;
-        thumbnailsHide: AnimationConfiguration;
-        thumbnailsSlice: AnimationConfiguration;
-        zoomShow: AnimationConfiguration;
-        zoomHide: AnimationConfiguration;
-        zoomIn: AnimationConfiguration;
-        zoomOut: AnimationConfiguration;
-        feetToWidth: AnimationConfiguration;
-        resetZoom: AnimationConfiguration;
-        itemSlice: AnimationConfiguration;
-        itemOpen: AnimationConfiguration;
-    };
+    controls: ControlsConfiguration;
+    animations: AnimationsConfiguration;
 }

@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnChanges } from '@angular/core';
-import { LightboxService } from '../../services/lightbox.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 const BUTTON_HOST_ATTRIBUTES = [

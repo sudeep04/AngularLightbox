@@ -1,7 +1,7 @@
 :host {
     display: block;
     position: relative;
-    .header-container{   
+    .toolbar-container{   
         background-color: #000;
         color: #fff;
         height: 64px;
@@ -34,7 +34,7 @@
             justify-content: flex-end;
             padding-right: 12px;
         }
-        .header-title {
+        .toolbar-title {
             overflow: hidden;
             margin-left: 12px;
             white-space: nowrap;
@@ -50,7 +50,7 @@
             }
         }
         @media (max-width: 480px) {
-            .header-title {
+            .toolbar-title {
                 display: none;
             }
         }

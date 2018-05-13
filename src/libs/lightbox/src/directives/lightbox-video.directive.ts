@@ -2,8 +2,6 @@ import { Directive, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
 import { ItemDirectiveBase } from '../models/item-directive-base';
 import { LightboxService } from '../services/lightbox.service';
 import { Video } from '../models/video';
-import { Item } from '../models/item';
-import { Img } from '../models/img';
 
 @Directive({
     selector: 'img[lightbox-video]',
@@ -16,6 +14,9 @@ import { Img } from '../models/img';
 })
 export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
 
+    ngOnDestroy(): void {
+        throw new Error("Method not implemented.");
+    }
     @Input('youtube-id') public youtubeId: string;
 
     constructor(
