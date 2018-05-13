@@ -4,9 +4,9 @@ import { ZoomAnimation } from '../../models/zoom-animation.interface';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
 @Component({
-    selector: 'lightbox-img-control',
-    templateUrl: 'lightbox-img-control.component.html',
-    styleUrls: ['lightbox-img-control.component.scss'],
+    selector: 'lightbox-zoom',
+    templateUrl: 'lightbox-zoom.component.html',
+    styleUrls: ['lightbox-zoom.component.scss'],
     animations: [
         trigger('zoomAnimation', [
             state('hidden',
@@ -25,7 +25,7 @@ import { LightboxConfigurationService } from '../../services/lightbox-configurat
         '[@zoomAnimation]': 'zoomAnimation'
     }
 })
-export class LightboxImgControlComponent implements OnInit {
+export class LightboxZoomComponent implements OnInit {
 
     @Output() public zoomInEvent = new EventEmitter();
 

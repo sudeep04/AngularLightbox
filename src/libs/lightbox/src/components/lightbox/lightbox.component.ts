@@ -5,7 +5,7 @@ import {  } from '@types/youtube';
 import { Pagination } from '../../models/pagination.interface';
 import { LightboxToolbarComponent } from '../lightbox-toolbar/lightbox-toolbar.component';
 import { LightboxThumbnailsComponent } from '../lightbox-thumbnails/lightbox-thumbnails.component';
-import { LightboxImgControlComponent } from '../lightbox-img-control/lightbox-img-control.component';
+import { LightboxZoomComponent } from '../lightbox-zoom/lightbox-zoom.component';
 import { LightboxButtonComponent } from '../lightbox-button/lightbox-button.component';
 import { Item } from '../../models/item';
 import { BackgroundFadeAnimation } from '../../models/background-fade-animation.interface';
@@ -41,7 +41,7 @@ export class LightboxComponent implements OnInit {
 
     public displayPlayer: 'hidden' | 'visible' = 'hidden';
 
-    public displayImgControls: 'hidden' | 'visible' = 'hidden';
+    public displayZoom: 'hidden' | 'visible' = 'hidden';
 
     public navigationNextAnimator: 'hide' | 'show' = 'hide';
 
@@ -51,7 +51,7 @@ export class LightboxComponent implements OnInit {
 
     @ViewChild('thumbnails') public thumbnails: LightboxThumbnailsComponent;
 
-    @ViewChild('controls') public imgControls: LightboxImgControlComponent;
+    @ViewChild('controls') public imgControls: LightboxZoomComponent;
 
     @ViewChild('next') public next: LightboxButtonComponent;
 
@@ -159,7 +159,7 @@ export class LightboxComponent implements OnInit {
                         }
                     });
 
-                    this._checkImgControls();
+                    this._checkZoom();
                     this._checkImageControlVisibility(itemRef);
                 }
             }
@@ -212,7 +212,7 @@ export class LightboxComponent implements OnInit {
             this.pagination.current = itemIndex + 1;
             this.activeItem = item;
             this.thumbnails.selectItem(item);
-            this._checkImgControls();
+            this._checkZoom();
 
             if (activeItemRef.isVideo()) {
 
@@ -397,14 +397,14 @@ export class LightboxComponent implements OnInit {
         this.navigationPreviousAnimator = 'hide';
     }
 
-    private _checkImgControls() {
+    private _checkZoom() {
 
         if (this._itemRef(this._itemIndex(this.activeItem!)).isVideo()) {
 
-            this.displayImgControls = 'hidden';
+            this.displayZoom = 'hidden';
         } else {
 
-            this.displayImgControls = 'visible';
+            this.displayZoom = 'visible';
         }
     }
 

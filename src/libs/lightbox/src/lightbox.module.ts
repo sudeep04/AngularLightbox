@@ -9,7 +9,7 @@ import { LightboxToolbarComponent } from './components/lightbox-toolbar/lightbox
 import { LightboxImgDirective } from './directives/lightbox-img.directive';
 import { LightboxVideoDirective } from './directives/lightbox-video.directive';
 import { LightboxItemComponent } from './components/lightbox-item/lightbox-item.component';
-import { LightboxImgControlComponent } from './components/lightbox-img-control/lightbox-img-control.component';
+import { LightboxZoomComponent } from './components/lightbox-zoom/lightbox-zoom.component';
 import { LightboxThumbnailsComponent } from './components/lightbox-thumbnails/lightbox-thumbnails.component';
 import { LightboxService } from './services/lightbox.service';
 import { DoomService } from './services/doom.service';
@@ -23,7 +23,7 @@ import { LightboxConfigurationService } from './services/lightbox-configuration.
         LightboxImgDirective,
         LightboxVideoDirective,
         LightboxItemComponent,
-        LightboxImgControlComponent,
+        LightboxZoomComponent,
         LightboxThumbnailsComponent
     ],
     imports: [

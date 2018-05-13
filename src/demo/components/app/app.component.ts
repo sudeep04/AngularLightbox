@@ -26,43 +26,6 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
 
-        // this._lightboxConfigurationService.forwardControl = { disable: true };
-        // this._lightboxConfigurationService.backwardControl = { disable: true };
-        // this._lightboxConfigurationService.thumbnailsControl = { disable: true };
-        // this._lightboxConfigurationService.jumpToStartControl = { disable: true };
-        // this._lightboxConfigurationService.jumpToEndControl = { disable: true };
-        // this._lightboxConfigurationService.itemIndexControl = { disable: true };
-        // this._lightboxConfigurationService.navigationControl = { disable: true };
-        // this._lightboxConfigurationService.zoomControl = { disable: true };
-        // this._lightboxConfigurationService.zoomInControl = { disable: true };
-        // this._lightboxConfigurationService.zoomOutControl = { disable: true };
-        // this._lightboxConfigurationService.feetToWidthControl = { disable: true };
-        // this._lightboxConfigurationService.resetZoomControl = { disable: true };
-
-        // this._lightboxConfigurationService.headerShowAnimation = { duration:.4 };
-        // this._lightboxConfigurationService.headerHideAnimation = { duration: 2 };
-        // this._lightboxConfigurationService.backgroundFadeInAnimation = { duration: 5, opacity: 1 };
-        // this._lightboxConfigurationService.backgroundFadeOutAnimation = { duration: 2 };
-        // this._lightboxConfigurationService.thumbnailsShowAnimation = { duration: 1 };
-        // this._lightboxConfigurationService.thumbnailsHideAnimation = { duration: 1 };
-        // this._lightboxConfigurationService.thumbnailsSliceAnimation = { duration: 3 };
-
-        // this._lightboxConfigurationService.zoomShowAnimation = { duration: 1 };
-        // this._lightboxConfigurationService.zoomHideAnimation = { duration: 3 };
-
-        // this._lightboxConfigurationService.itemSliceAnimation = { duration: 3 };
-        // this._lightboxConfigurationService.itemOpenAnimation = { duration: 5 };
-
-        // this._lightboxConfigurationService.zoomInAnimation = { duration: 3 };
-        // this._lightboxConfigurationService.zoomOutAnimation = { duration: 5 };
-        // this._lightboxConfigurationService.feetToWidthAnimation = { duration: 3 };
-        // this._lightboxConfigurationService.resetZoomAnimation = { duration: 5 };
-
-        // zoomIn?: AnimationConfiguration;
-        // zoomOut?: AnimationConfiguration;
-        // feetToWidth?: AnimationConfiguration;
-        // resetZoom?: AnimationConfiguration;
-
         this._router.events.subscribe((event) => {
 
             if (event instanceof NavigationEnd) {
