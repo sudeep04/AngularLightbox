@@ -13,7 +13,7 @@ export class YoutubePlayerService {
     constructor(
         private zone: NgZone,
         private youtubeApi: YoutubeApiService,
-    ) { 
+    ) {
         this._window = getWindow();
     }
 

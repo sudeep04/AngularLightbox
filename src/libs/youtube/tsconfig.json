@@ -20,7 +20,8 @@
     "node_modules",
     "dist",
     "tmp",
-    "src/**/*.spec.ts"
+    "src/**/*.spec.ts",
+    "gulpfile.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,

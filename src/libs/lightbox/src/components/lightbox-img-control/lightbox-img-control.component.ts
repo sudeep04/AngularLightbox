@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 import { ZoomAnimation } from '../../models/zoom-animation.interface';
+import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
 
 @Component({
     selector: 'lightbox-img-control',
@@ -56,35 +56,35 @@ export class LightboxImgControlComponent implements OnInit {
 
     public ngOnInit(): void {
 
-        this.zoomAnimation = { value: 'hidden', params: { duration: this.config.zoomHideAnimation.duration } };
+        this.zoomAnimation = { value: 'hidden', params: { duration: this.config.animations.zoomHide.duration } };
     }
 
     public close(): void {
 
-        if (!this.config.zoomControl.disable) {
+        if (!this.config.controls.zoom.disable) {
 
-            this.zoomAnimation = { value: 'hidden', params: { duration: this.config.zoomHideAnimation.duration } };
+            this.zoomAnimation = { value: 'hidden', params: { duration: this.config.animations.zoomHide.duration } };
         }
     }
 
     public open(): void {
 
-        if (!this.config.zoomControl.disable) {
+        if (!this.config.controls.zoom.disable) {
 
-            this.zoomAnimation = { value: 'visible', params: { duration: this.config.zoomShowAnimation.duration } };
+            this.zoomAnimation = { value: 'visible', params: { duration: this.config.animations.zoomShow.duration } };
         }
     }
 
     public toggle(): void {
 
-        if (!this.config.zoomControl.disable) {
+        if (!this.config.controls.zoom.disable) {
 
             if (this.zoomAnimation.value === 'hidden') {
 
-                this.zoomAnimation = { value: 'visible', params: { duration: this.config.zoomShowAnimation.duration } };
+                this.zoomAnimation = { value: 'visible', params: { duration: this.config.animations.zoomShow.duration } };
             } else {
 
-                this.zoomAnimation = { value: 'hidden', params: { duration: this.config.zoomHideAnimation.duration } };
+                this.zoomAnimation = { value: 'hidden', params: { duration: this.config.animations.zoomHide.duration } };
             }
         }
     }
