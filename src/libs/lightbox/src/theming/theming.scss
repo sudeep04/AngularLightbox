@@ -35,6 +35,13 @@
     }
 }
 
+@mixin lightbox($theme) {
+
+    lightbox {
+        font-family: map-get(map-get($theme, lightbox), font-family) !important;
+    }
+}
+
 @mixin lightbox-theme($theme) {
     @if (map-get($theme, toolbar)) {
         @include lightbox-toolbar($theme);
@@ -47,5 +54,8 @@
     }
     @if (map-get($theme, container)) {
         @include lightbox-container($theme);
+    }
+    @if (map-get($theme, lightbox)) {
+        @include lightbox($theme);
     }
 }
