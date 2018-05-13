@@ -1,6 +1,7 @@
 export interface ThumbnailsAnimation {
-    value: 'hidden' | 'visible';
+    value: 'animated' | 'animating';
     params?: {
+        maxWidth: number;
         duration: number;
     };
 }

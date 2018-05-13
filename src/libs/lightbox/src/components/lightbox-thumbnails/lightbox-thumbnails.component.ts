@@ -1,9 +1,12 @@
-import { Component, Output, EventEmitter, Input, ViewChildren, QueryList, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ViewChildren, QueryList, ElementRef, ViewChild, OnInit, Inject, InjectionToken } from '@angular/core';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { ThumbnailsAnimation } from '../../models/thumbnails-animation.interface';
 import { ThumbnailsSliceAnimation } from '../../models/thumbnails-slice-animation.interface';
 import { Item } from '../../models/item';
 import { LightboxConfigurationService } from '../../services/lightbox-configuration.service';
+
+export const WINDOW = new InjectionToken('Window');
+export function _window() { return window; }
 
 @Component({
     selector: 'lightbox-thumbnails',
@@ -11,14 +14,13 @@ import { LightboxConfigurationService } from '../../services/lightbox-configurat
     styleUrls: ['lightbox-thumbnails.component.scss'],
     animations: [
         trigger('thumbnailsAnimation', [
-            state('hidden',
-                style({ maxWidth: '0px' })),
-            state('visible',
-                style({ maxWidth: '170px' })),
-            transition('hidden => visible', [
-                animate('{{duration}}s')
-            ], { params: { duration: 0 } }),
-            transition('visible => hidden', [
+            state('animating',
+                style({ maxWidth: '{{maxWidth}}px' }),
+                { params: { maxWidth: 0 } }),
+            state('animated',
+                style({ maxWidth: '{{maxWidth}}px' }),
+                { params: { maxWidth: 0 } }),
+            transition('* => animating', [
                 animate('{{duration}}s')
             ], { params: { duration: 0 } })
         ]),
@@ -36,6 +38,9 @@ import { LightboxConfigurationService } from '../../services/lightbox-configurat
                 animate('{{duration}}s')
             ], { params: { duration: 0 } })
         ])
+    ],
+    providers: [
+        { provide: WINDOW, useFactory: _window }
     ],
     host: {
         '[@thumbnailsAnimation]': 'thumbnailsAnimation',
@@ -60,6 +65,10 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     @ViewChild('thumnailsContainer') private _containerRef: ElementRef;
 
+    private _maxWidth: number;
+
+    private _state: 'opened' | 'closed' = 'closed';
+
     private _scrolling = false;
 
     public get config(): LightboxConfigurationService {
@@ -68,7 +77,8 @@ export class LightboxThumbnailsComponent implements OnInit {
     }
 
     constructor(
-        private readonly _lightboxConfigurationService: LightboxConfigurationService
+        private readonly _lightboxConfigurationService: LightboxConfigurationService,
+        @Inject(WINDOW) private readonly _window: Window
     ) { }
 
     public onwheel(event: any): void {
@@ -98,9 +108,15 @@ export class LightboxThumbnailsComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+        if (this._window.innerWidth <= 767) {
 
+            this._maxWidth = 85;
+        } else {
+
+            this._maxWidth = 170;
+        }
         this.thumbnailsSliceAnimation = { value: 'sliced' };
-        this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.animations.thumbnailsHide.duration } };
+        this._animatePanel();
     }
 
     public thumbnailsSliceAnimationDone(event: AnimationEvent): void {
@@ -117,7 +133,11 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     public thumbnailsAnimationDone(event: AnimationEvent): void {
 
-        if (event.toState === 'visible' && this.activeItem) {
+        if (event.toState === 'animating') {
+            this.thumbnailsAnimation = { value: 'animated', params: this.thumbnailsAnimation.params }
+        }
+
+        if (this.activeItem && this._state == 'opened') {
 
             this._animateSlice();
         }
@@ -142,17 +162,19 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     public close(): void {
 
-        if (!this.config.controls.thumbnails.disable) {
+        if (!this.config.controls.thumbnails.disable && this._state !== 'closed') {
 
-            this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.animations.thumbnailsHide.duration } };
+            this._state = 'closed';
+            this._animatePanel();
         }
     }
 
     public open(): void {
 
-        if (!this.config.controls.thumbnails.disable) {
+        if (!this.config.controls.thumbnails.disable && this._state !== 'opened') {
 
-            this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.animations.thumbnailsShow.duration } };
+            this._state = 'opened';
+            this._animatePanel();
         }
     }
 
@@ -160,19 +182,31 @@ export class LightboxThumbnailsComponent implements OnInit {
 
         if (!this.config.controls.thumbnails.disable) {
 
-            if (this.thumbnailsAnimation.value === 'hidden') {
+            if (this._state === 'opened') {
 
-                this.thumbnailsAnimation = { value: 'visible', params: { duration: this.config.animations.thumbnailsShow.duration } };
+                this._state = 'closed';
+                this._animatePanel();
             } else {
 
-                this.thumbnailsAnimation = { value: 'hidden', params: { duration: this.config.animations.thumbnailsHide.duration } };
+                this._state = 'opened';
+                this._animatePanel();
             }
         }
     }
 
     public resize(): void {
 
-        if (this.thumbnailsAnimation.value === 'visible' && !this._scrolling) {
+        if (this._window.innerWidth <= 767 && this._maxWidth != 85) {
+
+            this._maxWidth = 85;
+            this._animatePanel();
+        }
+        if (this._window.innerWidth > 767 && this._maxWidth != 170) {
+
+            this._maxWidth = 170;
+            this._animatePanel();
+        }
+        if (this.thumbnailsAnimation.params.maxWidth > 0 && !this._scrolling) {
 
             this._animateSlice();
         }
@@ -188,6 +222,15 @@ export class LightboxThumbnailsComponent implements OnInit {
         if (item.xlSrc) { return item.xlSrc; }
 
         return '';
+    }
+
+    private _animatePanel() {
+
+        if (this._state == 'opened') {
+            this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsShow.duration, maxWidth: this._maxWidth } };
+        } else {
+            this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsShow.duration, maxWidth: 0 } };
+        }
     }
 
     private _animateSlice(): void {

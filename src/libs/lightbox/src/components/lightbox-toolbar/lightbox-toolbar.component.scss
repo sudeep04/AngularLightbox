@@ -41,16 +41,13 @@
             text-overflow: ellipsis;
             max-width: calc(100% - 52px);
         }
-        @media (max-width: 767px) {
-            .nav-menu {
-                justify-content: flex-end;
-            }
-            >div:last-child {
+        @media (max-width: 479px) {            
+            .toolbar-title {
                 display: none;
             }
         }
-        @media (max-width: 480px) {
-            .toolbar-title {
+        @media (max-width: 359px) {
+            >div:last-child {
                 display: none;
             }
         }

@@ -9,7 +9,7 @@
     (lastEvent)="onLast()"
     (thumbnailsToggleEvent)="thumbnailsToggle()">
 </lightbox-toolbar>
-<div class="lightbox-container">
+<div *ngIf="config.controls.thumbnails.position === 'right'" class="lightbox-container">
     <div class="lightbox-items-container">
         <div (click)="onClose()" class="lightbox-items-background">
             <div *ngIf="activeItem" class="item-list">
@@ -26,4 +26,22 @@
     </div>
     <lightbox-thumbnails #thumbnails [items]="activeItem? items[activeItem.container]:[]" (selectEvent)="selectItem($event)">
     </lightbox-thumbnails>
+</div>
+<div *ngIf="config.controls.thumbnails.position === 'left'" class="lightbox-container">
+    <lightbox-thumbnails #thumbnails [items]="activeItem? items[activeItem.container]:[]" (selectEvent)="selectItem($event)">
+    </lightbox-thumbnails>
+    <div class="lightbox-items-container">
+        <div (click)="onClose()" class="lightbox-items-background">
+            <div *ngIf="activeItem" class="item-list">
+                <lightbox-item (toggleEvent)="onToggle()" #lightboxItem *ngFor="let item of items[activeItem.container]" [item]="item">
+                </lightbox-item>
+            </div>
+        </div>
+        <lightbox-zoom #controls [style.visibility]="displayZoom" [disableZoomIn]="disableZoomIn" [disableZoomOut]="disableZoomOut"
+            [disableResetZoom]="disableResetZoom" [disableFeetToWidth]="disableFeetToWidth" (zoomInEvent)="zoomIn()" (zoomOutEvent)="zoomOut()"
+            (resetZoomEvent)="resetZoom()" (feetToWidthEvent)="feetToWidth()">
+        </lightbox-zoom>
+        <youtube [style.visibility]="displayPlayer" [videoId]="activeItem? getYoutubeVideoId() : undefined" (ready)="onReady($event)"
+            (change)="onChange($event)" (error)="onError($event)"></youtube>
+    </div>
 </div>

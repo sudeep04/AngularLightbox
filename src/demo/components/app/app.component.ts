@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
 
+        this._lightboxConfigurationService.controls.thumbnails.position = 'left';
+
         this._router.events.subscribe((event) => {
 
             if (event instanceof NavigationEnd) {

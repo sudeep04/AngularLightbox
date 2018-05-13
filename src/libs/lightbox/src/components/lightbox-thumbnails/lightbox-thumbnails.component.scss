@@ -20,7 +20,7 @@
         
             margin-bottom: 12px;
             img{
-                width: 146px;
+                width: calc(100% - 24px);
                 margin-left: 12px;
                 margin-right: 12px; 
                 display: block;
@@ -32,13 +32,13 @@
     
             img{
                 cursor: default;
-                width: 158px;
+                width: calc(100% - 12px);
                 margin-left: 6px;
                 margin-right: 6px; 
             }
         }
     }
-    @media (max-width: 767px) {
+    @media (max-width: 359px) {
         display: none;
     }
 }
