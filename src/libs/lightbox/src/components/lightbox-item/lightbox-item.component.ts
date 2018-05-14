@@ -147,7 +147,7 @@ export class LightboxItemComponent implements OnInit {
 
     public itemAnimationDone(event: AnimationEvent): void {
 
-        if (event.toState === 'left' || event.toState === 'right' || event.toState === 'hidden') {
+        if (this.itemAnimation.value === 'left' || this.itemAnimation.value === 'right' || this.itemAnimation.value === 'hidden') {
 
             this.visibility = 'hidden';
         } else {
@@ -313,12 +313,17 @@ export class LightboxItemComponent implements OnInit {
                 this.resize();
             }, 100);
         } else {
-
-            this._animate(this._getItemAnimation('zoom', this._getCurrentPosition(), 0)).done(() => {
-                this._animate(this._getItemAnimation('zooming', this._zoomList[this._position], .4)).done(() => {
-                    this._animate(this._getItemAnimation('zoomed', this._getCurrentPosition(), 0));
+            if (this.itemAnimation.value !== 'left' && this.itemAnimation.value !== 'right') {
+                this._animate(this._getItemAnimation('zoom', this._getCurrentPosition(), 0)).done(() => {
+                    if (this.itemAnimation.value !== 'left' && this.itemAnimation.value !== 'right') {
+                        this._animate(this._getItemAnimation('zooming', this._zoomList[this._position], .4)).done(() => {
+                            if (this.itemAnimation.value !== 'left' && this.itemAnimation.value !== 'right') {
+                                this._animate(this._getItemAnimation('zoomed', this._getCurrentPosition(), 0));
+                            }
+                        });
+                    }
                 });
-            });
+            }
         }
     }
 
