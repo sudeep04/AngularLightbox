@@ -43,3 +43,13 @@ lightbox {
     top: 0px;
     left: 0px;
 }
+
+lightbox .lightbox-container.vertical-container{
+
+    flex-direction: row;
+}
+
+lightbox .lightbox-container.horizontal-container{
+    
+    flex-direction: column;
+}

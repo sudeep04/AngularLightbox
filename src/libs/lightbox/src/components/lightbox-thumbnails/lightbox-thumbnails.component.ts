@@ -15,25 +15,25 @@ export function _window() { return window; }
     animations: [
         trigger('thumbnailsAnimation', [
             state('animating',
-                style({ maxWidth: '{{maxWidth}}px' }),
-                { params: { maxWidth: 0 } }),
+                style({ maxWidth: '{{maxWidth}}px', maxHeight: '{{maxHeight}}px' }),
+                { params: { maxWidth: 0, maxHeight: 0 } }),
             state('animated',
-                style({ maxWidth: '{{maxWidth}}px' }),
-                { params: { maxWidth: 0 } }),
+                style({ maxWidth: '{{maxWidth}}px', maxHeight: '{{maxHeight}}px' }),
+                { params: { maxWidth: 0, maxHeight: 0  } }),
             transition('* => animating', [
                 animate('{{duration}}s')
             ], { params: { duration: 0 } })
         ]),
         trigger('thumbnailsSliceAnimation', [
             state('slice',
-                style({ top: '{{top}}px' }),
-                { params: { top: 0 } }),
+                style({ top: '{{top}}px', left: '{{left}}px' }),
+                { params: { top: 0, left: 0 } }),
             state('slicing',
-                style({ top: '{{top}}px' }),
-                { params: { top: 0 } }),
+                style({ top: '{{top}}px', left: '{{left}}px' }),
+                { params: { top: 0, left: 0 } }),
             state('sliced',
-                style({ top: '{{top}}px' }),
-                { params: { top: 0 } }),
+                style({ top: '{{top}}px', left: '{{left}}px' }),
+                { params: { top: 0, left: 0 } }),
             transition('* => slicing', [
                 animate('{{duration}}s')
             ], { params: { duration: 0 } })
@@ -65,7 +65,11 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     @ViewChild('thumnailsContainer') private _containerRef: ElementRef;
 
-    private _maxWidth: number;
+    private _thickness: number;
+
+    public thumbnailsWidth: string;
+
+    public thumbnailsHeight: string;
 
     private _state: 'opened' | 'closed' = 'closed';
 
@@ -110,10 +114,10 @@ export class LightboxThumbnailsComponent implements OnInit {
     public ngOnInit(): void {
         if (this._window.innerWidth <= 767) {
 
-            this._maxWidth = 85;
+            this._thickness = 85;
         } else {
 
-            this._maxWidth = 170;
+            this._thickness = 170;
         }
         this.thumbnailsSliceAnimation = { value: 'sliced' };
         this._animatePanel();
@@ -196,14 +200,19 @@ export class LightboxThumbnailsComponent implements OnInit {
 
     public resize(): void {
 
-        if (this._window.innerWidth <= 767 && this._maxWidth != 85) {
+        if (this._window.innerWidth <= 767 && this._thickness != 80) {
 
-            this._maxWidth = 85;
+            this._thickness = 80;
             this._animatePanel();
         }
-        if (this._window.innerWidth > 767 && this._maxWidth != 170) {
+        if (this._window.innerWidth <= 1023 && this._thickness != 120) {
 
-            this._maxWidth = 170;
+            this._thickness = 120;
+            this._animatePanel();
+        }
+        if (this._window.innerWidth > 1023 && this._thickness != 170) {
+
+            this._thickness = 170;
             this._animatePanel();
         }
         if (this.thumbnailsAnimation.params.maxWidth > 0 && !this._scrolling) {
@@ -225,45 +234,79 @@ export class LightboxThumbnailsComponent implements OnInit {
     }
 
     private _animatePanel() {
-
-        if (this._state == 'opened') {
-            this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsShow.duration, maxWidth: this._maxWidth } };
+        if (this.config.controls.thumbnails.position === 'left' || this.config.controls.thumbnails.position === 'right') {
+            if (this._state == 'opened') {
+                this.thumbnailsWidth = this._thickness + 'px';
+                this.thumbnailsHeight = 'auto';
+                this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsShow.duration, maxWidth: this._thickness, maxHeight: 10000 } };
+            } else {
+                this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsHide.duration, maxWidth: 0, maxHeight: 10000 } };
+            }
         } else {
-            this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsShow.duration, maxWidth: 0 } };
+            if (this._state == 'opened') {
+                this.thumbnailsWidth = 'auto';
+                this.thumbnailsHeight = this._thickness + 'px';
+                this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsShow.duration, maxHeight: this._thickness, maxWidth: 10000 } };
+            } else {
+                this.thumbnailsAnimation = { value: 'animating', params: { duration: this.config.animations.thumbnailsHide.duration, maxHeight: 0, maxWidth: 10000 } };
+            }
         }
     }
 
     private _animateSlice(): void {
-
-        this.thumbnailsSliceAnimation = {
-            value: 'slice', params: {
-                top: this._listRef.nativeElement.offsetTop - 12,
-                duration: this.config.animations.thumbnailsSlice.duration
-            }
-        };
+        if (this.config.controls.thumbnails.position === 'left' || this.config.controls.thumbnails.position === 'right') {
+            this.thumbnailsSliceAnimation = {
+                value: 'slice', params: {
+                    top: this._listRef.nativeElement.offsetTop - 12,
+                    left:0,
+                    duration: this.config.animations.thumbnailsSlice.duration
+                }
+            };
+        } else {
+            this.thumbnailsSliceAnimation = {
+                value: 'slice', params: {
+                    top: 0,
+                    left: this._listRef.nativeElement.offsetLeft - 12,
+                    duration: this.config.animations.thumbnailsSlice.duration
+                }
+            };
+        }
     }
 
     private _animateSliced(): void {
 
+        if (this.config.controls.thumbnails.position === 'left' || this.config.controls.thumbnails.position === 'right') {
+            
         this.thumbnailsSliceAnimation = {
             value: 'sliced', params: {
                 top: this._listRef.nativeElement.offsetTop - 12,
+                left: 0,
                 duration: this.config.animations.thumbnailsSlice.duration
             }
         };
+        } else {
+            
+            this.thumbnailsSliceAnimation = {
+                value: 'sliced', params: {
+                    top: 0,
+                    left: this._listRef.nativeElement.offsetLeft - 12,
+                    duration: this.config.animations.thumbnailsSlice.duration
+                }
+            };
+        }
     }
 
     private _animateSlicing(): void {
 
         const activeItemRef = this._itemsRef.toArray()[this.items.indexOf(this.activeItem)];
 
-        if (activeItemRef) {
+        if (activeItemRef  && (this.config.controls.thumbnails.position === 'left' || this.config.controls.thumbnails.position === 'right')) {
 
             let top = Math.round(((this._containerRef.nativeElement.clientHeight - activeItemRef.nativeElement.clientHeight) / 2) - activeItemRef.nativeElement.offsetTop);
 
-            if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight)) {
+            if (top < (this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight + 12)) {
 
-                top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight;
+                top = this._containerRef.nativeElement.clientHeight - this._listRef.nativeElement.clientHeight + 12;
             }
 
             if (top > 0) {
@@ -274,6 +317,30 @@ export class LightboxThumbnailsComponent implements OnInit {
             this.thumbnailsSliceAnimation = {
                 value: 'slicing', params: {
                     top,
+                    left: 0,
+                    duration: this.config.animations.thumbnailsSlice.duration
+                }
+            };
+        }
+
+        if (activeItemRef  && (this.config.controls.thumbnails.position === 'top' || this.config.controls.thumbnails.position === 'bottom')) {
+
+            let left = Math.round(((this._containerRef.nativeElement.clientWidth - activeItemRef.nativeElement.clientWidth) / 2) - activeItemRef.nativeElement.offsetLeft);
+
+            if (left < (this._containerRef.nativeElement.clientWidth - this._listRef.nativeElement.clientWidth + 12)) {
+
+                left = this._containerRef.nativeElement.clientWidth - this._listRef.nativeElement.clientWidth + 12;
+            }
+
+            if (left > 0) {
+
+                left = 0;
+            }
+
+            this.thumbnailsSliceAnimation = {
+                value: 'slicing', params: {
+                    top: 0,
+                    left,
                     duration: this.config.animations.thumbnailsSlice.duration
                 }
             };
