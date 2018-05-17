@@ -14,9 +14,6 @@ import { Video } from '../models/video';
 })
 export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
 
-    ngOnDestroy(): void {
-        throw new Error("Method not implemented.");
-    }
     @Input('youtube-id') public youtubeId: string;
 
     constructor(
@@ -57,5 +54,10 @@ export class LightboxVideoDirective extends ItemDirectiveBase implements OnInit,
         this.item = item;
 
         this._lightboxService.addItem(this.item);
+    }
+
+    public ngOnDestroy(): void {
+
+        this.lightboxService.removeItem(this.item);
     }
 }
