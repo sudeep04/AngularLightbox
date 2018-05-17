@@ -6,7 +6,7 @@
         </ng-template>
         <div class="tab-content">
             <p>
-                Change demo controls, animations and theme configurations.
+                Change demo template, controls and animations configurations.
             </p>
             <mat-accordion>
                 <mat-expansion-panel>
@@ -95,6 +95,9 @@
                         <mat-form-field>
                             <input matInput name="animations.backgroundFadeIn.duration" placeholder="duration" [(ngModel)]="config.animations.backgroundFadeIn.duration" type="number" step="0.1" min="0">
                         </mat-form-field>
+                        <mat-form-field>
+                            <input matInput name="animations.backgroundFadeIn.opacity" placeholder="opacity" [(ngModel)]="config.animations.backgroundFadeIn.opacity" type="number" step="0.1" min="0">
+                        </mat-form-field>
                         <h3>Background Fade Out</h3>
                         <mat-form-field>
                             <input matInput name="animations.backgroundFadeOut.duration" placeholder="duration" [(ngModel)]="config.animations.backgroundFadeOut.duration" type="number" step="0.1" min="0">
@@ -143,16 +146,7 @@
                         <mat-form-field>
                             <input matInput name="animations.itemOpen.duration" placeholder="duration" [(ngModel)]="config.animations.itemOpen.duration" type="number" step="0.1" min="0">
                         </mat-form-field>
-                    </form>   
-
-                </mat-expansion-panel>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Theme
-                    </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p>I'm visible because I am open</p>
+                    </form>
                 </mat-expansion-panel>
             </mat-accordion>
         </div>
