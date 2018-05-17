@@ -8,6 +8,8 @@ import { LightboxConfigurationService } from '../../services/lightbox-configurat
 export const WINDOW = new InjectionToken('Window');
 export function _window() { return window; }
 
+const SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
+
 @Component({
     selector: 'lightbox-thumbnails',
     templateUrl: 'lightbox-thumbnails.component.html',
@@ -219,6 +221,11 @@ export class LightboxThumbnailsComponent implements OnInit {
 
             this._animateSlice();
         }
+    }
+
+    public swipe(action: string) {
+        
+        console.log(action);
     }
 
     public getItemSrc(item: Item): string {

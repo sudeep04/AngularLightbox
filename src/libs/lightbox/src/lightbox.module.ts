@@ -14,6 +14,14 @@ import { LightboxThumbnailsComponent } from './components/lightbox-thumbnails/li
 import { LightboxService } from './services/lightbox.service';
 import { DoomService } from './services/doom.service';
 import { LightboxConfigurationService } from './services/lightbox-configuration.service';
+import * as Hammer from 'hammerjs';
+import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+
+export class HammerConfig extends HammerGestureConfig {
+    overrides = <any>{
+      'swipe': { direction: Hammer.DIRECTION_ALL }
+    };
+  }
 
 @NgModule({
     declarations: [
@@ -37,6 +45,10 @@ import { LightboxConfigurationService } from './services/lightbox-configuration.
         LightboxVideoDirective
     ],
     providers: [
+        {
+        provide: HAMMER_GESTURE_CONFIG,
+        useClass: HammerConfig
+        },
         LightboxService,
         DoomService,
         LightboxConfigurationService

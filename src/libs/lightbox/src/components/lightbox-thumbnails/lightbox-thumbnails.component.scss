@@ -14,9 +14,10 @@
         }
         .thumbnail{
             display: inline-block;
+            cursor: pointer;
             img{
                 display: block;
-                cursor: pointer;
+                pointer-events: none;
             }
         }
 

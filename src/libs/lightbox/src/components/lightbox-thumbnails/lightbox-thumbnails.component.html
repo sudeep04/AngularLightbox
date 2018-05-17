@@ -1,7 +1,7 @@
-<div *ngIf="!config.controls.thumbnails.disable" #thumnailsContainer class="thumbnail-container">
-    <div (wheel)="onwheel($event)" #thumnailsList [@thumbnailsSliceAnimation]="thumbnailsSliceAnimation" (@thumbnailsSliceAnimation.done)="thumbnailsSliceAnimationDone($event)">
-        <div [style.height]="thumbnailsHeight" [style.width]="thumbnailsWidth" class="thumbnail" *ngFor="let item of items" [ngClass]="{'active': item === activeItem}">
-            <img #thumnail [src]="getItemSrc(item)" (click)="onSelect(item)" title="{{item.title}}" />
+<div *ngIf="!config.controls.thumbnails.disable" #thumnailsContainer class="thumbnail-container" >
+    <div (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)" (swipeup)="swipe($event.type)" (swipedown)="swipe($event.type)" (wheel)="onwheel($event)" #thumnailsList [@thumbnailsSliceAnimation]="thumbnailsSliceAnimation" (@thumbnailsSliceAnimation.done)="thumbnailsSliceAnimationDone($event)">
+        <div (click)="onSelect(item)"[style.height]="thumbnailsHeight" [style.width]="thumbnailsWidth" class="thumbnail" *ngFor="let item of items" [ngClass]="{'active': item === activeItem}">
+            <img #thumnail [src]="getItemSrc(item)" title="{{item.title}}" />
         </div>
     </div>
 </div>

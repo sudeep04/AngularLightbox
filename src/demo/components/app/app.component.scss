@@ -36,7 +36,7 @@ $app-navbar-height-mobile-portrait: 56px !default;
 }
 
 .demo-content {
-    padding: 32px;
+    padding: 12px;
     box-sizing: border-box;
 }
 
@@ -84,5 +84,11 @@ h1 {
     .mat-list-item.active {
         background-color: mat-color(map-get($app-dark-theme, background), 'hover');
         color: mat-color(map-get($app-dark-theme, foreground), text);
+    }
+}
+
+@media (max-width: 767px) {
+    .demo-content {
+        padding: 0px;
     }
 }
