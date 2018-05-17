@@ -5,6 +5,7 @@ import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LazyLoadingModule } from '@sveguru/lazy-loading';
 import { LightboxModule } from '@sveguru/lightbox';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
 ];
@@ -15,14 +16,16 @@ const routes: Routes = [
         MaterialModule,
         FlexLayoutModule,
         LazyLoadingModule,
-        LightboxModule
+        LightboxModule,
+        FormsModule
     ],
     exports: [
         CommonModule,
         MaterialModule,
         FlexLayoutModule,
         LazyLoadingModule,
-        LightboxModule
+        LightboxModule,
+        FormsModule
     ]
 })
 export class SharedModule { }

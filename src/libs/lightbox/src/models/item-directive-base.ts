@@ -3,7 +3,7 @@ import { ElementRef, Input, OnDestroy } from '@angular/core';
 import { Item } from './item';
 import { Position } from './position.interface';
 
-export class ItemDirectiveBase implements OnDestroy {
+export class ItemDirectiveBase {
 
     @Input('container') protected container: string;
 
@@ -41,11 +41,6 @@ export class ItemDirectiveBase implements OnDestroy {
         protected readonly lightboxService: LightboxService,
         protected readonly elementRef: ElementRef
     ) {}
-
-    public ngOnDestroy(): void {
-
-        this.lightboxService.removeItem(this.item);
-    }
 
     protected onClick(event: Event): void {
 

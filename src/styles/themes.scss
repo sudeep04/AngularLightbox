@@ -90,6 +90,16 @@ $lightbox-theme: (
     .mat-selection-list .mat-list-option .mat-list-item-content .mat-list-text:not(:nth-child(2)) {
         padding-right: 16px !important;
     }
+    .mat-tab-label-content{
+        display: flex;
+        span{
+            padding: 4px 15px;
+        }
+    }
+    .mat-tab-label-active:not(:focus){
+        color: mat-color(map-get($theme, primary));
+        opacity: 1 !important;
+    }
 }
 
 
