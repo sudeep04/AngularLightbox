@@ -12,7 +12,7 @@ import { Img } from '../models/img';
         '(load)': 'onLoad($event)'
     }
 })
-export class LightboxImgDirective extends ItemDirectiveBase implements OnInit {
+export class LightboxImgDirective extends ItemDirectiveBase implements OnInit, OnDestroy {
 
     constructor(
         private readonly _lightboxService: LightboxService,
@@ -47,5 +47,10 @@ export class LightboxImgDirective extends ItemDirectiveBase implements OnInit {
         this.item = item;
 
         this._lightboxService.addItem(this.item);
+    }
+
+    public ngOnDestroy(): void {
+
+        this.lightboxService.removeItem(this.item);
     }
 }

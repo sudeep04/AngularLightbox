@@ -12,7 +12,7 @@ export class LightboxConfigurationService {
     ) {
         this._configuration = {
             controls: {
-                toolbar: { disable: false, position: 'top' },
+                toolbar: { position: 'top' },
                 back: { icon: 'arrow_back' },
                 navigation: { disable: false },
                 jumpToStart: { disable: false, icon: 'first_page' },
